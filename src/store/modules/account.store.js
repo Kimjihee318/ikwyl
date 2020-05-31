@@ -2,7 +2,7 @@ export default {
   namespaced: true,
   state: {
     // * #### FIX ####
-    user: 'jiheekim',
+    user: '깜찍이',
     userInfo: {
       address: '',
       buildingName: '마곡 경동 미르웰',
@@ -13,7 +13,8 @@ export default {
   },
   getters: {
     isAuthenticated() {
-      return false
+      // * #### FIX ####
+      return true
     },
   },
   mutations: {},

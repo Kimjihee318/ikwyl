@@ -12,6 +12,14 @@ const router = new VueRouter({
       meta: {
         requiresAuth: true,
       },
+      redirect: '/main',
+      children: [
+        {
+          path: 'main', // * 그냥 자식 path는 '/' 붙여주지 않음
+          name: 'main',
+          component: () => import('@/views/service/ServiceMain.vue'),
+        },
+      ],
     },
     {
       path: '/login',
