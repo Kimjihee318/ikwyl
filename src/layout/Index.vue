@@ -3,21 +3,21 @@
     <!-- <Header class="header" /> -->
     <Lnb class="lnb" />
     <router-view class="contents"></router-view>
-    <Footer class="footer" />
+    <!-- <Footer class="footer" /> -->
   </div>
 </template>
 
 <script>
 // import Header from './Header'
 import Lnb from './Lnb'
-import Footer from './Footer'
+// import Footer from './Footer'
 
 export default {
   name: 'index',
   components: {
     // Header,
     Lnb,
-    Footer,
+    // Footer,
   },
 }
 </script>
@@ -27,7 +27,7 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
-    left: 14rem;
+    left: 20rem;
     height: 3rem;
 
     border-bottom: 1px solid #c0ddff;
@@ -37,24 +37,23 @@ export default {
     top: 3rem;
     right: 0;
     bottom: 3rem;
-    left: 14rem;
+    left: 20rem;
   }
   .lnb {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
-    width: 14rem;
+    width: 20rem;
 
     padding: 1rem;
-    padding-right: 0;
     border-right: 1px solid #c0ddff;
   }
   .footer {
     position: absolute;
     right: 0;
     bottom: 0;
-    left: 14rem;
+    left: 20rem;
     height: 3rem;
 
     border-top: 1px solid #c0ddff;

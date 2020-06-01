@@ -2,7 +2,7 @@ export default {
   namespaced: true,
   state: {
     // * #### FIX ####
-    user: '깜찍이',
+    user: 'JIHEE',
     userInfo: {
       address: '',
       buildingName: '마곡 경동 미르웰',
