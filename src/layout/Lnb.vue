@@ -17,16 +17,20 @@
         </div>
       </div>
     </div>
-    <button class="">Add</button>
-    <Chart :Canvas="canvas" :FloorInfo="floorInfo" :Unit="unit" :User="user" :DataItems="dataItems" />
+    <button class="add">Add Record</button>
+    <div class="chart">
+      <h4>Today Report</h4>
+      <Chart :Canvas="canvas" :FloorInfo="floorInfo" :Unit="unit" :User="user" :DataItems="dataItems" />
+    </div>
+    <!-- <img src="@/assets/ref.jpg" alt="reference" /> -->
   </div>
 </template>
 
 <script>
 // import Logo from '../assets/icons/smoke_free-24px.svg'
 import __C from '@/primitives/_constants_.js'
-import _ChartData from '@/primitives/chartFloorPlan_Lnb'
-import Chart from '@/lib/d3/chart/floorPlan/SvgStructure.vue'
+import _ChartData from '@/primitives/Lnb.chartFloorPlan'
+import Chart from '@/lib/d3/chart/floorPlan/SvgFloorStructure.vue'
 import { mapState } from 'vuex'
 
 export default {
@@ -44,7 +48,7 @@ export default {
       return _ChartData.canvas
     },
     dataItems() {
-      return _ChartData.dataItems
+      return _ChartData.dataItems[0]
     },
     floorInfo() {
       return _ChartData.floorInfo
@@ -125,7 +129,21 @@ export default {
     }
   }
 }
-
+.add {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  padding: 0.4rem;
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 0.2rem;
+  color: #1a2157;
+  font-weight: bold;
+}
+.chart {
+  > div {
+    margin-bottom: 1rem;
+  }
+}
 .today_summary {
   border: 1px solid #c0ddff;
 }

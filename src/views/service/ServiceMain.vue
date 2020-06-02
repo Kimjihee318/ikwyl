@@ -1,14 +1,21 @@
 <template>
   <div class="main">
-    <Chart :Canvas="canvas" :FloorInfo="floorInfo" :Unit="unit" :User="user" :DataItems="dataItems" />
-    <img src="@/assets/ref.jpg" alt="reference" />
+    <Chart
+      v-for="(dataItem, i) in dataItems"
+      :key="`chart__${i}`"
+      :Canvas="canvas"
+      :FloorInfo="floorInfo"
+      :Unit="unit"
+      :User="user"
+      :DataItems="dataItem"
+    />
   </div>
 </template>
 
 <script>
 import __C from '@/primitives/_constants_.js'
 import _ChartData from '@/primitives/chartFloorPlan'
-import Chart from '@/lib/d3/chart/floorPlan/SvgStructure.vue'
+import Chart from '@/lib/d3/chart/floorPlan/SvgFloorStructure.vue'
 import { mapState } from 'vuex'
 export default {
   name: 'main-page',
@@ -21,7 +28,7 @@ export default {
       return _ChartData.canvas
     },
     dataItems() {
-      return _ChartData.dataItems
+      return _ChartData.dataItems.reverse()
     },
     floorInfo() {
       return _ChartData.floorInfo

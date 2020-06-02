@@ -24,8 +24,8 @@ export default {
       this.drawUnit()
     },
     drawBoxGroup() {
-      let dataItems = JSON.parse(JSON.stringify(this.DataItems))
-      dataItems.forEach(o => console.log(o, Object.keys(o)))
+      let dataItems = JSON.parse(JSON.stringify(this.DataItems.units))
+
       this.chartBoxGroup = this.chartArea
         .selectAll('g')
         .data(dataItems)
@@ -50,15 +50,19 @@ export default {
       this.unitSelection.each((d, i, j) => {
         let _self = d3.select(j[i])
 
+        // #3d62a8 #2d519f
         _self
           .append('rect')
           .attr('x', 10)
           .attr('y', 20)
           .attr('width', this.Unit.UnitWidth)
           .attr('height', this.Unit.UnitHeight)
-          .attr('fill', this.Unit.UnitFillColor)
+          .attr(
+            'fill',
+            this.FloorInfo.Userfloor === this.DataItems.floor ? this.Unit.UnitFillPointColor : this.Unit.UnitFillColor
+          )
           .attr('stroke', d => (d.userName === this.User ? '#ffffff' : this.Unit.UnitStroke))
-          .attr('stroke-width', d => (d.userName === this.User ? 1.5 : this.Unit.UnitStrokeWidth))
+          .attr('stroke-width', d => (d.userName === this.User ? 2 : this.Unit.UnitStrokeWidth))
 
         _self
           .append('text')

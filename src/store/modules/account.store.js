@@ -5,9 +5,9 @@ export default {
     user: 'jihee',
     userInfo: {
       address: '',
-      buildingName: '마곡 경동 미르웰',
+      buildingName: 'RICH CASTLE',
       buildingNo: 101,
-      unit: 1001
+      unit: 901
     }
     // * #### FIX ####
   },

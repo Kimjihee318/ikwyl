@@ -9,19 +9,16 @@ export default {
         .attr('class', 'canvas')
         .attr('width', this.Canvas.CanvasWidth)
         .attr('height', this.Canvas.CanvasHeight)
+        .style('border', `solid ${this.Canvas.CanvasBorderWeight}px ${this.Canvas.CanvasBorderColor}`)
         .style(
-          'border',
-          `solid ${this.Canvas.CanvasBorderWeight}px ${this.Canvas.CanvasBorderColor}`
+          'background-color',
+          this.FloorInfo.Userfloor === this.DataItems.floor ? this.Canvas.CanvasBgPointColor : this.Canvas.CanvasBgColor
         )
-        .style('background-color', this.Canvas.CanvasBgColor)
 
       this.chartArea = this.svg
         .append('g')
         .attr('id', `chart_area___${this.localId}`)
-        .attr(
-          'transform',
-          `translate(${this.Canvas.CanvasChartX},${this.Canvas.CanvasChartY})`
-        )
+        .attr('transform', `translate(${this.Canvas.CanvasChartX},${this.Canvas.CanvasChartY})`)
     }
   }
 }
