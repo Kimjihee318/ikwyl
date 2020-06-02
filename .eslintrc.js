@@ -16,13 +16,13 @@ module.exports = {
       {
         singleQuote: true,
         semi: false,
-        useTabs: false,
-        // tabWidth: 2,
-        trailingComma: 'all',
-        printWidth: 80,
-        bracketSpacing: true,
-        arrowParens: 'avoid',
-        "endOfLine":"auto"
+        // useTabs: false,
+        // // tabWidth: 2,
+        // trailingComma: 'all',
+        printWidth: 200, // 줄바꿈 간격
+        // bracketSpacing: true,
+        // arrowParens: 'avoid',
+        // "endOfLine":"auto"
       },
     ],
   },

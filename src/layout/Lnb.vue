@@ -1,10 +1,10 @@
 <template>
   <div>
-    <!-- <div class="logo"><Logo /></div> -->
+    <div class="logo"></div>
     <div class="account_info">
       <div class="user">
         <div class="user_img"></div>
-        <div class="user_name">{{ `${user}` }}</div>
+        <div class="user_name">{{ userUpperCase }}</div>
       </div>
       <div class="card_style">
         <div class="card_style_red"></div>
@@ -18,36 +18,55 @@
       </div>
     </div>
     <button class="">Add</button>
-    <today-summary class="today_summary"></today-summary>
+    <Chart :Canvas="canvas" :FloorInfo="floorInfo" :Unit="unit" :User="user" :DataItems="dataItems" />
   </div>
 </template>
 
 <script>
 // import Logo from '../assets/icons/smoke_free-24px.svg'
-import TodaySummary from '@/components/TodaySummary.vue'
 import __C from '@/primitives/_constants_.js'
+import _ChartData from '@/primitives/chartFloorPlan_Lnb'
+import Chart from '@/lib/d3/chart/floorPlan/SvgStructure.vue'
 import { mapState } from 'vuex'
 
 export default {
   name: 'left-navigation-bar',
   components: {
+    Chart
     // Logo,
-    TodaySummary,
   },
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user', 'userInfo']),
-  },
+    userUpperCase() {
+      return this.user.toUpperCase()
+    },
+    canvas() {
+      return _ChartData.canvas
+    },
+    dataItems() {
+      return _ChartData.dataItems
+    },
+    floorInfo() {
+      return _ChartData.floorInfo
+    },
+    unit() {
+      return _ChartData.unit
+    }
+  }
   // components: { }
 }
 </script>
 <style lang="scss" scoped>
+.logo {
+  height: 3rem;
+}
 .account_info {
   position: relative;
   display: flex;
   margin-bottom: 2rem;
   padding: 1rem;
-  background-color: #081063;
-  border: 2px solid #7e92d9;
+  background-color: #2d519f;
+  border: 1px solid #81a8e3;
   color: #ffffff;
 
   .user {
