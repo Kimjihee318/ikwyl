@@ -12,7 +12,9 @@ export default {
         .style('border', `solid ${this.Canvas.CanvasBorderWeight}px ${this.Canvas.CanvasBorderColor}`)
         .style(
           'background-color',
-          this.FloorInfo.Userfloor === this.DataItems.floor ? this.Canvas.CanvasBgPointColor : this.Canvas.CanvasBgColor
+          this.FloorInfo && this.FloorInfo.Userfloor === this.DataItems.floor
+            ? this.Canvas.CanvasBgPointColor
+            : this.Canvas.CanvasBgColor
         )
 
       this.chartArea = this.svg

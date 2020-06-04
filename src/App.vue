@@ -15,6 +15,7 @@ export default {
 }
 html {
   // font-size: 10px;
+  background-color: #0f1333;
 }
 .app {
   position: absolute;
@@ -23,7 +24,6 @@ html {
   bottom: 0;
   left: 0;
 
-  background-color: #0f1333;
   color: #c0ddff;
   // bg: #1b39e7 #e9f9f8
   // font: #cce8ff #b1d4ec

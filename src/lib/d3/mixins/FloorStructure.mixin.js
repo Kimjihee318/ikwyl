@@ -50,7 +50,6 @@ export default {
       this.unitSelection.each((d, i, j) => {
         let _self = d3.select(j[i])
 
-        // #3d62a8 #2d519f
         _self
           .append('rect')
           .attr('x', 10)

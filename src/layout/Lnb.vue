@@ -18,10 +18,32 @@
       </div>
     </div>
     <button class="add">Add Record</button>
-    <div class="chart">
-      <h4>Today Report</h4>
-      <Chart :Canvas="canvas" :FloorInfo="floorInfo" :Unit="unit" :User="user" :DataItems="dataItems" />
-    </div>
+    <div class="chart"></div>
+    <ui-card>
+      <chart-stack
+        :Canvas="stackedCanvas"
+        :Chart="stackedChart"
+        :Circle="stackedCircle"
+        :DataItems="stackedDataItems"
+      />
+      <div v-for="(item, i) in reportToday.quantity" class="report_today" :key="`report_${i}`">
+        <div class="report_title">{{ item.title }}</div>
+        <div class="report_contents">{{ item.value }}</div>
+      </div>
+    </ui-card>
+    <ui-card>
+      <chart-time :Canvas="timeCanvas" :Chart="timeChart" :Circle="timeCircle" :DataItems="timeDataItems" />
+      <div v-for="(item, i) in reportToday.time" class="report_today" :key="`report_${i}`">
+        <div class="report_title">{{ item.title }}</div>
+        <div class="report_contents">{{ item.value }}</div>
+      </div>
+    </ui-card>
+    <ui-card>
+      <div v-for="(item, i) in reportCumulative" class="report_today" :key="`report_${i}`">
+        <div class="report_title">{{ item.title }}</div>
+        <div class="report_contents">{{ item.value }}</div>
+      </div>
+    </ui-card>
     <!-- <img src="@/assets/ref.jpg" alt="reference" /> -->
   </div>
 </template>
@@ -29,32 +51,92 @@
 <script>
 // import Logo from '../assets/icons/smoke_free-24px.svg'
 import __C from '@/primitives/_constants_.js'
-import _ChartData from '@/primitives/Lnb.chartFloorPlan'
-import Chart from '@/lib/d3/chart/floorPlan/SvgFloorStructure.vue'
+import _ChartStackedData from '@/primitives/chartStacked'
+import _ChartTimeData from '@/primitives/chartTime'
+import ChartStack from '@/lib/d3/chart/stack/StackedChart.vue'
+import ChartTime from '@/lib/d3/chart/time/TimeChart.vue'
+import UiCard from '@/components/ui/Card.vue'
+
 import { mapState } from 'vuex'
 
 export default {
   name: 'left-navigation-bar',
   components: {
-    Chart
+    ChartStack,
+    ChartTime,
+    UiCard
     // Logo,
   },
+  data: () => ({
+    reportToday: {
+      // {
+      //   title: '',
+      //   content: ''
+      // }
+      quantity: [
+        {
+          title: '평균 간접 흡연 량',
+          value: 9
+        },
+        {
+          title: '같은층 간접 흡연 량',
+          value: 7
+        },
+        {
+          title: '주위 간접 흡연 량',
+          value: 3
+        }
+      ],
+      time: [
+        {
+          title: '평균 감지 시간',
+          value: [22, 21, 24]
+        },
+        {
+          title: '주말 평균 감지 시간',
+          value: [22, 21, 24]
+        }
+      ]
+    },
+    reportCumulative: [
+      {
+        title: '누적 간접 흡연량',
+        value: 1234
+      },
+      {
+        title: '누적 간접 흡연 일수',
+        value: 123
+      }
+    ]
+  }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user', 'userInfo']),
     userUpperCase() {
       return this.user.toUpperCase()
     },
-    canvas() {
-      return _ChartData.canvas
+    stackedCanvas() {
+      return _ChartStackedData.canvas
     },
-    dataItems() {
-      return _ChartData.dataItems[0]
+    stackedChart() {
+      return _ChartStackedData.chart
     },
-    floorInfo() {
-      return _ChartData.floorInfo
+    stackedCircle() {
+      return _ChartStackedData.circle
     },
-    unit() {
-      return _ChartData.unit
+    stackedDataItems() {
+      return _ChartStackedData.dataItems[0]
+    },
+    timeCanvas() {
+      return _ChartTimeData.canvas
+    },
+    timeCircle() {
+      return _ChartTimeData.circle
+    },
+    timeChart() {
+      return _ChartTimeData.chart
+    },
+    timeDataItems() {
+      return _ChartTimeData.dataItems
     }
   }
   // components: { }
@@ -146,5 +228,13 @@ export default {
 }
 .today_summary {
   border: 1px solid #c0ddff;
+}
+.report_today,
+.report_cumulative {
+  display: flex;
+  justify-content: space-between;
+  &_title {
+    width: 10rem;
+  }
 }
 </style>

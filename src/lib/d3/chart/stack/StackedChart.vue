@@ -6,21 +6,20 @@
 import CommonMixin from './importers'
 
 export default {
-  name: 'column-side-plan',
+  name: 'sh-smoking-stack',
   mixins: [CommonMixin],
   props: {
     id: String,
 
     // Chart Data
     Canvas: { type: Object, default: () => ({}) },
-    FloorInfo: { type: Object, default: () => ({}) },
-    Unit: { type: Object, default: () => ({}) },
-    User: String,
+    Chart: { type: Object, default: () => ({}) },
+    Circle: { type: Object, default: () => ({}) },
     // Database
-    DataItems: { type: Array, default: () => [] }
+    DataItems: { type: Object, default: () => {} }
   },
   created() {
-    this.localId = `${this.id || 'Floor_Structure'}__${this.safeId('')}`
+    this.localId = `${this.id || 'Stacked'}__${this.safeId('')}`
   },
   mounted() {
     this.draw()
@@ -31,7 +30,7 @@ export default {
       this.clear()
       // this.initData()
       this.drawCanvas()
-      this.drawColumnPlan()
+      this.drawStacked()
     }
   }
 }

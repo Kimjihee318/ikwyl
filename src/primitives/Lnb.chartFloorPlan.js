@@ -10,11 +10,13 @@ export default {
     CanvasChartY: 0
   },
   floorInfo: {
-    Userfloor: 9,
+    Userfloor: 9, // GET FROM DB
+    UserUnitNo: 9, // GET FROM DB
     UnitNumbers: 12,
     UnitsMaxSide: 7,
     UnitsMinSide: null,
-    Sides: 2
+    Sides: 2,
+    TopFloor: 10
   },
   unit: {
     UnitWidth: 30,

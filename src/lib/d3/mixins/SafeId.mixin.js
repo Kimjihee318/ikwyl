@@ -1,6 +1,6 @@
 export const SafeIdMixin = {
   data: () => ({
-    localId: null,
+    localId: null
   }),
   computed: {
     safeId() {
@@ -26,6 +26,6 @@ export const SafeIdMixin = {
         return suffix ? id + '_' + suffix : id
       }
       return fn
-    },
-  },
+    }
+  }
 }

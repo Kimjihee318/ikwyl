@@ -1,8 +1,8 @@
 <template>
   <div class="layout">
     <!-- <Header class="header" /> -->
-    <Lnb class="lnb" />
-    <router-view class="contents"></router-view>
+    <Lnb class="layout_lnb" />
+    <router-view class="layout_contents"></router-view>
     <!-- <Footer class="footer" /> -->
   </div>
 </template>
@@ -32,15 +32,15 @@ export default {
 
     border-bottom: 1px solid #c0ddff;
   }
-  .contents {
+  &_contents {
     position: absolute;
     top: 3rem;
     right: 0;
     bottom: 3rem;
     left: 23rem;
   }
-  .lnb {
-    position: absolute;
+  &_lnb {
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;

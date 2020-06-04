@@ -1,5 +1,5 @@
 <template>
-  <div :id="localId"></div>
+  <div :id="localId" class="floor_chart"></div>
 </template>
 
 <script>
@@ -36,3 +36,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.floor_chart {
+  margin-bottom: 0.5rem;
+}
+</style>
