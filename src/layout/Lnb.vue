@@ -17,7 +17,10 @@
         </div>
       </div>
     </div>
-    <button class="add">Add Record</button>
+    <button class="add" @click="onAdd">Add Record</button>
+    <ui-modal v-if="modalOpened">
+      <template><form-smoke v-model="modalOpened"/></template>
+    </ui-modal>
     <div class="chart"></div>
     <ui-card>
       <chart-stack
@@ -56,6 +59,8 @@ import _ChartTimeData from '@/primitives/chartTime'
 import ChartStack from '@/lib/d3/chart/stack/StackedChart.vue'
 import ChartTime from '@/lib/d3/chart/time/TimeChart.vue'
 import UiCard from '@/components/ui/Card.vue'
+import UiModal from '@/components/ui/Modal.vue'
+import FormSmoke from '@/components/form/FormSmoke.vue'
 
 import { mapState } from 'vuex'
 
@@ -64,10 +69,13 @@ export default {
   components: {
     ChartStack,
     ChartTime,
-    UiCard
+    FormSmoke,
+    UiCard,
+    UiModal
     // Logo,
   },
   data: () => ({
+    modalOpened: false,
     reportToday: {
       // {
       //   title: '',
@@ -138,8 +146,12 @@ export default {
     timeDataItems() {
       return _ChartTimeData.dataItems
     }
+  },
+  methods: {
+    onAdd() {
+      this.modalOpened = true
+    }
   }
-  // components: { }
 }
 </script>
 <style lang="scss" scoped>

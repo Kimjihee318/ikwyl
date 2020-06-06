@@ -6,7 +6,7 @@
     <div class="main_body">
       <div class="main_left">
         <div class="main_left_chart_wapper">
-          <Floor
+          <chart-floor
             v-for="(dataItem, i) in floorDataItems"
             :key="`chart__${i}`"
             :Canvas="floorCanvas"
@@ -17,10 +17,10 @@
           />
         </div>
         <div class="main_left_card_wapper">
-          <Card
+          <ui-card
             v-for="(item, i) in floorSummaries"
             :card-style="propStyle"
-            :style="styleCard"
+            :style="styleCard(item)"
             :key="`floor_summary_${i}`"
           >
             <!-- // * slot -->
@@ -29,11 +29,11 @@
               <div class="card_contents_report_title">{{ _item.title }}</div>
               <div class="card_contents_report_val">{{ _item.value }}</div>
             </div>
-          </Card>
+          </ui-card>
         </div>
       </div>
       <div class="main_right fixed_width">
-        <Column
+        <chart-column
           :Canvas="columnCanvas"
           :FloorInfo="columnFloorInfo"
           :Unit="columnUnit"
@@ -50,25 +50,25 @@
 import __C from '@/primitives/_constants_.js'
 import _ChartFloorData from '@/primitives/chartFloorPlan'
 import _ChartColumnData from '@/primitives/chartColumnPlan'
-import Card from '@/components/ui/Card.vue'
+import UiCard from '@/components/ui/Card.vue'
 import Calendar from '@/components/ui/Calendar.vue'
-import Column from '@/lib/d3/chart/columnPlan/SvgColStructure'
-import Floor from '@/lib/d3/chart/floorPlan/SvgFloorStructure.vue'
+import ChartColumn from '@/lib/d3/chart/columnPlan/SvgColStructure'
+import ChartFloor from '@/lib/d3/chart/floorPlan/SvgFloorStructure.vue'
 
 import { mapState } from 'vuex'
 export default {
   name: 'main-page',
   components: {
-    Card,
+    UiCard,
     Calendar,
-    Column,
-    Floor
+    ChartColumn,
+    ChartFloor
   },
   data: () => ({
     floorSummaries: []
   }),
   computed: {
-    ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user']),
+    ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user', 'userInfo']),
     columnCanvas() {
       return _ChartColumnData.canvas
     },
@@ -93,11 +93,6 @@ export default {
     floorUnit() {
       return _ChartFloorData.unit
     },
-    styleCard() {
-      return {
-        height: `${_ChartFloorData.canvas.CanvasHeight}px`
-      }
-    },
     propStyle() {
       return {
         marginBottom: `${0.75}rem`
@@ -112,7 +107,8 @@ export default {
         values: [
           { title: '평균 간접 흡연량', value: 7 },
           { title: '평균 감지 시간', value: 18 },
-          { title: '평균 주말 감지 시간', value: 18 }
+          { title: '평균 주말 감지 시간', value: 18 },
+          { title: '흡연자 있을 가능성', value: 100 }
         ]
       },
       {
@@ -120,7 +116,8 @@ export default {
         values: [
           { title: '평균 간접 흡연량', value: 7 },
           { title: '평균 감지 시간', value: 18 },
-          { title: '평균 주말 감지 시간', value: 18 }
+          { title: '평균 주말 감지 시간', value: 18 },
+          { title: '흡연자 있을 가능성', value: 80 }
         ]
       },
       {
@@ -128,10 +125,19 @@ export default {
         values: [
           { title: '평균 간접 흡연량', value: 7 },
           { title: '평균 감지 시간', value: 18 },
-          { title: '평균 주말 감지 시간', value: 18 }
+          { title: '평균 주말 감지 시간', value: 18 },
+          { title: '흡연자 있을 가능성', value: 18 }
         ]
       }
     ]
+  },
+  methods: {
+    styleCard(item) {
+      return {
+        backgroundColor: `${item.floor === this.userInfo.floor ? _ChartFloorData.canvas.CanvasBgPointColor : null}`,
+        height: `${_ChartFloorData.canvas.CanvasHeight}px`
+      }
+    }
   }
 }
 </script>
