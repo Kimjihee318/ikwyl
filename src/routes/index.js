@@ -10,31 +10,30 @@ const router = new VueRouter({
       path: '/',
       component: () => import('@/layout/Index.vue'),
       meta: {
-        requiresAuth: true,
+        requiresAuth: true
       },
       redirect: '/main',
       children: [
         {
           path: 'main', // * 그냥 자식 path는 '/' 붙여주지 않음
           name: 'main',
-          component: () => import('@/views/service/ServiceMain.vue'),
-        },
-      ],
+          component: () => import('@/views/service/ServiceMain.vue')
+        }
+      ]
     },
     {
       path: '/login',
       name: 'login',
       component: () => import('@/views/service/ServiceLogin.vue'),
       meta: {
-        requiresAuth: false,
-      },
-    },
-  ],
+        requiresAuth: false
+      }
+    }
+  ]
 })
 
 router.beforeEach((to, from, next) => {
   let isAuthenticated = store.getters['account/isAuthenticated']
-  console.log(isAuthenticated)
   if (to.meta.requiresAuth && !isAuthenticated) return next({ name: 'login' })
   next()
 })

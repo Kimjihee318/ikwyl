@@ -137,8 +137,6 @@ d3.csv('CIMIS_Station_125.csv', type, function(error, data) {
     .attr('height', height)
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
     .call(zoom)
-
-  console.log(data)
 })
 
 function brushed() {

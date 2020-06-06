@@ -34,7 +34,8 @@ export default {
   }
   &_contents {
     position: absolute;
-    top: 3rem;
+    // top: 3rem;
+    top: 0;
     right: 0;
     bottom: 3rem;
     left: 23rem;
