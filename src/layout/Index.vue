@@ -23,7 +23,7 @@ export default {
 </script>
 <style lang="scss">
 .layout {
-  .header {
+  &_header {
     position: absolute;
     top: 0;
     right: 0;
@@ -46,6 +46,7 @@ export default {
     bottom: 0;
     left: 0;
     width: 23rem;
+    z-index: 2;
 
     padding: 1rem;
     border-right: 1px solid #c0ddff;

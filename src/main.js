@@ -3,10 +3,11 @@ import App from './App.vue'
 import store from '@/store'
 import router from '@/routes'
 
+// console.log(oAuth)
 Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
   store,
-  router,
+  router
 }).$mount('#app')

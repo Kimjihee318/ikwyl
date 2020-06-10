@@ -17,7 +17,10 @@ const router = new VueRouter({
         {
           path: 'main', // * 그냥 자식 path는 '/' 붙여주지 않음
           name: 'main',
-          component: () => import('@/views/service/ServiceMain.vue')
+          component: () => import('@/views/service/ServiceMain.vue'),
+          meta: {
+            requiresAuth: true
+          }
         }
       ]
     },

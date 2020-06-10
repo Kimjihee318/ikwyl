@@ -18,8 +18,9 @@
       </div>
     </div>
     <button class="add" @click="onAdd">Add Record</button>
-    <ui-modal v-if="modalOpened">
-      <template><form-smoke v-model="modalOpened"/></template>
+    <ui-modal v-if="modalOpened" v-model="modalOpened">
+      <template #slot_title>Today Second Hand Smoking Upload</template>
+      <template #slot_contents><form-smoke /></template>
     </ui-modal>
     <div class="chart"></div>
     <ui-card>

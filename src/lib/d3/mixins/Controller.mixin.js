@@ -2,12 +2,11 @@ import * as d3 from 'd3'
 
 export default {
   data: () => ({
-    svg: null,
+    svg: null
   }),
   methods: {
     clear() {
-      if (!d3.select(`#${this.localId}`).empty())
-        d3.select(`#${this.localId}`).html('')
+      if (!d3.select(`#${this.localId}`).empty()) d3.select(`#${this.localId}`).html('')
       this.svg = d3.select(`#${this.localId}`).append('svg')
     },
     complete() {
@@ -38,6 +37,6 @@ export default {
         // this.DataItems.length > 0 &&
         Object.keys(this.Canvas).length > 0
       )
-    },
-  },
+    }
+  }
 }
