@@ -11,18 +11,28 @@
         <div class="card_style_blue"></div>
       </div>
       <div class="building">
-        <div class="building_name">{{ userInfo.buildingName }}</div>
+        <div class="building_name">{{ userInfo.buildingname }}</div>
         <div class="building_unit">
-          {{ `${userInfo.buildingNo}동 ${userInfo.unit}호` }}
+          {{ `${userInfo.buildingno}동 ${userInfo.unit}호` }}
         </div>
       </div>
     </div>
     <button class="add" @click="onAdd">Add Record</button>
     <ui-modal v-if="modalOpened" v-model="modalOpened">
       <template #slot_title>Today Second Hand Smoking Upload</template>
-      <template #slot_contents><form-smoke /></template>
+      <template #slot_contents><form-smoke-today /></template>
     </ui-modal>
     <div class="chart"></div>
+    <ui-card>
+      <div v-for="(item, i) in reportToday.quantity" class="report_today" :key="`report_t_q${i}`">
+        <div class="report_title">{{ item.title }}</div>
+        <div class="report_contents">{{ item.value }}</div>
+      </div>
+      <div v-for="(item, i) in reportToday.time" class="report_today" :key="`report_t_t${i}`">
+        <div class="report_title">{{ item.title }}</div>
+        <div class="report_contents">{{ item.value }}</div>
+      </div>
+    </ui-card>
     <ui-card>
       <chart-stack
         :Canvas="stackedCanvas"
@@ -30,20 +40,12 @@
         :Circle="stackedCircle"
         :DataItems="stackedDataItems"
       />
-      <div v-for="(item, i) in reportToday.quantity" class="report_today" :key="`report_${i}`">
+      <div v-for="(item, i) in reportCumulative.quantity" class="report_today" :key="`report_c_q${i}`">
         <div class="report_title">{{ item.title }}</div>
         <div class="report_contents">{{ item.value }}</div>
       </div>
-    </ui-card>
-    <ui-card>
       <chart-time :Canvas="timeCanvas" :Chart="timeChart" :Circle="timeCircle" :DataItems="timeDataItems" />
-      <div v-for="(item, i) in reportToday.time" class="report_today" :key="`report_${i}`">
-        <div class="report_title">{{ item.title }}</div>
-        <div class="report_contents">{{ item.value }}</div>
-      </div>
-    </ui-card>
-    <ui-card>
-      <div v-for="(item, i) in reportCumulative" class="report_today" :key="`report_${i}`">
+      <div v-for="(item, i) in reportCumulative.time" class="report_today" :key="`report_c_t${i}`">
         <div class="report_title">{{ item.title }}</div>
         <div class="report_contents">{{ item.value }}</div>
       </div>
@@ -53,7 +55,7 @@
 </template>
 
 <script>
-// import Logo from '../assets/icons/smoke_free-24px.svg'
+import { mapState, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_.js'
 import _ChartStackedData from '@/primitives/chartStacked'
 import _ChartTimeData from '@/primitives/chartTime'
@@ -61,16 +63,14 @@ import ChartStack from '@/lib/d3/chart/stack/StackedChart.vue'
 import ChartTime from '@/lib/d3/chart/time/TimeChart.vue'
 import UiCard from '@/components/ui/Card.vue'
 import UiModal from '@/components/ui/Modal.vue'
-import FormSmoke from '@/components/form/FormSmoke.vue'
-
-import { mapState } from 'vuex'
+import FormSmokeToday from '@/components/form/FormSmokeToday.vue'
 
 export default {
   name: 'left-navigation-bar',
   components: {
     ChartStack,
     ChartTime,
-    FormSmoke,
+    FormSmokeToday,
     UiCard,
     UiModal
     // Logo,
@@ -78,10 +78,28 @@ export default {
   data: () => ({
     modalOpened: false,
     reportToday: {
-      // {
-      //   title: '',
-      //   content: ''
-      // }
+      quantity: [
+        {
+          title: '평균 간접 흡연 량',
+          value: 9
+        },
+        {
+          title: '같은층 간접 흡연 량',
+          value: 7
+        },
+        {
+          title: '주위 간접 흡연 량',
+          value: 3
+        }
+      ],
+      time: [
+        {
+          title: '감지 시간',
+          value: [new Date().getHours(), new Date(new Date().setHours(15)).getHours()]
+        }
+      ]
+    },
+    reportCumulative: {
       quantity: [
         {
           title: '평균 간접 흡연 량',
@@ -99,24 +117,14 @@ export default {
       time: [
         {
           title: '평균 감지 시간',
-          value: [22, 21, 24]
+          value: new Date().getHours()
         },
         {
           title: '주말 평균 감지 시간',
-          value: [22, 21, 24]
+          value: new Date().getHours()
         }
       ]
-    },
-    reportCumulative: [
-      {
-        title: '누적 간접 흡연량',
-        value: 1234
-      },
-      {
-        title: '누적 간접 흡연 일수',
-        value: 123
-      }
-    ]
+    }
   }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user', 'userInfo']),
@@ -148,7 +156,12 @@ export default {
       return _ChartTimeData.dataItems
     }
   },
+  mounted() {
+    this.getUserInfoFromServer()
+  },
   methods: {
+    ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['getUserInfoFromServer']),
+
     onAdd() {
       this.modalOpened = true
     }

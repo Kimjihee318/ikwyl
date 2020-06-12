@@ -4,7 +4,7 @@ import firebase from './firebase.init'
 export default class FirebaseOAuth {
   constructor() {}
 
-  async googleAuth(callback) {
+  loginGoogleAuth(callback) {
     let provider = new firebase.auth.GoogleAuthProvider()
     // ? TRY TO ASYNC AWAIT
     // try {
@@ -32,10 +32,16 @@ export default class FirebaseOAuth {
       .then(function(result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         let token = result.credential.accessToken
-        // The signed-in user info.
         let user = result.user
+        let isNewUser = result.additionalUserInfo.isNewUser
 
-        callback(token, user)
+        let formattedResult = {
+          token: token,
+          user: user,
+          isNewUser: isNewUser,
+          origin: result
+        }
+        callback(formattedResult)
       })
       .catch(function(error) {
         console.log(error)
@@ -51,6 +57,20 @@ export default class FirebaseOAuth {
         let credential = error.credential
         console.log(`[credential]`, credential)
         // ...
+      })
+  }
+
+  logoutGoogleAuth(callback) {
+    firebase
+      .auth()
+      .signOut()
+      .then(function() {
+        callback(true)
+        // Sign-out successful.
+      })
+      .catch(function(error) {
+        // An error happened.
+        console.log(`[SIGNOUT_ERROR]`, error)
       })
   }
 }

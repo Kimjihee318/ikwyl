@@ -1,52 +1,77 @@
 import __C from '@/primitives/_constants_'
+import __F from '@/primitives/_function_'
 import router from '@/routes/index'
 import accountApi from '@/service/service.account'
 
-let account = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
+const ACCOUNT = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
+
 export default {
   namespaced: true,
   state: {
-    // * #### FIX ####
-    user: 'jihee',
-    token: null,
-    email: '',
+    user: ACCOUNT ? ACCOUNT.user.displayName : '',
+    token: ACCOUNT ? ACCOUNT.token : '',
+    email: ACCOUNT ? ACCOUNT.user.email : '',
     userInfo: {
       address: '',
-      buildingName: 'RICH CASTLE',
-      buildingNo: 101,
-      floor: 9,
-      unit: 901
-      // should added Top Floor
-    }
-    // * #### FIX ####
-  },
-  getters: {
-    isAuthenticated() {
-      // * #### FIX ####
-      return !!account.token && account.token.length !== 0 ? true : false
-    }
+      buildingname: '',
+      buildingno: '',
+      floor: '',
+      unit: '',
+      maxfloor: ''
+    },
+    userInfoIdx: null
   },
   mutations: {
-    setToken(state) {
-      state.token = account.token
+    setUserInfoItem(state, payload) {
+      let key = Object.keys(payload)
+      if (key.length === 0) return
+      state.userInfo[key[0]] = payload[key[0]]
     },
-    setUser(state) {
-      state.user = account.user.displayName
-    },
-    setEmail(state) {
-      state.email = account.user.email
+    setIdx(state, payload) {
+      state.userInfoIdx = payload
     }
   },
   actions: {
-    async googleAuth({ commit }) {
-      await accountApi.setAccount2LocalStorage(() => {
-        if (account.token) {
-          router.push({ path: '/main' })
-        }
-        commit('setToken')
-        commit('setUser')
-        commit('setEmail')
+    async addUserInfo2Server({ state }) {
+      try {
+        let userData = JSON.parse(JSON.stringify(state.userInfo))
+        userData.user = state.user
+        await accountApi.addUserInfo(userData, res => {
+          state.userInfoIdx = res.idx
+        })
+      } catch (err) {
+        console.log('[AXIOS ERROR]', err)
+      }
+    },
+    async getUserInfoFromServer({ commit, state }, callback) {
+      let user = { user: state.user }
+      await accountApi.getUserInfo(user, res => {
+        let formattedObj = __F.obj2Lowercase(res.data)
+        commit('setIdx', formattedObj.id)
+        state.userInfo = formattedObj
+        if (callback) callback(formattedObj)
       })
+    },
+    async login() {
+      await accountApi.setAccount2LocalStorage(() => {
+        if (!ACCOUNT) return
+        ACCOUNT.isNewUser ? router.push({ path: '/userinfo' }) : router.push({ path: '/main' })
+      })
+    },
+    async logout() {
+      await accountApi.delAccount2LocalStorage(({ isEmpty }) => {
+        if (isEmpty) console.log('GOOD')
+      })
+    },
+    async upUserInfo2Server({ state }) {
+      try {
+        let userData = JSON.parse(JSON.stringify(state.userInfo))
+        userData.id = state.userInfoIdx
+        userData.user = state.user
+        await accountApi.postUserInfo(userData, null)
+      } catch (err) {
+        console.log('[AXIOS ERROR]', err)
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '@/store'
+import __C from '@/primitives/_constants_'
 
 Vue.use(VueRouter)
 
@@ -31,13 +31,21 @@ const router = new VueRouter({
       meta: {
         requiresAuth: false
       }
+    },
+    {
+      path: '/userinfo',
+      component: () => import('@/views/service/ServiceUserInfo.vue'),
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  let isAuthenticated = store.getters['account/isAuthenticated']
-  if (to.meta.requiresAuth && !isAuthenticated) return next({ name: 'login' })
+  let account = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
+
+  if (to.meta.requiresAuth && !account) return next({ name: 'login' })
   next()
 })
 

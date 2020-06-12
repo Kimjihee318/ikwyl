@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <!-- <Header class="header" /> -->
+    <Header class="layout_header" />
     <Lnb class="layout_lnb" />
     <router-view class="layout_contents"></router-view>
     <!-- <Footer class="footer" /> -->
@@ -8,14 +8,14 @@
 </template>
 
 <script>
-// import Header from './Header'
+import Header from './Header'
 import Lnb from './Lnb.vue'
 // import Footer from './Footer'
 
 export default {
   name: 'index',
   components: {
-    // Header,
+    Header,
     Lnb
     // Footer,
   }
@@ -34,11 +34,11 @@ export default {
   }
   &_contents {
     position: absolute;
-    // top: 3rem;
-    top: 0;
+    top: 3rem;
     right: 0;
     bottom: 3rem;
     left: 23rem;
+    z-index: 0;
   }
   &_lnb {
     position: fixed;
@@ -46,7 +46,7 @@ export default {
     bottom: 0;
     left: 0;
     width: 23rem;
-    z-index: 2;
+    z-index: 1;
 
     padding: 1rem;
     border-right: 1px solid #c0ddff;

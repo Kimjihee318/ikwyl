@@ -131,6 +131,7 @@ export default {
       }
     ]
   },
+
   methods: {
     styleCard(item) {
       return {

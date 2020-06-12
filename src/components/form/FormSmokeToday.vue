@@ -1,9 +1,9 @@
 <template>
   <div class="form_sh">
     <div class="form_sh_contents">
-      <date-picker v-model="Cdate" />
+      <date-picker v-model="date" />
       <div>
-        <input v-model="Cquantity" type="number" />
+        <input v-model="quantity" type="number" />
       </div>
     </div>
     <div class="form_sh_buttons">
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_'
 import DatePicker from '@/components/ui/DatePicker.vue'
 export default {
@@ -24,36 +24,23 @@ export default {
     DatePicker
   },
   data: () => ({
-    date: null,
+    date: new Date(),
     quantity: 0
   }),
   computed: {
-    ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user']),
-    // ! FIX COMPUTED NAME
-    Cdate: {
-      get() {
-        return this.date || new Date()
-      },
-      set(val) {
-        this.date = val
-      }
-    },
-    Cquantity: {
-      get() {
-        return this.quantity
-      },
-      set(val) {
-        this.quantity = val
-      }
-    }
+    ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user'])
   },
   methods: {
+    ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['user']),
+
     async put2TodayReport() {
-      // let date = {
-      //   user: this.user,
-      //   date: this.date,
-      //   quantity: this.quantity
-      // }
+      let data = {
+        user: this.user,
+        date: this.date,
+        quantity: this.quantity
+      }
+
+      this.addReport2Server(data)
     },
     onUpload() {
       // upload logic

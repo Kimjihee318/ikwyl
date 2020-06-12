@@ -1,15 +1,15 @@
 <template>
-  <div class="modal">
-    <div class="modal_title">
-      <Close class="icon_close" @click="onClose" />
-      <slot name="slot_title"></slot>
+  <div>
+    <div class="modal_wrap" @click="onClose"></div>
+    <div class="modal">
+      <div class="modal_title">
+        <Close class="icon_close" @click="onClose" />
+        <slot name="slot_title"></slot>
+      </div>
+      <div class="modal_contents">
+        <slot name="slot_contents"></slot>
+      </div>
     </div>
-    <div class="modal_contents">
-      <slot name="slot_contents"></slot>
-    </div>
-    <!-- <div class="modal_btn">
-      <div @click="onUpload">Upload</div>
-    </div> -->
   </div>
 </template>
 <script>
@@ -26,20 +26,29 @@ export default {
     onClose() {
       this.$emit('input', false)
     }
-    // onUpload() {
-    //   this.$emit('update')
-    // }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.modal_wrap {
+  align-items: center;
+  background-color: rgba(144, 144, 144, 0.5);
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
 .modal {
-  position: relative;
-  width: 33rem;
-  height: 20rem;
   background-color: #ffffff;
   border-radius: 2px;
+  height: 20rem;
+  left: 50%;
+  position: fixed;
+  top: 50%;
+  transform: translate(-16.5rem, -10rem);
+  width: 33rem;
 
   &_title {
     height: 2rem;

@@ -9,15 +9,16 @@
 </template>
 
 <script>
-import __C from '@/primitives/_constants_'
 import { mapActions } from 'vuex'
+import __C from '@/primitives/_constants_'
+
 export default {
   name: 'login',
   created() {},
   methods: {
-    ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['googleAuth']),
+    ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['login']),
     async onLogin() {
-      await this.googleAuth()
+      await this.login()
     }
   }
 }

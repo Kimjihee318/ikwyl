@@ -109,7 +109,6 @@ export default {
     date: function(val) {
       // ! 예외 전부 파악하지 못함
       if (!val) return
-      console.log(val)
       this.initDate()
     },
     // * 정체를 알아보자
