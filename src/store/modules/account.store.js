@@ -36,6 +36,7 @@ export default {
       try {
         let userData = JSON.parse(JSON.stringify(state.userInfo))
         userData.user = state.user
+        userData.useremail = state.email
         await accountApi.addUserInfo(userData, res => {
           state.userInfoIdx = res.idx
         })
@@ -44,8 +45,8 @@ export default {
       }
     },
     async getUserInfoFromServer({ commit, state }, callback) {
-      let user = { user: state.user }
-      await accountApi.getUserInfo(user, res => {
+      let userEmail = { useremail: state.email }
+      await accountApi.getUserInfo(userEmail, res => {
         let formattedObj = __F.obj2Lowercase(res.data)
         commit('setIdx', formattedObj.id)
         state.userInfo = formattedObj
@@ -67,7 +68,8 @@ export default {
       try {
         let userData = JSON.parse(JSON.stringify(state.userInfo))
         userData.id = state.userInfoIdx
-        userData.user = state.user
+        // ! FIX ME | user email property를 보내지 않고 오류가 없는지 확인 하지 못함
+        // userData.user = state.user
         await accountApi.postUserInfo(userData, null)
       } catch (err) {
         console.log('[AXIOS ERROR]', err)

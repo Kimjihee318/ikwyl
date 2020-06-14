@@ -1,4 +1,12 @@
 function obj2Lowercase(obj) {
+  if (obj instanceof Array) {
+    return obj.map(d => {
+      if (typeof d === 'object') {
+        d = obj2Lowercase(d)
+      }
+      return d
+    })
+  }
   let key
   let keys = Object.keys(obj)
   let newobj = {}

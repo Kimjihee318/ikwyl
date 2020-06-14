@@ -7,8 +7,8 @@
         <div><label>빌딩 명</label>{{ buildingName }}</div>
         <div><label>동</label>{{ buildingNo }}</div>
         <div><label>층수</label>{{ floor }}</div>
-        <div><label>호수</label>{{ maxFloor }}</div>
-        <div><label>최고층</label>{{ unit }}</div>
+        <div><label>호수</label>{{ unit }}</div>
+        <div><label>최고층</label>{{ maxFloor }}</div>
         <div class="btn_wrapper">
           <div class="btn_user_info" @click="onAction('MOD')">수정</div>
           <div class="btn_user_info" @click="onAction('DEL')">삭제</div>
@@ -62,7 +62,7 @@ export default {
         return this.userInfo.buildingno
       },
       set(val) {
-        this.userInfo.buildingno = val
+        this.userInfo.buildingno = parseFloat(val)
       }
     },
     floor: {
@@ -70,7 +70,7 @@ export default {
         return this.userInfo.floor
       },
       set(val) {
-        this.userInfo.floor = val
+        this.userInfo.floor = parseFloat(val)
       }
     },
     maxFloor: {
@@ -78,7 +78,7 @@ export default {
         return this.userInfo.maxfloor
       },
       set(val) {
-        this.userInfo.maxfloor = val
+        this.userInfo.maxfloor = parseFloat(val)
       }
     },
     unit: {
@@ -86,7 +86,7 @@ export default {
         return this.userInfo.unit
       },
       set(val) {
-        this.userInfo.unit = val
+        this.userInfo.unit = parseFloat(val)
       }
     }
   },
@@ -105,13 +105,11 @@ export default {
     onAction(mod) {
       switch (mod) {
         case __C.BUTTON.EDIT_MODE_ADD:
-          // * ACTIONS 인자 하나만 받음. callback을 인자로 넘겨줄 수 없음
           this.addUserInfo2Server()
           this.mode = __C.FORM.EDIT_MODE_READ
           break
         case __C.FORM.EDIT_MODE_MOD:
           this.mode = __C.FORM.EDIT_MODE_MOD
-          console.log(`[TEMPLATE]`, this.insertedUserInfoIndex)
           break
         case __C.BUTTON.EDIT_MODE_EDIT:
           this.upUserInfo2Server()

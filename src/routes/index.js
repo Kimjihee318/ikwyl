@@ -38,6 +38,14 @@ const router = new VueRouter({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/setshs',
+      component: () => import('@/views/system/SystemSetSHS.vue'),
+      meta: {
+        // !FIXME SYSTEM ADMIN REQUIRED
+        requiresAuth: true
+      }
     }
   ]
 })

@@ -15,7 +15,8 @@ let CONSTANTS = function() {
     },
     STORE: {
       NAMESPACE: {
-        ACCOUNT: 'account'
+        ACCOUNT: 'account',
+        REPORT: 'report'
       }
     },
     URL: {

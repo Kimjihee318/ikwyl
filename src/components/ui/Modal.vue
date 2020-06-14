@@ -3,7 +3,7 @@
     <div class="modal_wrap" @click="onClose"></div>
     <div class="modal">
       <div class="modal_title">
-        <Close class="icon_close" @click="onClose" />
+        <!-- <Close class="icon_close" @click="onClose" /> -->
         <slot name="slot_title"></slot>
       </div>
       <div class="modal_contents">
@@ -13,11 +13,11 @@
   </div>
 </template>
 <script>
-import Close from '@/assets/icons/close-24px.svg'
+// import Close from '@/assets/icons/close-24px.svg'
 export default {
   name: 'ui-modal',
   components: {
-    Close
+    // Close
   },
   props: {
     value: Boolean
@@ -43,11 +43,11 @@ export default {
 .modal {
   background-color: #ffffff;
   border-radius: 2px;
-  height: 20rem;
+  height: 30rem;
   left: 50%;
   position: fixed;
   top: 50%;
-  transform: translate(-16.5rem, -10rem);
+  transform: translate(-16.5rem, -15rem);
   width: 33rem;
 
   &_title {

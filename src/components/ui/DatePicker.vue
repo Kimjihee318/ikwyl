@@ -5,7 +5,7 @@
       // * 인자로 이벤트를 넣을때 $event를 넣는다. 
       // * key가 눌러질 때는 key event, input박스안에 포인터 있을때 focus event, 포인터 뗏을땐 blur event
     -->
-    <input v-model="stringDate" type="text" @click="init4Input" @blur="isBlurred = true" />
+    <input v-if="inputType" v-model="stringDate" type="text" @click="init4Input" @blur="isBlurred = true" />
     <div class="date_picker_modal_wrapper">
       <div class="date_picker_modal">
         <div class="date_picker_modal_box">
@@ -53,6 +53,9 @@ export default {
       type: Date
     },
     formOpend: {
+      type: Boolean
+    },
+    inputType: {
       type: Boolean
     }
   },
