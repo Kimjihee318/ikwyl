@@ -1,16 +1,24 @@
 <template>
   <div class="header">
     <div class="header_user_info"></div>
-    <div class="header_user_btn_logout" @click="onLogout">logout</div>
+    <!-- <div class="header_user_btn_onLoad" @click="onLoad">{{ user }}</div> -->
+    <div class="header_user_btn_logout" @click="onLogout">Logout</div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_'
 export default {
+  computed: {
+    ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user'])
+  },
   methods: {
     ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['logout']),
+
+    onLoad() {
+      // userinfo page
+    },
     onLogout() {
       this.logout()
       this.$router.push({ path: 'login' })

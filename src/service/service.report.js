@@ -1,6 +1,5 @@
 import axios from './middleware/axiosInstance'
-// import __C from '@/primitives/_constants_'
-
+// * [ SHS ]
 async function getReport(data, callback) {
   let res = await axios('report').post('/', data)
   callback(res ? res.data : {})
@@ -15,9 +14,16 @@ async function delReport(id) {
   await axios('report').delete('/', { params: { id: id } })
 }
 
+// * [ USER JOIN SHS ]
+async function getJoinedReport(callback) {
+  let res = await axios('report').get('/')
+  callback(res ? res.data : {})
+}
+
 export default {
   getReport,
   putReport,
   upReport,
-  delReport
+  delReport,
+  getJoinedReport
 }

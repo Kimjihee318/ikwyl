@@ -3,14 +3,16 @@ import __F from '@/primitives/_function_'
 import router from '@/routes/index'
 import accountApi from '@/service/service.account'
 
-const ACCOUNT = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
-
+console.log('ACCOUNT STORE IN')
+let ACCOUNT = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
+console.log('[STORE ACCOUNT]', ACCOUNT)
 export default {
   namespaced: true,
   state: {
-    user: ACCOUNT ? ACCOUNT.user.displayName : '',
-    token: ACCOUNT ? ACCOUNT.token : '',
     email: ACCOUNT ? ACCOUNT.user.email : '',
+    permission: __C.FULL_ACCESS_PERMISSION.SERVICE,
+    token: ACCOUNT ? ACCOUNT.token : '',
+    user: ACCOUNT ? ACCOUNT.user.displayName : '',
     userInfo: {
       address: '',
       buildingname: '',
@@ -22,6 +24,10 @@ export default {
     userInfoIdx: null
   },
   mutations: {
+    setPermissionState(state, payload) {
+      if (!payload.ISPERMISSION) return
+      state.permission = __C.FULL_ACCESS_PERMISSION.SYSTEM
+    },
     setUserInfoItem(state, payload) {
       let key = Object.keys(payload)
       if (key.length === 0) return
@@ -32,6 +38,43 @@ export default {
     }
   },
   actions: {
+    // * [ LOGIN / LOGOUT ]
+    async login({ state }) {
+      await accountApi.setAccount2LocalStorage(() => {
+        let getAccount = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
+        ACCOUNT = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
+        console.log(`[GET ACCOUNT]`, getAccount)
+        console.log(`[ACCOUNT]`, ACCOUNT)
+        console.log(`[1]`, state)
+        if (!ACCOUNT) return
+        ACCOUNT.isNewUser ? router.push({ path: '/userinfo' }) : router.push({ path: '/main' })
+      })
+      console.log(`[2]`, state)
+    },
+    async logout() {
+      await accountApi.delAccount2LocalStorage(({ isEmpty }) => {
+        if (isEmpty) console.log('GOOD')
+      })
+    },
+    // * [ PERMISSION ]
+    async getUserPermissionFromServer({ state, commit }) {
+      let email = {
+        useremail: state.email
+      }
+      await accountApi.getUserPermission(email, res => {
+        commit('setPermissionState', res.data[0])
+      })
+    },
+    // * [ USER INFO ]
+    async getUserInfoFromServer({ commit, state }, callback) {
+      let userEmail = { useremail: state.email }
+      await accountApi.getUserInfo(userEmail, res => {
+        let formattedObj = __F.obj2Lowercase(res.data)
+        commit('setIdx', formattedObj.id)
+        state.userInfo = formattedObj
+        if (callback) callback(formattedObj)
+      })
+    },
     async addUserInfo2Server({ state }) {
       try {
         let userData = JSON.parse(JSON.stringify(state.userInfo))
@@ -43,26 +86,6 @@ export default {
       } catch (err) {
         console.log('[AXIOS ERROR]', err)
       }
-    },
-    async getUserInfoFromServer({ commit, state }, callback) {
-      let userEmail = { useremail: state.email }
-      await accountApi.getUserInfo(userEmail, res => {
-        let formattedObj = __F.obj2Lowercase(res.data)
-        commit('setIdx', formattedObj.id)
-        state.userInfo = formattedObj
-        if (callback) callback(formattedObj)
-      })
-    },
-    async login() {
-      await accountApi.setAccount2LocalStorage(() => {
-        if (!ACCOUNT) return
-        ACCOUNT.isNewUser ? router.push({ path: '/userinfo' }) : router.push({ path: '/main' })
-      })
-    },
-    async logout() {
-      await accountApi.delAccount2LocalStorage(({ isEmpty }) => {
-        if (isEmpty) console.log('GOOD')
-      })
     },
     async upUserInfo2Server({ state }) {
       try {

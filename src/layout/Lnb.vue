@@ -17,153 +17,61 @@
         </div>
       </div>
     </div>
-    <button class="add" @click="onAdd">Add Record</button>
+    <button v-if="permission === 'SYS_ADMIN' && !isSystemMod" class="btn type_nav" @click="onSys">System</button>
+    <button v-if="isSystemMod" class="btn type_nav" @click="onSvc">
+      Main
+    </button>
+    <system-navigation v-if="this.isSystemMod" />
+    <!-- <button class="add" @click="onAdd">Add Record</button>
     <ui-modal v-if="modalOpened" v-model="modalOpened">
       <template #slot_title>Today Second Hand Smoking Upload</template>
       <template #slot_contents><form-smoke-today /></template>
-    </ui-modal>
-    <div class="chart"></div>
-    <ui-card>
-      <div v-for="(item, i) in reportToday.quantity" class="report_today" :key="`report_t_q${i}`">
-        <div class="report_title">{{ item.title }}</div>
-        <div class="report_contents">{{ item.value }}</div>
-      </div>
-      <div v-for="(item, i) in reportToday.time" class="report_today" :key="`report_t_t${i}`">
-        <div class="report_title">{{ item.title }}</div>
-        <div class="report_contents">{{ item.value }}</div>
-      </div>
-    </ui-card>
-    <ui-card>
-      <chart-stack
-        :Canvas="stackedCanvas"
-        :Chart="stackedChart"
-        :Circle="stackedCircle"
-        :DataItems="stackedDataItems"
-      />
-      <div v-for="(item, i) in reportCumulative.quantity" class="report_today" :key="`report_c_q${i}`">
-        <div class="report_title">{{ item.title }}</div>
-        <div class="report_contents">{{ item.value }}</div>
-      </div>
-      <chart-time :Canvas="timeCanvas" :Chart="timeChart" :Circle="timeCircle" :DataItems="timeDataItems" />
-      <div v-for="(item, i) in reportCumulative.time" class="report_today" :key="`report_c_t${i}`">
-        <div class="report_title">{{ item.title }}</div>
-        <div class="report_contents">{{ item.value }}</div>
-      </div>
-    </ui-card>
-    <!-- <img src="@/assets/ref.jpg" alt="reference" /> -->
+    </ui-modal> -->
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_.js'
-import _ChartStackedData from '@/primitives/chartStacked'
-import _ChartTimeData from '@/primitives/chartTime'
-import ChartStack from '@/lib/d3/chart/stack/StackedChart.vue'
-import ChartTime from '@/lib/d3/chart/time/TimeChart.vue'
-import UiCard from '@/components/ui/Card.vue'
-import UiModal from '@/components/ui/Modal.vue'
-import FormSmokeToday from '@/components/form/FormSmokeToday.vue'
+import SystemNavigation from '@/views/system/SystemNavigation'
+// import UiModal from '@/components/ui/Modal.vue'
+// import FormSmokeToday from '@/components/form/FormSmokeToday.vue'
 
 export default {
   name: 'left-navigation-bar',
   components: {
-    ChartStack,
-    ChartTime,
-    FormSmokeToday,
-    UiCard,
-    UiModal
-    // Logo,
+    SystemNavigation
+    // FormSmokeToday,
+    // UiModal
   },
   data: () => ({
-    modalOpened: false,
-    reportToday: {
-      quantity: [
-        {
-          title: '평균 간접 흡연 량',
-          value: 9
-        },
-        {
-          title: '같은층 간접 흡연 량',
-          value: 7
-        },
-        {
-          title: '주위 간접 흡연 량',
-          value: 3
-        }
-      ],
-      time: [
-        {
-          title: '감지 시간',
-          value: [new Date().getHours(), new Date(new Date().setHours(15)).getHours()]
-        }
-      ]
-    },
-    reportCumulative: {
-      quantity: [
-        {
-          title: '평균 간접 흡연 량',
-          value: 9
-        },
-        {
-          title: '같은층 간접 흡연 량',
-          value: 7
-        },
-        {
-          title: '주위 간접 흡연 량',
-          value: 3
-        }
-      ],
-      time: [
-        {
-          title: '평균 감지 시간',
-          value: new Date().getHours()
-        },
-        {
-          title: '주말 평균 감지 시간',
-          value: new Date().getHours()
-        }
-      ]
-    }
+    modalOpened: false
   }),
   computed: {
-    ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user', 'userInfo']),
+    ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user', 'userInfo', 'permission']),
+    ...mapState(__C.STORE.NAMESPACE.SYSTEM, ['isSystemMod']),
     userUpperCase() {
       return this.user.toUpperCase()
-    },
-    stackedCanvas() {
-      return _ChartStackedData.canvas
-    },
-    stackedChart() {
-      return _ChartStackedData.chart
-    },
-    stackedCircle() {
-      return _ChartStackedData.circle
-    },
-    stackedDataItems() {
-      return _ChartStackedData.dataItems[0]
-    },
-    timeCanvas() {
-      return _ChartTimeData.canvas
-    },
-    timeCircle() {
-      return _ChartTimeData.circle
-    },
-    timeChart() {
-      return _ChartTimeData.chart
-    },
-    timeDataItems() {
-      return _ChartTimeData.dataItems
     }
   },
   mounted() {
     this.getUserInfoFromServer()
+    this.getUserPermissionFromServer()
   },
   methods: {
-    ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['getUserInfoFromServer']),
+    ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['getUserInfoFromServer', 'getUserPermissionFromServer']),
 
     onAdd() {
       this.modalOpened = true
+    },
+    onSvc() {
+      this.$store.commit(`${__C.STORE.NAMESPACE.SYSTEM}/setSysMod`, false)
+      this.$router.push({ path: '/' })
+    },
+    onSys() {
+      if (this.permission === __C.FULL_ACCESS_PERMISSION.SYSTEM)
+        this.$store.commit(`${__C.STORE.NAMESPACE.SYSTEM}/setSysMod`, true)
+      this.$router.push({ path: 'system' })
     }
   }
 }
@@ -247,20 +155,9 @@ export default {
   color: #1a2157;
   font-weight: bold;
 }
-.chart {
-  > div {
-    margin-bottom: 1rem;
-  }
-}
-.today_summary {
-  border: 1px solid #c0ddff;
-}
-.report_today,
-.report_cumulative {
-  display: flex;
-  justify-content: space-between;
-  &_title {
-    width: 10rem;
+.btn {
+  &.type_nav {
+    border: 1px solid #ddd;
   }
 }
 </style>

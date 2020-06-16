@@ -15,12 +15,43 @@ const router = new VueRouter({
       redirect: '/main',
       children: [
         {
-          path: 'main', // * 그냥 자식 path는 '/' 붙여주지 않음
+          path: 'main', // * 그냥 자식 path는 '/' 붙여주지 않음 redirect에만 / 붙여줌
           name: 'main',
           component: () => import('@/views/service/ServiceMain.vue'),
           meta: {
             requiresAuth: true
           }
+        },
+        {
+          path: 'system',
+          name: 'system',
+          redirect: '/system/userinfo',
+          component: {
+            render(c) {
+              return c('router-view')
+            }
+          },
+          meta: {
+            requiresAuth: true
+          },
+          children: [
+            {
+              path: 'userinfo',
+              name: 'userinfo',
+              component: () => import('@/views/system/SystemUserInfoBoard.vue'),
+              meta: {
+                requiresAuth: true
+              }
+            },
+            {
+              path: 'dailyshs',
+              name: 'dailyshs',
+              component: () => import('@/views/system/SystemSHSBoard.vue'),
+              meta: {
+                requiresAuth: true
+              }
+            }
+          ]
         }
       ]
     },
@@ -31,19 +62,16 @@ const router = new VueRouter({
       meta: {
         requiresAuth: false
       }
+      // beforeEnter(from, to, next) {
+      //   const account = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
+      //   if (account) return next('/')
+      //   next()
+      // }
     },
     {
       path: '/userinfo',
       component: () => import('@/views/service/ServiceUserInfo.vue'),
       meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/setshs',
-      component: () => import('@/views/system/SystemSetSHS.vue'),
-      meta: {
-        // !FIXME SYSTEM ADMIN REQUIRED
         requiresAuth: true
       }
     }
@@ -52,7 +80,6 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   let account = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
-
   if (to.meta.requiresAuth && !account) return next({ name: 'login' })
   next()
 })

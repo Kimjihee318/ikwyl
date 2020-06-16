@@ -5,8 +5,13 @@
 </template>
 
 <script>
+import __C from '@/primitives/_constants_'
 export default {
-  name: 'App'
+  name: 'App',
+  created() {
+    // console.log(`[APP]`, localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
+    if (!localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT)) return
+  }
 }
 </script>
 <style lang="scss">
@@ -27,5 +32,8 @@ html {
   color: #c0ddff;
   // bg: #1b39e7 #e9f9f8
   // font: #cce8ff #b1d4ec
+}
+svg {
+  fill: #ffffff;
 }
 </style>

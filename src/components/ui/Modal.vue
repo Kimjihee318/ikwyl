@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal_wrap" @click="onClose"></div>
-    <div class="modal">
+    <div class="modal" :style="modalStyle">
       <div class="modal_title">
         <!-- <Close class="icon_close" @click="onClose" /> -->
         <slot name="slot_title"></slot>
@@ -20,7 +20,18 @@ export default {
     // Close
   },
   props: {
-    value: Boolean
+    value: Boolean,
+    width: Number,
+    height: Number
+  },
+  computed: {
+    modalStyle() {
+      return {
+        width: `${this.width}px`,
+        height: `${this.height}px`,
+        transform: `translate(${-(this.width / 2)}px, ${-(this.height / 2)}px)`
+      }
+    }
   },
   methods: {
     onClose() {
@@ -43,12 +54,10 @@ export default {
 .modal {
   background-color: #ffffff;
   border-radius: 2px;
-  height: 30rem;
+  color: #000000;
   left: 50%;
   position: fixed;
   top: 50%;
-  transform: translate(-16.5rem, -15rem);
-  width: 33rem;
 
   &_title {
     height: 2rem;

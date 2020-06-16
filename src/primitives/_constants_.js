@@ -1,9 +1,18 @@
 let CONSTANTS = function() {
   return {
+    ACTION: {
+      ADD_MODE_ROW: 'ROW',
+      ADD_MODE_LIST: 'LIST'
+    },
     BUTTON: {
       EDIT_MODE_EDIT: 'EDIT',
       EDIT_MODE_ADD: 'ADD',
+      EDIT_MODE_ADD_LIST: 'ADD_LIST',
       EDIT_MODE_DEL: 'DEL'
+    },
+    FULL_ACCESS_PERMISSION: {
+      SYSTEM: 'SYS_ADMIN',
+      SERVICE: 'SVC_ADMIN'
     },
     FORM: {
       EDIT_MODE_MOD: 'MOD',
@@ -16,7 +25,8 @@ let CONSTANTS = function() {
     STORE: {
       NAMESPACE: {
         ACCOUNT: 'account',
-        REPORT: 'report'
+        REPORT: 'report',
+        SYSTEM: 'system'
       }
     },
     URL: {
