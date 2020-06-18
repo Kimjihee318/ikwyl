@@ -2,6 +2,7 @@ import * as d3 from 'd3'
 
 export default {
   data: () => ({
+    execRequested: [],
     svg: null
   }),
   methods: {
@@ -14,6 +15,12 @@ export default {
         this.$emit('complete', this.localId)
         this.$emit('to-xml-string', this.toXmlString())
       }, 1000)
+    },
+    exec(requested) {
+      if (requested.num != this.execRequested.length) return
+
+      this.execRequested = []
+      requested.drawer()
     },
     // Drawing Common
     noDataFound() {
@@ -33,10 +40,20 @@ export default {
       text_NoDataFound.attr('transform', `translate(${boxX_},${boxY_})`)
     },
     ready2draw() {
-      return (
-        // this.DataItems.length > 0 &&
-        Object.keys(this.Canvas).length > 0
-      )
+      return this.DataItems.length > 0 && Object.keys(this.Canvas).length > 0
+    },
+    register(drawer) {
+      let requested = {
+        num: this.execRequested.length + 1,
+        time: new Date().getTime(),
+        drawer: () => {
+          drawer()
+        }
+      }
+      this.execRequested.push(requested)
+      setTimeout(() => {
+        this.exec(requested)
+      }, 250)
     }
   }
 }

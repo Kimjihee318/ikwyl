@@ -1,8 +1,9 @@
 import * as d3 from 'd3'
+import __F from '@/primitives/_function_'
 
 export default {
   data: () => ({
-    dataItems: {},
+    dataItems: [],
     extentTime: [],
     timeGroup: null, // * Selection
     circleGroup: null, // * Selection
@@ -16,9 +17,8 @@ export default {
       this.drawCircles()
     },
     setScale() {
-      this.dataItems = JSON.parse(JSON.stringify(this.DataItems)).dates
-      // ! FIX : modify to date type
-      this.extentTime = d3.extent(this.dataItems, d => new Date(d.time))
+      this.dataItems = JSON.parse(JSON.stringify(this.DataItems))
+      this.extentTime = __F.getWeekDates()
 
       this.scaleTime = d3
         .scaleTime()
@@ -30,23 +30,26 @@ export default {
         .domain(d3.range(10))
         .range([0, this.Canvas.CanvasHeight - this.Chart.ChartVPadding])
         .round(true)
-        .paddingInner(0.5)
-        .paddingOuter(0.1)
     },
     drawAxis() {
       let xAxis = d3
         .axisBottom()
         .scale(this.scaleTime)
-        .tickFormat(d => `${d3.timeFormat('%d')(d)}`)
-        .ticks(7)
-        .tickSize(0)
+        .tickFormat(d => `${d3.timeFormat('%d')(d)}일`)
+        .ticks(8)
+        .tickSize(3)
         .tickPadding(10)
 
       this.chartArea
         .append('g')
         .attr('class', 'xAxis')
-        .attr('transform', `translate(0, ${this.Canvas.CanvasHeight - this.Chart.ChartVPadding})`)
+        .attr(
+          'transform',
+          `translate(${this.Chart.ChartHPadding / 2}, ${this.Canvas.CanvasHeight - this.Chart.ChartVPadding})`
+        )
         .call(xAxis)
+        .selectAll('text')
+        .style('text-anchor', 'middle')
     },
     drawCircles() {
       this.timeGroup = this.chartArea
@@ -60,23 +63,22 @@ export default {
         .append('g')
         .attr('class', (d, i) => `date_${i}`)
         .attr('transform', d => {
-          // ! FIX : modify to date type
-          return `translate(${this.scaleTime(new Date(d.time)) +
-            Math.floor(this.scaleVBand.bandwidth() / 2)}, ${-this.scaleVBand.bandwidth() - 5})`
+          return `translate(${this.scaleTime(new Date(d.date)) +
+            this.Chart.ChartHPadding / 2}, ${-this.scaleVBand.bandwidth() - 5})`
         })
         .each((d, i, j) => {
           let _self = d3.select(j[i])
 
           _self
             .selectAll('rect')
-            .data(Array.from({ length: d.smell }, () => null))
+            .data(Array.from({ length: d.quantity }, () => null))
             .enter()
             .append('rect')
             .attr('x', 0)
             .attr('y', (d, i) => {
               return this.Canvas.CanvasHeight - this.Chart.ChartVPadding - (2 + 4) * i
             })
-            .attr('width', this.scaleVBand.bandwidth())
+            .attr('width', 10)
             .attr('height', 2)
             .attr('fill', '#ffffff')
         })

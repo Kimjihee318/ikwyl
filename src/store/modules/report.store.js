@@ -5,7 +5,7 @@ export default {
   namespaced: true,
   state: {
     dailySHS: [{ date: '', id: null, quantity: null, user: '' }],
-    joinedDataUserInfoNSHS: []
+    joinedSHSWithUserInfo: []
   },
   mutations: {
     setDailySHS(state, payload) {
@@ -26,18 +26,7 @@ export default {
       state.dailySHS[idx][property] = value
     },
     setJoinedSHS(state, payload) {
-      payload.forEach((d, i) => {
-        let date = new Date(d.date)
-        payload[i].date = date
-        payload[i].formateddate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
-      })
-      // TODO NESTED MAKING!
-      let result = payload.reduce((c, v) => {
-        c[v.formateddate] = c[v.formateddate] || [] //Init if company property does not exist
-        c[v.formateddate].push(v) //Add employee property with null value
-        return c
-      }, {})
-      state.dailySHS = result
+      state.joinedSHSWithUserInfo = payload
     }
   },
   actions: {
@@ -48,7 +37,6 @@ export default {
         await reportApi.getReport(useremail, res => {
           let formattedData = __F.obj2Lowercase(res.data)
           commit('setDailySHS', formattedData)
-          console.log(`[getReportFromServer]`)
         })
         return true
       } catch (err) {
@@ -78,12 +66,11 @@ export default {
     },
 
     // * [ USER JOIN SHS ]
-    async getJoinedReportFromServer({ commit }) {
+    async getJoinedSHSFromServer({ commit }) {
       try {
-        await reportApi.getJoinedReport(res => {
+        await reportApi.getJoinedSHS(res => {
           let formattedData = __F.obj2Lowercase(res.data)
           commit('setJoinedSHS', formattedData)
-          console.log(`[getReportFromServer]`)
         })
         return true
       } catch (err) {

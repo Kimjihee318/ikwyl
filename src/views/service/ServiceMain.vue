@@ -14,13 +14,18 @@
         />
         <ui-card>
           <h3>Daily</h3>
-          <div v-for="(item, i) in reportToday.quantity" class="report_today" :key="`report_t_q${i}`">
+          <div>
+            {{ todaySHSInfo }}
+          </div>
+          <div v-for="(item, i) in todaySHS.quantity" class="report_today" :key="`report_t_q${i}`">
             <div class="report_title">{{ item.title }}</div>
             <div class="report_contents">{{ item.value }}</div>
           </div>
-          <div v-for="(item, i) in reportToday.time" class="report_today" :key="`report_t_t${i}`">
+          <div v-for="(item, i) in todaySHS.time" class="report_today" :key="`report_t_t${i}`">
             <div class="report_title">{{ item.title }}</div>
-            <div class="report_contents">{{ item.value }}</div>
+            <div class="report_contents">
+              <span v-for="(_item, _i) in item.value" :key="`shs_time_${_i}`">{{ _item }}</span>
+            </div>
           </div>
         </ui-card>
         <ui-card>
@@ -31,12 +36,12 @@
             :Circle="stackedCircle"
             :DataItems="stackedDataItems"
           />
-          <div v-for="(item, i) in reportCumulative.quantity" class="report_today" :key="`report_c_q${i}`">
+          <div v-for="(item, i) in cumulativeSHS.quantity" class="report_today" :key="`report_c_q${i}`">
             <div class="report_title">{{ item.title }}</div>
             <div class="report_contents">{{ item.value }}</div>
           </div>
           <chart-time :Canvas="timeCanvas" :Chart="timeChart" :Circle="timeCircle" :DataItems="timeDataItems" />
-          <div v-for="(item, i) in reportCumulative.time" class="report_today" :key="`report_c_t${i}`">
+          <div v-for="(item, i) in cumulativeSHS.time" class="report_today" :key="`report_c_t${i}`">
             <div class="report_title">{{ item.title }}</div>
             <div class="report_contents">{{ item.value }}</div>
           </div>
@@ -77,7 +82,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import __C from '@/primitives/_constants_.js'
+import __C from '@/primitives/_constants_'
+import __F from '@/primitives/_function_'
 import mainMixin from '@/mixins/main.mixins'
 
 export default {
@@ -85,8 +91,10 @@ export default {
   mixins: [mainMixin],
 
   data: () => ({
+    weeklySHS: [],
     floorSummaries: [],
-    reportToday: {
+    formattedJoinedSHS: {},
+    cumulativeSHS: {
       quantity: {
         shs: {
           title: '평균 간접 흡연 량',
@@ -96,47 +104,72 @@ export default {
           title: '같은층 간접 흡연 량',
           value: ''
         },
-        shs4Room: {
+        shsSurround: {
           title: '주위 간접 흡연 량',
           value: ''
         }
       },
-      time: [
-        {
-          title: '감지 시간',
-          value: [new Date().getHours(), new Date(new Date().setHours(15)).getHours()]
-        }
-      ]
-    },
-    reportCumulative: {
-      quantity: [
-        {
-          title: '평균 간접 흡연 량',
-          value: 9
-        },
-        {
-          title: '같은층 간접 흡연 량',
-          value: 7
-        },
-        {
-          title: '주위 간접 흡연 량',
-          value: 3
-        }
-      ],
-      time: [
-        {
+      time: {
+        daily: {
           title: '평균 감지 시간',
-          value: new Date().getHours()
+          value: ''
         },
-        {
+        weekend: {
           title: '주말 평균 감지 시간',
-          value: new Date().getHours()
+          value: ''
         }
-      ]
-    }
+      }
+    },
+    todaySHS: {
+      quantity: {
+        shs: {
+          title: '평균 간접 흡연 량',
+          value: ''
+        },
+        shsFloor: {
+          title: '같은층 간접 흡연 량',
+          value: ''
+        },
+        shsSurround: {
+          title: '주위 간접 흡연 량',
+          value: ''
+        }
+      },
+      time: {
+        dailyAvg: {
+          title: '감지 시간',
+          value: []
+        }
+      }
+    },
+    todaySHSInfo: '',
+    todaySHSMode: '',
+    todaySurroundingSHS: [],
+    todayUserFloorSHS: [],
+    userWeeklySHS: []
   }),
   computed: {
-    ...mapState(__C.STORE.NAMESPACE.REPORT, ['dailySHS'])
+    ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['userInfo']),
+    ...mapState(__C.STORE.NAMESPACE.REPORT, ['dailySHS', 'joinedSHSWithUserInfo']),
+    stackedDataItems() {
+      return this.userWeeklySHS
+    },
+    timeDataItems() {
+      return this.userWeeklySHS
+    },
+    floorDataItems() {
+      let today = new Date()
+      let propertyToday = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+      return this.formattedJoinedSHS[propertyToday]
+    }
+  },
+  watch: {
+    userWeeklySHS: {
+      handler(val) {
+        if (!val || val.length === 0) return
+      },
+      deep: true
+    }
   },
   created() {
     // !FIX change database data
@@ -172,31 +205,112 @@ export default {
   },
   mounted() {
     this.setSHS()
+    this.getJoinedSHS()
   },
   methods: {
-    ...mapActions(__C.STORE.NAMESPACE.REPORT, ['getReportFromServer', 'getJoinedReportFromServer']),
+    ...mapActions(__C.STORE.NAMESPACE.REPORT, ['getReportFromServer', 'getJoinedSHSFromServer']),
+    // [ JOINED SHS ]
+    async getJoinedSHS() {
+      console.log(`[SET JOINED]`)
+      let isData = await this.getJoinedSHSFromServer()
+      if (!isData) return
+      this.setFloorSHS()
+      this.setSurroundingRoomsSHS()
+      this.setCumulativeSHS()
+      this.formatJoinedSHS()
+    },
+    // [ Daily SHS ]
     async setSHS() {
       let isSHS = await this.getReportFromServer()
       if (!isSHS) return
-      let today = new Date()
-      let todaySHSKey = Object.keys(this.dailySHS).filter(d => {
-        return (
-          new Date(d).getFullYear() === today.getFullYear() &&
-          new Date(d).getMonth() === today.getMonth() &&
-          new Date(d).getDate() === today.getDate()
-        )
-      })
+      let todaySHSKey = Object.keys(this.dailySHS).filter(d => __F.expressionCheckToday(new Date(d)))
+
+      if (!todaySHSKey || todaySHSKey.length === 0) {
+        this.todaySHSMode = 'NO_DATA'
+        this.todaySHSInfo = 'Please Add Data'
+        return
+      }
 
       let todaySHS = this.dailySHS[todaySHSKey]
-
-      let avgSHSDegree =
-        todaySHS.reduce((c, v) => {
-          return c + v.quantity
-        }, 0) / todaySHS.length
-
-      this.reportToday.quantity.shs.value = avgSHSDegree
+      let avgSHSQauntity = __F.propertyMean(todaySHS, 'quantity')
+      let avgSHSTime = todaySHS.map(d => __F.timeFormat('%H:%M %p', d.date))
+      // set Quantity
+      this.todaySHS.quantity.shs.value = avgSHSQauntity
+      // set Time
+      this.todaySHS.time.dailyAvg.value = avgSHSTime
     },
-    async setFloorSHS() {}
+    // [ Cumulated SHS ]
+    setCumulativeSHS() {
+      let unit = this.userInfo.unit
+      this.weeklySHS = __F.filterDatesByCurrentWeek(this.joinedSHSWithUserInfo, 'date')
+      this.userWeeklySHS = this.weeklySHS.filter(d => d.useremail === this.userInfo.useremail)
+      this.userWeeklySHS.forEach(d => (d.date = new Date(d.date)))
+      let weeklyFloorSHS = this.weeklySHS.filter(d => d.floor === this.userInfo.floor)
+      let weeklySurroundingSHS = weeklyFloorSHS.filter(d => {
+        return d.unit === unit + 1 || d.unit === unit - 1 || d.unit === unit
+      })
+      // calc avg
+      let avgWeeklyUserSHSQauntity = __F.propertyMean(this.userWeeklySHS, 'quantity')
+      let avgUserFloorSHS = __F.propertyMean(weeklyFloorSHS, 'quantity')
+      let avgSurroundingSHS = __F.propertyMean(weeklySurroundingSHS, 'quantity')
+      // set Quantity
+      this.cumulativeSHS.quantity.shs.value = avgWeeklyUserSHSQauntity
+      this.cumulativeSHS.quantity.shsFloor.value = avgUserFloorSHS
+      this.cumulativeSHS.quantity.shsSurround.value = avgSurroundingSHS
+      // set Time
+      let weeklySHSTime = this.weeklySHS.map(d => new Date(d.date))
+      let weekendSHSTime = weeklySHSTime.filter(d => d.getDay() <= 5)
+
+      let avgWeeklySHSTime = `${Math.floor(__F.mean(weeklySHSTime.map(d => d.getHours())))}:${Math.floor(
+        __F.mean(weeklySHSTime.map(d => d.getMinutes()))
+      )}` // !FIX AM / PM 추가
+      let avgWeekendSHSTime =
+        weekendSHSTime.length !== 0
+          ? `${Math.floor(__F.mean(weekendSHSTime.map(d => d.getHours())))}: ${Math.floor(
+              __F.mean(weekendSHSTime.map(d => d.getMinutes()))
+            )}`
+          : ''
+      this.cumulativeSHS.time.daily.value = avgWeeklySHSTime
+      this.cumulativeSHS.time.weekend.value = avgWeekendSHSTime
+    },
+    // [ Floor SHS ]
+    setFloorSHS() {
+      this.todayUserFloorSHS = this.joinedSHSWithUserInfo.filter(d => {
+        return d.floor === this.userInfo.floor && __F.expressionCheckToday(new Date(d.date))
+      })
+      // ! FIX FUNC NAME
+      let avgUserFloorSHS = __F.propertyMean(this.todayUserFloorSHS, 'quantity')
+      this.todaySHS.quantity.shsFloor.value = avgUserFloorSHS
+    },
+    formatJoinedSHS() {
+      let copied = JSON.parse(JSON.stringify(this.joinedSHSWithUserInfo))
+
+      copied.forEach(d => {
+        let date = new Date(d.date)
+        Object.assign(d, {
+          ['formatedDate']: new Date(date.getFullYear(), date.getMonth(), date.getDate())
+        })
+      })
+      let result = copied.reduce((c, v) => {
+        c[v.formatedDate] = c[v.formatedDate] || {} //Init if company property does not exist
+        c[v.formatedDate][v.floor] = c[v.formatedDate][v.floor] || [] //Add employee property with null value
+        c[v.formatedDate][v.floor].push(v)
+        return c
+      }, {})
+
+      this.formattedJoinedSHS = result
+    },
+    // [ Surround SHS ]
+    setSurroundingRoomsSHS() {
+      console.log(`[SET SURROUNDING]`)
+      if (this.todayUserFloorSHS.length === 0) return
+      let unit = this.userInfo.unit
+      this.todaySurroundingSHS = this.todayUserFloorSHS.filter(d => {
+        return d.unit === unit + 1 || d.unit === unit - 1 || d.unit === unit
+      })
+      let avgSurroundingSHS = __F.propertyMean(this.todaySurroundingSHS, 'quantity')
+      this.todaySHS.quantity.shsSurround.value = avgSurroundingSHS
+    }
   }
 }
 </script>

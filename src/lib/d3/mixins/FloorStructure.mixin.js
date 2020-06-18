@@ -24,7 +24,7 @@ export default {
       this.drawUnit()
     },
     drawBoxGroup() {
-      let dataItems = JSON.parse(JSON.stringify(this.DataItems.units))
+      let dataItems = JSON.parse(JSON.stringify(this.DataItems))
 
       this.chartBoxGroup = this.chartArea
         .selectAll('g')
@@ -69,13 +69,13 @@ export default {
           .attr('y', 10)
           .style('font-size', this.Unit.UnitTextSize)
           .style('fill', this.Unit.UnitTextColor)
-          .text(`${d.unitNo}호`)
+          .text(`${d.unit}호`)
 
         _self
           .append('g')
           .attr('class', 'group_smell')
           .selectAll('rect')
-          .data(Array.from({ length: d.smell }, () => null))
+          .data(Array.from({ length: d.quantity }, () => null))
           .enter()
           .append('rect')
           .attr('x', (d, i) => 10 + i * 4)

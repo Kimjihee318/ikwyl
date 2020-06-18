@@ -15,8 +15,8 @@ async function delReport(id) {
 }
 
 // * [ USER JOIN SHS ]
-async function getJoinedReport(callback) {
-  let res = await axios('report').get('/')
+async function getJoinedSHS(callback) {
+  let res = await axios('joinreport').get('/')
   callback(res ? res.data : {})
 }
 
@@ -25,5 +25,5 @@ export default {
   putReport,
   upReport,
   delReport,
-  getJoinedReport
+  getJoinedSHS
 }

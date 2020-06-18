@@ -1,7 +1,7 @@
 export default {
   canvas: {
-    CanvasWidth: 300.5,
-    CanvasHeight: 190.5,
+    CanvasWidth: 320.5,
+    CanvasHeight: 150.5,
     CanvasBgColor: '#0f1333',
     CanvasBgPointColor: '#1a2157',
     CanvasBorderWeight: 0,
@@ -10,22 +10,12 @@ export default {
     CanvasChartY: 0
   },
   chart: {
-    ChartHPadding: 40,
-    ChartVPadding: 30
+    ChartHPadding: 20,
+    ChartVPadding: 40
   },
   circle: {},
   // Draw data
   dataItems: [
-    {
-      dates: [
-        { userId: '1', userName: 'jihee', floorNo: 9, unitNo: 901, smell: 7, time: new Date('2020-05-27') },
-        { userId: '1', userName: 'jihee', floorNo: 9, unitNo: 901, smell: 1, time: new Date('2020-05-28') },
-        { userId: '1', userName: 'jihee', floorNo: 9, unitNo: 901, smell: 7, time: new Date('2020-05-29') },
-        { userId: '1', userName: 'jihee', floorNo: 9, unitNo: 901, smell: 2, time: new Date('2020-05-30') },
-        { userId: '1', userName: 'jihee', floorNo: 9, unitNo: 901, smell: 1, time: new Date('2020-05-31') },
-        { userId: '1', userName: 'jihee', floorNo: 9, unitNo: 901, smell: 2, time: new Date('2020-06-01') },
-        { userId: '1', userName: 'jihee', floorNo: 9, unitNo: 901, smell: 1, time: new Date('2020-06-02') }
-      ]
-    }
+    // !FIX ME, Add Primitive data
   ]
 }

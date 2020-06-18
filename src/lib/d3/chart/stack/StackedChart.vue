@@ -16,7 +16,7 @@ export default {
     Chart: { type: Object, default: () => ({}) },
     Circle: { type: Object, default: () => ({}) },
     // Database
-    DataItems: { type: Object, default: () => {} }
+    DataItems: { type: Array, default: () => [] }
   },
   created() {
     this.localId = `${this.id || 'Stacked'}__${this.safeId('')}`
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     draw() {
-      if (!this.ready2draw) return
+      if (!this.ready2draw()) return
       this.clear()
       // this.initData()
       this.drawCanvas()

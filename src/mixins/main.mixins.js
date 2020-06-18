@@ -37,9 +37,7 @@ export default {
     floorCanvas() {
       return _ChartFloorData.canvas
     },
-    floorDataItems() {
-      return _ChartFloorData.dataItems
-    },
+
     floorFloorInfo() {
       return _ChartFloorData.floorInfo
     },
@@ -60,9 +58,6 @@ export default {
     stackedCircle() {
       return _ChartStackedData.circle
     },
-    stackedDataItems() {
-      return _ChartStackedData.dataItems[0]
-    },
     timeCanvas() {
       return _ChartTimeData.canvas
     },
@@ -71,9 +66,6 @@ export default {
     },
     timeChart() {
       return _ChartTimeData.chart
-    },
-    timeDataItems() {
-      return _ChartTimeData.dataItems
     }
   },
   methods: {

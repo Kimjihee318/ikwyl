@@ -17,7 +17,7 @@ export default {
     Unit: { type: Object, default: () => ({}) },
     User: String,
     // Database
-    DataItems: { type: Object, default: () => {} }
+    DataItems: { type: Array, default: () => [] }
   },
   created() {
     this.localId = `${this.id || 'Floor_Structure'}__${this.safeId('')}`

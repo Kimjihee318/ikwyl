@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     draw() {
-      if (!this.ready2draw) return
+      if (!this.ready2draw()) return
       this.clear()
       // this.initData()
       this.drawCanvas()
