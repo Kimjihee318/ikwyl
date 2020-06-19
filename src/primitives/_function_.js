@@ -1,5 +1,23 @@
 import * as d3 from 'd3'
 
+function expressionCheckDate(date) {
+  let today = new Date()
+  return (
+    date.getFullYear() === today.getFullYear() &&
+    date.getMonth() === today.getMonth() &&
+    date.getDate() === today.getDate()
+  )
+}
+
+function expressionCheckToday(date) {
+  let today = new Date()
+  return (
+    date.getFullYear() === today.getFullYear() &&
+    date.getMonth() === today.getMonth() &&
+    date.getDate() === today.getDate()
+  )
+}
+
 function filterDatesByCurrentWeek(arr, prop) {
   if (!arr || arr.length === 0) return
   let [start, end] = getWeekDates()
@@ -89,15 +107,6 @@ function obj2Lowercase(obj) {
   return newobj
 }
 
-function expressionCheckToday(date) {
-  let today = new Date()
-  return (
-    date.getFullYear() === today.getFullYear() &&
-    date.getMonth() === today.getMonth() &&
-    date.getDate() === today.getDate()
-  )
-}
-
 function timeFormat(format, time) {
   // * format || typeof String || example '%Y년 %m월 %d일 %H:%M %p'
   return d3.timeFormat(format)(time)
@@ -129,13 +138,14 @@ function toCamel(o) {
 }
 
 export default {
+  expressionCheckDate,
+  expressionCheckToday,
   filterDatesByCurrentWeek,
   getWeekDates,
   mean,
   meanTime,
   propertyMean,
   obj2Lowercase,
-  expressionCheckToday,
   timeFormat,
   toCamel,
   nested

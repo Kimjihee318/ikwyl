@@ -18,8 +18,9 @@ export default {
       buildingname: '',
       buildingno: '',
       floor: '',
-      unit: '',
-      maxfloor: ''
+      maxunitno: '',
+      maxfloor: '',
+      unit: ''
     },
     userInfoIdx: null
   },

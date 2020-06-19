@@ -50,25 +50,27 @@
       <div class="main_right">
         <div class="main_right_chart_wapper">
           <chart-floor
-            v-for="(dataItem, i) in floorDataItems"
-            :key="`chart__${i}`"
+            v-for="(bgItem, key) in floorBgItems"
+            :class="`key_${key}`"
+            :key="`chart__${key}`"
             :Canvas="floorCanvas"
             :FloorInfo="floorFloorInfo"
+            :BackgroundItem="bgItem"
             :Unit="floorUnit"
             :User="user"
-            :DataItems="dataItem"
-          />
+            :DataItems="getfloorDataItem(key)"
+          ></chart-floor>
         </div>
         <div class="main_right_card_wapper">
           <ui-card
-            v-for="(item, i) in floorSummaries"
+            v-for="(item, i) in floorSummary"
             :card-style="propStyle"
             :style="styleCard(item)"
             :key="`floor_summary_${i}`"
           >
             <template>
               <div class="card_contents_floor">{{ item.floor }} 층</div>
-              <div v-for="(_item, _i) in item.values" class="card_contents_report" :key="`rep_${_i}`">
+              <div v-for="(_item, _i) in item" class="card_contents_report" :key="`rep_${_i}`">
                 <div class="card_contents_report_title">{{ _item.title }}</div>
                 <div class="card_contents_report_val">{{ _item.value }}</div>
               </div>
@@ -91,9 +93,6 @@ export default {
   mixins: [mainMixin],
 
   data: () => ({
-    weeklySHS: [],
-    floorSummaries: [],
-    formattedJoinedSHS: {},
     cumulativeSHS: {
       quantity: {
         shs: {
@@ -120,6 +119,9 @@ export default {
         }
       }
     },
+    floorBgStructure: {},
+    floorSummary: [],
+    formattedJoinedSHS: {},
     todaySHS: {
       quantity: {
         shs: {
@@ -145,22 +147,27 @@ export default {
     todaySHSInfo: '',
     todaySHSMode: '',
     todaySurroundingSHS: [],
+    todayFloorSHS: [],
     todayUserFloorSHS: [],
-    userWeeklySHS: []
+    userWeeklySHS: [],
+    weeklySHS: []
   }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['userInfo']),
     ...mapState(__C.STORE.NAMESPACE.REPORT, ['dailySHS', 'joinedSHSWithUserInfo']),
-    stackedDataItems() {
-      return this.userWeeklySHS
-    },
-    timeDataItems() {
-      return this.userWeeklySHS
+    floorBgItems() {
+      return this.floorBgStructure
     },
     floorDataItems() {
       let today = new Date()
       let propertyToday = new Date(today.getFullYear(), today.getMonth(), today.getDate())
       return this.formattedJoinedSHS[propertyToday]
+    },
+    stackedDataItems() {
+      return this.userWeeklySHS
+    },
+    timeDataItems() {
+      return this.userWeeklySHS
     }
   },
   watch: {
@@ -170,38 +177,6 @@ export default {
       },
       deep: true
     }
-  },
-  created() {
-    // !FIX change database data
-    this.floorSummaries = [
-      {
-        floor: 8,
-        values: [
-          { title: '평균 간접 흡연량', value: 7 },
-          { title: '평균 감지 시간', value: 18 },
-          { title: '평균 주말 감지 시간', value: 18 },
-          { title: '흡연자 있을 가능성', value: 100 }
-        ]
-      },
-      {
-        floor: 9,
-        values: [
-          { title: '평균 간접 흡연량', value: 7 },
-          { title: '평균 감지 시간', value: 18 },
-          { title: '평균 주말 감지 시간', value: 18 },
-          { title: '흡연자 있을 가능성', value: 80 }
-        ]
-      },
-      {
-        floor: 10,
-        values: [
-          { title: '평균 간접 흡연량', value: 7 },
-          { title: '평균 감지 시간', value: 18 },
-          { title: '평균 주말 감지 시간', value: 18 },
-          { title: '흡연자 있을 가능성', value: 18 }
-        ]
-      }
-    ]
   },
   mounted() {
     this.setSHS()
@@ -218,13 +193,14 @@ export default {
       this.setSurroundingRoomsSHS()
       this.setCumulativeSHS()
       this.formatJoinedSHS()
+      this.setFloorBgStructure()
+      this.setSurroundingFloorSHS(new Date())
     },
     // [ Daily SHS ]
     async setSHS() {
       let isSHS = await this.getReportFromServer()
       if (!isSHS) return
       let todaySHSKey = Object.keys(this.dailySHS).filter(d => __F.expressionCheckToday(new Date(d)))
-
       if (!todaySHSKey || todaySHSKey.length === 0) {
         this.todaySHSMode = 'NO_DATA'
         this.todaySHSInfo = 'Please Add Data'
@@ -238,6 +214,27 @@ export default {
       this.todaySHS.quantity.shs.value = avgSHSQauntity
       // set Time
       this.todaySHS.time.dailyAvg.value = avgSHSTime
+    },
+    formatJoinedSHS() {
+      let copied = JSON.parse(JSON.stringify(this.joinedSHSWithUserInfo))
+
+      copied.forEach(d => {
+        let date = new Date(d.date)
+        Object.assign(d, {
+          ['formatedDate']: new Date(date.getFullYear(), date.getMonth(), date.getDate())
+        })
+      })
+      let result = copied.reduce((c, v) => {
+        c[v.formatedDate] = c[v.formatedDate] || {} //Init if company property does not exist
+        c[v.formatedDate][v.floor] = c[v.formatedDate][v.floor] || [] //Add employee property with null value
+        c[v.formatedDate][v.floor].push(v)
+        return c
+      }, {})
+
+      this.formattedJoinedSHS = result
+    },
+    getfloorDataItem(item) {
+      return this.floorDataItems && Object.keys(this.floorDataItems).length > 0 ? this.floorDataItems[item] : []
     },
     // [ Cumulated SHS ]
     setCumulativeSHS() {
@@ -274,6 +271,29 @@ export default {
       this.cumulativeSHS.time.weekend.value = avgWeekendSHSTime
     },
     // [ Floor SHS ]
+    setFloorBgStructure() {
+      let floors = []
+      switch (this.userInfo.floor) {
+        case this.userInfo.maxfloor:
+          floors = [this.userInfo.floor - 1, this.userInfo.floor]
+          break
+        case 1:
+          floors = [this.userInfo.floor, this.userInfo.floor + 1]
+          break
+        default:
+          floors = [this.userInfo.floor - 1, this.userInfo.floor, this.userInfo.floor + 1]
+          break
+      }
+
+      floors.forEach(f => {
+        Object.assign(this.floorBgStructure, {
+          [f]: Array.from({ length: 12 }, (u, i) => {
+            let idx = i + 1
+            return { unit: i + 1 >= 10 ? `${f}${idx}` : `${f}0${idx}` }
+          })
+        })
+      })
+    },
     setFloorSHS() {
       this.todayUserFloorSHS = this.joinedSHSWithUserInfo.filter(d => {
         return d.floor === this.userInfo.floor && __F.expressionCheckToday(new Date(d.date))
@@ -281,24 +301,6 @@ export default {
       // ! FIX FUNC NAME
       let avgUserFloorSHS = __F.propertyMean(this.todayUserFloorSHS, 'quantity')
       this.todaySHS.quantity.shsFloor.value = avgUserFloorSHS
-    },
-    formatJoinedSHS() {
-      let copied = JSON.parse(JSON.stringify(this.joinedSHSWithUserInfo))
-
-      copied.forEach(d => {
-        let date = new Date(d.date)
-        Object.assign(d, {
-          ['formatedDate']: new Date(date.getFullYear(), date.getMonth(), date.getDate())
-        })
-      })
-      let result = copied.reduce((c, v) => {
-        c[v.formatedDate] = c[v.formatedDate] || {} //Init if company property does not exist
-        c[v.formatedDate][v.floor] = c[v.formatedDate][v.floor] || [] //Add employee property with null value
-        c[v.formatedDate][v.floor].push(v)
-        return c
-      }, {})
-
-      this.formattedJoinedSHS = result
     },
     // [ Surround SHS ]
     setSurroundingRoomsSHS() {
@@ -310,6 +312,29 @@ export default {
       })
       let avgSurroundingSHS = __F.propertyMean(this.todaySurroundingSHS, 'quantity')
       this.todaySHS.quantity.shsSurround.value = avgSurroundingSHS
+    },
+    setSurroundingFloorSHS(date) {
+      // ! FIX DATA NAME
+      let dateKey = Object.keys(this.formattedJoinedSHS).filter(d => {
+        return (
+          new Date(d).getFullYear() === date.getFullYear() &&
+          new Date(d).getMonth() === date.getMonth() &&
+          new Date(d).getDate() === date.getDate()
+        )
+      })[0]
+      let selectedSHS = this.formattedJoinedSHS[dateKey]
+      let floorKeys = Object.keys(this.formattedJoinedSHS[dateKey])
+      let result = []
+      floorKeys.forEach(d => {
+        result.push({
+          floor: Number(d),
+          avgQuantity: { title: '층 평균 간접 흡연 량', value: __F.propertyMean(selectedSHS[d], 'quantity') },
+          noOfMembers: { title: '층별 오늘 데이터 입력자 수', value: selectedSHS[d].length },
+          noOfTotalMembers: { title: '층별 총 이용자 수', value: selectedSHS[d].length }
+        })
+      })
+
+      this.floorSummary = result
     }
   }
 }

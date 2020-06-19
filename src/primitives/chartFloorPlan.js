@@ -19,21 +19,63 @@ export default {
     TopFloor: 10
   },
   unit: {
+    BgFillColor: 'transparent',
+    BgStrokeColor: '#2d519f90',
     UnitWidth: 50,
     UnitHeight: 50,
     UnitFillColor: '#1a2157',
     UnitFillPointColor: '#2d519f',
     UnitStroke: '#81a8e3',
     UnitStrokeWidth: 1,
-    UnitTextColor: '#ffffff',
+    UnitTextColor: '#81a8e3',
     UnitTextFont: null,
     UnitTextSize: '0.8rem',
     UnitSmellRectWidth: 2,
     UnitSmellRectHeight: 10,
     UnitSmellRectColor: '#ffffff'
   },
-  // Draw data
-  // !FIX ME
-  // Props로 넘겨줄때 데이터 베이스 확정 전 직접 필터링 해서 데이터 넘겨줌
-  dataItems: []
+  structure: {
+    8: [
+      { unit: 801 },
+      { unit: 802 },
+      { unit: 803 },
+      { unit: 804 },
+      { unit: 805 },
+      { unit: 806 },
+      { unit: 807 },
+      { unit: 808 },
+      { unit: 809 },
+      { unit: 810 },
+      { unit: 811 },
+      { unit: 812 }
+    ],
+    9: [
+      { unit: 901 },
+      { unit: 902 },
+      { unit: 903 },
+      { unit: 904 },
+      { unit: 905 },
+      { unit: 906 },
+      { unit: 907 },
+      { unit: 908 },
+      { unit: 909 },
+      { unit: 910 },
+      { unit: 911 },
+      { unit: 912 }
+    ],
+    10: [
+      { unit: 1001 },
+      { unit: 1002 },
+      { unit: 1003 },
+      { unit: 1004 },
+      { unit: 1005 },
+      { unit: 1006 },
+      { unit: 1007 },
+      { unit: 1008 },
+      { unit: 1009 },
+      { unit: 1010 },
+      { unit: 1011 },
+      { unit: 1012 }
+    ]
+  }
 }

@@ -9,6 +9,7 @@
         <div><label>층수</label>{{ floor }}</div>
         <div><label>호수</label>{{ unit }}</div>
         <div><label>최고층</label>{{ maxFloor }}</div>
+        <div><label>층별 총 호수</label>{{ maxUnitNo }}</div>
         <div class="btn_wrapper">
           <div class="btn_user_info" @click="onAction('MOD')">수정</div>
           <div class="btn_user_info" @click="onAction('DEL')">삭제</div>
@@ -21,6 +22,7 @@
         <div><label>층수</label><input v-model="floor" type="text" /></div>
         <div><label>호수</label><input v-model="unit" type="text" /></div>
         <div><label>최고층</label><input v-model="maxFloor" type="text" /></div>
+        <div><label>층별 총 호수</label><input v-model="maxUnitNo" type="text" /></div>
         <div class="btn_wrapper">
           <div v-if="mode === 'NEW'" class="btn_user_info" @click="onAction('ADD')">확인</div>
           <div v-else-if="mode === 'MOD'" class="btn_user_info" @click="onAction('EDIT')">확인</div>
@@ -81,6 +83,14 @@ export default {
         this.userInfo.maxfloor = parseFloat(val)
       }
     },
+    maxUnitNo: {
+      get() {
+        return this.userInfo.maxunitno
+      },
+      set(val) {
+        this.userInfo.maxunitno = parseFloat(val)
+      }
+    },
     unit: {
       get() {
         return this.userInfo.unit
@@ -96,12 +106,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, [
-      'getUserInfoFromServer',
-      'insertedUserInfoIndex',
-      'upUserInfo2Server',
-      'addUserInfo2Server'
-    ]),
+    ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['addUserInfo2Server', 'getUserInfoFromServer', 'upUserInfo2Server']),
     onAction(mod) {
       switch (mod) {
         case __C.BUTTON.EDIT_MODE_ADD:

@@ -37,7 +37,6 @@ export default {
     floorCanvas() {
       return _ChartFloorData.canvas
     },
-
     floorFloorInfo() {
       return _ChartFloorData.floorInfo
     },

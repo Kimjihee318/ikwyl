@@ -14,6 +14,7 @@ export default {
     // Chart Data
     Canvas: { type: Object, default: () => ({}) },
     FloorInfo: { type: Object, default: () => ({}) },
+    BackgroundItem: { type: Array, default: () => [] },
     Unit: { type: Object, default: () => ({}) },
     User: String,
     // Database
@@ -27,7 +28,7 @@ export default {
   },
   methods: {
     draw() {
-      if (!this.ready2draw) return
+      if (!this.ready2draw4FloorStructure()) return
       this.clear()
       // this.initData()
       this.drawCanvas()
