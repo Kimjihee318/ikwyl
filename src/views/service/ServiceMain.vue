@@ -5,13 +5,13 @@
     </div>
     <div class="main_body">
       <div class="main_left">
-        <chart-column
+        <!-- <chart-column
           :Canvas="columnCanvas"
           :FloorInfo="columnFloorInfo"
           :Unit="columnUnit"
           :User="user"
           :DataItems="columnDataItems"
-        />
+        /> -->
         <ui-card>
           <h3>Daily</h3>
           <div>
@@ -119,6 +119,7 @@ export default {
         }
       }
     },
+    usedfloors: [],
     floorBgStructure: {},
     floorSummary: [],
     formattedJoinedSHS: {},
@@ -285,9 +286,11 @@ export default {
           break
       }
 
+      this.usedfloors = floors
+
       floors.forEach(f => {
         Object.assign(this.floorBgStructure, {
-          [f]: Array.from({ length: 12 }, (u, i) => {
+          [f]: Array.from({ length: this.userInfo.maxunitno }, (u, i) => {
             let idx = i + 1
             return { unit: i + 1 >= 10 ? `${f}${idx}` : `${f}0${idx}` }
           })
@@ -314,16 +317,33 @@ export default {
       this.todaySHS.quantity.shsSurround.value = avgSurroundingSHS
     },
     setSurroundingFloorSHS(date) {
+      console.log(`[ IN ]`, this.formattedJoinedSHS)
       // ! FIX DATA NAME
-      let dateKey = Object.keys(this.formattedJoinedSHS).filter(d => {
+      let filteredDateKey = Object.keys(this.formattedJoinedSHS).filter(d => {
         return (
           new Date(d).getFullYear() === date.getFullYear() &&
           new Date(d).getMonth() === date.getMonth() &&
           new Date(d).getDate() === date.getDate()
         )
       })[0]
-      let selectedSHS = this.formattedJoinedSHS[dateKey]
-      let floorKeys = Object.keys(this.formattedJoinedSHS[dateKey])
+
+      if (!filteredDateKey) {
+        let result = []
+        this.usedfloors.forEach(d => {
+          result.push({
+            floor: Number(d),
+            avgQuantity: { title: '층 평균 간접 흡연 량', value: '' },
+            noOfMembers: { title: '층별 오늘 데이터 입력자 수', value: '' },
+            noOfTotalMembers: { title: '층별 총 이용자 수', value: '' }
+          })
+        })
+
+        this.floorSummary = result
+        return
+      }
+      // ! TEST WHEN IS DATA
+      let selectedSHS = this.formattedJoinedSHS[filteredDateKey]
+      let floorKeys = Object.keys(this.formattedJoinedSHS[filteredDateKey])
       let result = []
       floorKeys.forEach(d => {
         result.push({

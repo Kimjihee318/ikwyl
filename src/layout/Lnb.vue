@@ -22,11 +22,11 @@
       Main
     </button>
     <system-navigation v-if="this.isSystemMod" />
-    <!-- <button class="add" @click="onAdd">Add Record</button>
+    <button class="add" @click="onAdd">Add Record</button>
     <ui-modal v-if="modalOpened" v-model="modalOpened">
       <template #slot_title>Today Second Hand Smoking Upload</template>
       <template #slot_contents><form-smoke-today /></template>
-    </ui-modal> -->
+    </ui-modal>
   </div>
 </template>
 
@@ -34,15 +34,15 @@
 import { mapState, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_.js'
 import SystemNavigation from '@/views/system/SystemNavigation'
-// import UiModal from '@/components/ui/Modal.vue'
-// import FormSmokeToday from '@/components/form/FormSmokeToday.vue'
+import UiModal from '@/components/ui/Modal.vue'
+import FormSmokeToday from '@/components/form/FormSmokeToday.vue'
 
 export default {
   name: 'left-navigation-bar',
   components: {
-    SystemNavigation
-    // FormSmokeToday,
-    // UiModal
+    SystemNavigation,
+    FormSmokeToday,
+    UiModal
   },
   data: () => ({
     modalOpened: false
