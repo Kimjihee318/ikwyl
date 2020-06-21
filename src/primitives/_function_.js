@@ -1,12 +1,12 @@
 import * as d3 from 'd3'
 
-function expressionCheckDate(date) {
-  let today = new Date()
-  return (
-    date.getFullYear() === today.getFullYear() &&
-    date.getMonth() === today.getMonth() &&
-    date.getDate() === today.getDate()
-  )
+function isSelectedDate() {
+  // let today = new Date()
+  // return (
+  //   date.getFullYear() === today.getFullYear() &&
+  //   date.getMonth() === today.getMonth() &&
+  //   date.getDate() === today.getDate()
+  // )
 }
 
 function expressionCheckToday(date) {
@@ -24,6 +24,21 @@ function filterDatesByCurrentWeek(arr, prop) {
   return arr.filter(d => +new Date(d[prop]) >= +start && +new Date(d[prop]) < +end)
 }
 
+function getKeyofDateType(arr, dates) {
+  let selected = []
+  Object.keys(arr).forEach(d => {
+    dates.forEach(_d => {
+      if (
+        new Date(d).getFullYear() === _d.getFullYear() &&
+        new Date(d).getMonth() === _d.getMonth() &&
+        new Date(d).getDate() === _d.getDate()
+      )
+        selected.push(arr[_d])
+    })
+  })
+
+  return selected
+}
 function getWeekDates() {
   let now = new Date()
   let dayOfWeek = now.getDay() //0-6
@@ -61,6 +76,7 @@ function meanTime(arr) {
 }
 
 function nested() {
+  // ? THIS IS REFERENCE
   let arr = [
     { company: 'Google', country: 'USA', employee: 'John' },
     { company: 'Amazon', country: 'UK', employee: 'Arya' },
@@ -79,6 +95,16 @@ function nested() {
 
   return result
 }
+
+function onlyUnique(arr) {
+  return arr.filter((v, i, a) => a.indexOf(v) === i)
+}
+
+function onlyUniqueObjectInArray(arr) {
+  const uniq = new Set(arr.map(d => JSON.stringify(d)))
+  return Array.from(uniq).map(d => JSON.parse(d))
+}
+
 function propertyMean(arr, prop) {
   if (!arr || arr.length === 0) return
   return (
@@ -138,12 +164,15 @@ function toCamel(o) {
 }
 
 export default {
-  expressionCheckDate,
+  isSelectedDate,
   expressionCheckToday,
   filterDatesByCurrentWeek,
+  getKeyofDateType,
   getWeekDates,
   mean,
   meanTime,
+  onlyUnique,
+  onlyUniqueObjectInArray,
   propertyMean,
   obj2Lowercase,
   timeFormat,

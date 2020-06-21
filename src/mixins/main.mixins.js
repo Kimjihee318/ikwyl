@@ -2,13 +2,9 @@ import { mapState } from 'vuex'
 import __C from '@/primitives/_constants_.js'
 import _ChartFloorData from '@/primitives/chartFloorPlan'
 import _ChartColumnData from '@/primitives/chartColumnPlan'
-import _ChartStackedData from '@/primitives/chartStacked'
-import _ChartTimeData from '@/primitives/chartTime'
 import Calendar from '@/components/ui/Calendar.vue'
 import ChartColumn from '@/lib/d3/chart/columnPlan/SvgColStructure'
 import ChartFloor from '@/lib/d3/chart/floorPlan/SvgFloorStructure.vue'
-import ChartStack from '@/lib/d3/chart/stack/StackedChart.vue'
-import ChartTime from '@/lib/d3/chart/time/TimeChart.vue'
 import UiCard from '@/components/ui/Card.vue'
 
 export default {
@@ -16,8 +12,6 @@ export default {
     Calendar,
     ChartColumn,
     ChartFloor,
-    ChartStack,
-    ChartTime,
     UiCard
   },
   computed: {
@@ -27,9 +21,6 @@ export default {
     },
     columnFloorInfo() {
       return _ChartColumnData.floorInfo
-    },
-    columnDataItems() {
-      return _ChartColumnData.dataItems
     },
     columnUnit() {
       return _ChartColumnData.unit
@@ -47,24 +38,6 @@ export default {
       return {
         marginBottom: `${0.75}rem`
       }
-    },
-    stackedCanvas() {
-      return _ChartStackedData.canvas
-    },
-    stackedChart() {
-      return _ChartStackedData.chart
-    },
-    stackedCircle() {
-      return _ChartStackedData.circle
-    },
-    timeCanvas() {
-      return _ChartTimeData.canvas
-    },
-    timeCircle() {
-      return _ChartTimeData.circle
-    },
-    timeChart() {
-      return _ChartTimeData.chart
     }
   },
   methods: {

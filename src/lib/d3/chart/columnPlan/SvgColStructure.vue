@@ -14,8 +14,11 @@ export default {
     // Chart Data
     Canvas: { type: Object, default: () => ({}) },
     FloorInfo: { type: Object, default: () => ({}) },
+    Scale: { type: Object, default: () => ({}) },
     Unit: { type: Object, default: () => ({}) },
+    // ! FIX : realtime monitor에 user 없음
     User: String,
+    UserInfo: { type: Object, default: () => ({}) },
     // Database
     DataItems: { type: Array, default: () => [] }
   },
@@ -27,7 +30,7 @@ export default {
   },
   methods: {
     draw() {
-      if (!this.ready2draw) return
+      if (!this.ready2draw()) return
       this.clear()
       // this.initData()
       this.drawCanvas()

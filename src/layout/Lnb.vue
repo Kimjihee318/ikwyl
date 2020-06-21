@@ -27,21 +27,26 @@
       <template #slot_title>Today Second Hand Smoking Upload</template>
       <template #slot_contents><form-smoke-today /></template>
     </ui-modal>
+    <div class="summary">
+      <today-summary />
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_.js'
+import FormSmokeToday from '@/components/form/FormSmokeToday.vue'
 import SystemNavigation from '@/views/system/SystemNavigation'
 import UiModal from '@/components/ui/Modal.vue'
-import FormSmokeToday from '@/components/form/FormSmokeToday.vue'
+import TodaySummary from '@/components/TodaySummary.vue'
 
 export default {
   name: 'left-navigation-bar',
   components: {
-    SystemNavigation,
     FormSmokeToday,
+    SystemNavigation,
+    TodaySummary,
     UiModal
   },
   data: () => ({

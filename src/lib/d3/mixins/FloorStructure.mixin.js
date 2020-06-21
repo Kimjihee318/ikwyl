@@ -139,7 +139,7 @@ export default {
 
         _self
           .append('g')
-          .attr('class', 'group_smell')
+          .attr('class', 'floor_group_rect_shs_quantity')
           .selectAll('rect')
           .data(Array.from({ length: d.quantity }, () => null))
           .enter()
