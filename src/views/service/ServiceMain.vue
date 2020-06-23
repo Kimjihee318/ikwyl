@@ -5,45 +5,46 @@
     </div>
     <div class="main_body">
       <div class="main_left">
-        <chart-column
-          :Canvas="columnCanvas"
-          :FloorInfo="columnFloorInfo"
-          :Unit="columnUnit"
-          :User="user"
-          :UserInfo="userInfo"
-          :DataItems="columnDataItems"
-        />
+        <today-summary />
         <weekly-summray />
       </div>
       <div class="main_right">
-        <div class="main_right_chart_wapper">
-          <chart-floor
-            v-for="(bgItem, key) in floorBgItems"
-            :class="`key_${key}`"
-            :key="`chart__${key}`"
-            :Canvas="floorCanvas"
-            :FloorInfo="floorFloorInfo"
-            :BackgroundItem="bgItem"
-            :Unit="floorUnit"
-            :User="user"
-            :DataItems="getfloorDataItem(key)"
-          ></chart-floor>
+        <div class="main_chart_surrounding">
+          <surrounding-summary :dataItems="surroundingDataItems" />
         </div>
-        <div class="main_right_card_wapper">
-          <ui-card
-            v-for="(item, i) in floorSummary"
-            :card-style="propStyle"
-            :style="styleCard(item)"
-            :key="`floor_summary_${i}`"
-          >
-            <template>
-              <div class="card_contents_floor">{{ item.floor }} 층</div>
-              <div v-for="(_item, _i) in item" class="card_contents_report" :key="`rep_${_i}`">
-                <div class="card_contents_report_title">{{ _item.title }}</div>
-                <div class="card_contents_report_val">{{ _item.value }}</div>
-              </div>
-            </template>
-          </ui-card>
+        <div class="main_chart_floor">
+          <div class="main_chart_floor_chart">
+            <chart-floor
+              v-for="(bgItem, key) in floorBgItems"
+              :class="`key_${key}`"
+              :key="`chart__${key}`"
+              :Canvas="floorCanvas"
+              :FloorInfo="floorFloorInfo"
+              :BackgroundItem="bgItem"
+              :Unit="floorUnit"
+              :User="user"
+              :DataItems="getfloorDataItem(key)"
+            ></chart-floor>
+          </div>
+          <div class="main_chart_floor_card">
+            <ui-card
+              v-for="(item, i) in floorSummary"
+              class="main_chart_floor_card_item small_padding"
+              :card-style="propStyle"
+              :style="styleCard(item)"
+              :key="`floor_summary_${i}`"
+            >
+              <template>
+                <div class="card_contents_floor">{{ item.floor }} 층</div>
+                <div>
+                  <div v-for="(_item, _i) in item" class="card_contents_report" :key="`rep_${_i}`">
+                    <div class="card_contents_report_title">{{ _item.title }}</div>
+                    <div class="card_contents_report_val">{{ _item.value }}</div>
+                  </div>
+                </div>
+              </template>
+            </ui-card>
+          </div>
         </div>
       </div>
     </div>
@@ -56,11 +57,13 @@ import __C from '@/primitives/_constants_'
 import __F from '@/primitives/_function_'
 import mainMixin from '@/mixins/main.mixins'
 import WeeklySummray from '@/components/WeeklySummary.vue'
+import SurroundingSummary from '@/components/SurroundingSummary.vue'
+import TodaySummary from '@/components/TodaySummary.vue'
 
 export default {
   name: 'main-page',
   mixins: [mainMixin],
-  components: { WeeklySummray },
+  components: { SurroundingSummary, TodaySummary, WeeklySummray },
   data: () => ({
     floorBgStructure: {},
     floorSummary: [],
@@ -72,7 +75,7 @@ export default {
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['userInfo']),
     ...mapState(__C.STORE.NAMESPACE.REPORT, ['dailySHS', 'joinedSHSWithUserInfo']),
-    columnDataItems() {
+    surroundingDataItems() {
       return this.selectedDateSHS
     },
     floorBgItems() {
@@ -95,7 +98,7 @@ export default {
       let isData = await this.getJoinedSHSFromServer()
       if (!isData) return
       this.formatJoinedSHS()
-      this.getColumnDataItems()
+      this.setSelectedDateSHS()
       this.setFloorBgStructure()
       this.setSurroundingFloorSHS(new Date())
     },
@@ -117,7 +120,7 @@ export default {
 
       this.formattedJoinedSHS = result
     },
-    getColumnDataItems() {
+    setSelectedDateSHS() {
       this.selectedDateSHS = __F.getKeyofDateType(this.formattedJoinedSHS, this.selectedDates)
     },
     getfloorDataItem(item) {
@@ -165,8 +168,8 @@ export default {
           result.push({
             floor: Number(d),
             avgQuantity: { title: '층 평균 간접 흡연 량', value: '' },
-            noOfMembers: { title: '층별 오늘 데이터 입력자 수', value: '' },
-            noOfTotalMembers: { title: '층별 총 이용자 수', value: '' }
+            noOfMembers: { title: '층 별 데이터 입력자 수', value: '' },
+            noOfTotalMembers: { title: '층 별 총 이용자 수', value: '' }
           })
         })
 
@@ -181,8 +184,8 @@ export default {
         result.push({
           floor: Number(d),
           avgQuantity: { title: '층 평균 간접 흡연 량', value: __F.propertyMean(selected[d], 'quantity') },
-          noOfMembers: { title: '층별 오늘 데이터 입력자 수', value: selected[d].length },
-          noOfTotalMembers: { title: '층별 총 이용자 수', value: selected[d].length }
+          noOfMembers: { title: '층 별 데이터 입력자 수', value: selected[d].length },
+          noOfTotalMembers: { title: '층 별 총 이용자 수', value: selected[d].length }
         })
       })
 
@@ -193,47 +196,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main {
-  padding: 1rem;
-  .calendar_wrapper {
-    padding-bottom: 1rem;
-  }
-  .main_body {
-    display: flex;
-    justify-content: space-between;
-
-    .main_right {
-      display: flex;
-      justify-content: space-between;
-
-      &_chart_wapper {
-        margin-right: 1rem;
-      }
-
-      &_card_wapper {
-        .card_contents_report {
-          display: flex;
-          justify-content: space-between;
-          width: 13rem;
-        }
-      }
-    }
-    .main_left {
-      &.fixed_width {
-        width: 20rem;
-      }
-    }
-  }
-  .today_summary {
-    border: 1px solid #c0ddff;
-  }
-  .report_today,
-  .report_cumulative {
-    display: flex;
-    justify-content: space-between;
-    &_title {
-      width: 10rem;
-    }
-  }
-}
+@import '@/assets/style/ui/_main.scss';
 </style>

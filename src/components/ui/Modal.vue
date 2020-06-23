@@ -2,7 +2,7 @@
   <div>
     <div class="modal_wrap" @click="onClose"></div>
     <div class="modal" :style="modalStyle">
-      <div class="modal_title">
+      <div class="modal_title type_english_font">
         <!-- <Close class="icon_close" @click="onClose" /> -->
         <slot name="slot_title"></slot>
       </div>
@@ -42,34 +42,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal_wrap {
-  align-items: center;
-  background-color: rgba(144, 144, 144, 0.5);
-  height: 100%;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-}
-.modal {
-  background-color: #ffffff;
-  border-radius: 2px;
-  color: #000000;
-  left: 50%;
-  position: fixed;
-  top: 50%;
-
-  &_title {
-    height: 2rem;
-    padding: 0.5rem;
-    border-bottom: 1px solid #ddd;
-    color: #000000;
-    font-weight: bold;
-  }
-}
-.icon_close {
-  position: absolute;
-  left: 31.4rem;
-  top: 0.1rem;
-}
+@import '@/assets/style/_modal.scss';
 </style>

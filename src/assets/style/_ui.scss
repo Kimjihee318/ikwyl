@@ -1,0 +1,16 @@
+.ui_card {
+  border: 1px solid rgba(192, 221, 255, 0.5);
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+  &_title {
+    // color: #ffffff;
+    font-size: 1.5rem;
+    line-height: 2.3rem;
+    margin: 0;
+    margin-bottom: 1rem;
+  }
+
+  &.small_padding {
+    padding: 0.5rem;
+  }
+}

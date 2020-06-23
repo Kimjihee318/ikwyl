@@ -1,19 +1,20 @@
 <template>
   <div>
     <ui-card>
-      <h3>Weekly</h3>
+      <h3 class="light type_english_font ui_card_title no_margin">Weekly <br />Secondhand Smoke</h3>
       <chart-stack
         :Canvas="stackedCanvas"
         :Chart="stackedChart"
+        d
         :Circle="stackedCircle"
         :DataItems="stackedDataItems"
       />
-      <div v-for="(item, i) in cumulativeSHS.quantity" class="report_today" :key="`report_c_q${i}`">
+      <div v-for="(item, i) in cumulativeSHS.quantity" class="report_cumulative" :key="`report_c_q${i}`">
         <div class="report_title">{{ item.title }}</div>
         <div class="report_contents">{{ item.value }}</div>
       </div>
       <chart-time :Canvas="timeCanvas" :Chart="timeChart" :Circle="timeCircle" :DataItems="timeDataItems" />
-      <div v-for="(item, i) in cumulativeSHS.time" class="report_today" :key="`report_c_t${i}`">
+      <div v-for="(item, i) in cumulativeSHS.time" class="report_cumulative" :key="`report_c_t${i}`">
         <div class="report_title">{{ item.title }}</div>
         <div class="report_contents">{{ item.value }}</div>
       </div>
@@ -131,9 +132,9 @@ export default {
       let avgUserFloorSHS = __F.propertyMean(weeklyFloorSHS, 'quantity')
       let avgSurroundingSHS = __F.propertyMean(weeklySurroundingSHS, 'quantity')
       // set Quantity
-      this.cumulativeSHS.quantity.shs.value = avgWeeklyUserSHSQauntity
-      this.cumulativeSHS.quantity.shsFloor.value = avgUserFloorSHS
-      this.cumulativeSHS.quantity.shsSurround.value = avgSurroundingSHS
+      this.cumulativeSHS.quantity.shs.value = __F.integer(avgWeeklyUserSHSQauntity)
+      this.cumulativeSHS.quantity.shsFloor.value = __F.integer(avgUserFloorSHS)
+      this.cumulativeSHS.quantity.shsSurround.value = __F.integer(avgSurroundingSHS)
       // set Time
       let weeklySHSTime = this.weeklySHS.map(d => new Date(d.date))
       let weekendSHSTime = weeklySHSTime.filter(d => d.getDay() <= 5)
@@ -154,4 +155,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '@/assets/style/ui/_summary.scss';
+</style>

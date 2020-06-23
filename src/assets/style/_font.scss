@@ -1,0 +1,103 @@
+/* Noto Sans KR (korean) */
+
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 100;
+  src: url('~@/assets/fonts/notosans/NotoSansKR-Thin.woff2') format('woff2'),
+       url('~@/assets/fonts/notosans/NotoSansKR-Thin.woff') format('woff'),
+       url('~@/assets/fonts/notosans/NotoSansKR-Thin.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 300;
+  src: url('~@/assets/fonts/notosans/NotoSansKR-Light.woff2') format('woff2'),
+       url('~@/assets/fonts/notosans/NotoSansKR-Light.woff') format('woff'),
+       url('~@/assets/fonts/notosans/NotoSansKR-Light.otf') format('opentype');
+}
+// * 숫자일 경우 notosans 이지만 roboto가 적용되게 수정
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 300;
+  src: url(~@/assets/fonts/roboto/Roboto-Light.woff2) format('woff2'),
+      url(~@/assets/fonts/roboto/Roboto-Light.woff) format('woff'),
+      url(~@/assets/fonts/roboto/Roboto-Light.otf) format('opentype');
+      unicode-range: U+0030-0039;
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 400;
+  src: url('~@/assets/fonts/notosans/NotoSansKR-Regular.woff2') format('woff2'),
+      url('~@/assets/fonts/notosans/NotoSansKR-Regular.woff') format('woff'),
+      url('~@/assets/fonts/notosans/NotoSansKR-Regular.otf') format('opentype');
+}
+// * 숫자일 경우 notosans 이지만 roboto가 적용되게 수정
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 400;
+  src: url(~@/assets/fonts/roboto/Roboto-Regular.woff2) format('woff2'),
+      url(~@/assets/fonts/roboto/Roboto-Regular.woff) format('woff'),
+      url(~@/assets/fonts/roboto/Roboto-Regular.otf) format('opentype');
+      unicode-range: U+0030-0039;
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 500;
+  src: url('~@/assets/fonts/notosans/NotoSansKR-Medium.woff2') format('woff2'),
+        url('~@/assets/fonts/notosans/NotoSansKR-Medium.woff') format('woff'),
+        url('~@/assets/fonts/notosans/NotoSansKR-Medium.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 700;
+  src: url('~@/assets/fonts/notosans/NotoSansKR-Bold.woff2') format('woff2'),
+      url('~@/assets/fonts/notosans/NotoSansKR-Bold.woff') format('woff'),
+      url('~@/assets/fonts/notosans/NotoSansKR-Bold.otf') format('opentype');
+}
+// * 숫자일 경우 notosans 이지만 roboto가 적용되게 수정
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 700;
+  src: url(~@/assets/fonts/roboto/Roboto-Bold.woff2) format('woff2'),
+      url(~@/assets/fonts/roboto/Roboto-Bold.woff) format('woff'),
+      url(~@/assets/fonts/roboto/Roboto-Bold.otf) format('opentype');
+      unicode-range: U+0030-0039;
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 900;
+  src: url('~@/assets/fonts/notosans/NotoSansKR-Black.woff2') format('woff2'),
+        url('~@/assets/fonts/notosans/NotoSansKR-Black.woff') format('woff'),
+        url('~@/assets/fonts/notosans/NotoSansKR-Black.otf') format('opentype');
+}
+
+ // * ROBOTO 
+@font-face {  font-family: 'Roboto';  font-style: normal;  font-weight: 100;
+  src: url(~@/assets/fonts/roboto/Roboto-Thin.woff2) format('woff2'),
+      url(~@/assets/fonts/roboto/Roboto-Thin.woff) format('woff'),
+      url(~@/assets/fonts/roboto/Roboto-Thin.otf) format('opentype');}
+@font-face {  font-family: 'Roboto';  font-style: normal;  font-weight: 300;
+  src: url(~@/assets/fonts/roboto/Roboto-Light.woff2) format('woff2'),
+      url(~@/assets/fonts/roboto/Roboto-Light.woff) format('woff'),
+      url(~@/assets/fonts/roboto/Roboto-Light.otf) format('opentype');}
+@font-face {   font-family: 'Roboto';   font-style: normal;   font-weight: 400;
+  src: url(~@/assets/fonts/roboto/Roboto-Regular.woff2) format('woff2'),
+        url(~@/assets/fonts/roboto/Roboto-Regular.woff) format('woff'),
+        url(~@/assets/fonts/roboto/Roboto-Regular.otf) format('opentype'); 
+}
+@font-face {   font-family: 'Roboto';   font-style: normal;   font-weight: 500;
+  src: url(~@/assets/fonts/roboto/Roboto-Medium.woff2) format('woff2'),
+        url(~@/assets/fonts/roboto/Roboto-Medium.woff) format('woff'),
+        url(~@/assets/fonts/roboto/Roboto-Medium.otf) format('opentype'); }
+@font-face {   font-family: 'Roboto';   font-style: normal;   font-weight: 700;
+  src: url(~@/assets/fonts/roboto/Roboto-Bold.woff2) format('woff2'),
+        url(~@/assets/fonts/roboto/Roboto-Bold.woff) format('woff'),
+        url(~@/assets/fonts/roboto/Roboto-Bold.otf) format('opentype'); }

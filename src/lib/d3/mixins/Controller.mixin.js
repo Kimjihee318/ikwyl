@@ -3,12 +3,18 @@ import * as d3 from 'd3'
 export default {
   data: () => ({
     execRequested: [],
-    svg: null
+    svg: null,
+    svg2: null
   }),
   methods: {
     clear() {
       if (!d3.select(`#${this.localId}`).empty()) d3.select(`#${this.localId}`).html('')
       this.svg = d3.select(`#${this.localId}`).append('svg')
+      if (this.needsSecondSvg)
+        this.svg2 = d3
+          .select(`#${this.localId}`)
+          .append('svg')
+          .attr('class', `${this.localId}_second_svg`)
     },
     complete() {
       setTimeout(() => {

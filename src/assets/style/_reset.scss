@@ -1,0 +1,34 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  // font-size: 10px;
+  background-color: #0f1333;
+  font-size: 0.9rem;
+  line-height: 2rem;
+}
+
+body {
+  font-family: 'Noto Sans KR';
+  font-weight: 300;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+  height: 10px;
+  background: transparent;
+  box-shadow: none;
+}
+
+::-webkit-scrollbar-track, ::-webkit-scrollbar-track-piece {
+  background: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $blue_lightest;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $blue_lightest;
+}

@@ -25,6 +25,7 @@ let CONSTANTS = function() {
     STORE: {
       NAMESPACE: {
         ACCOUNT: 'account',
+        APPLICATION: 'application',
         REPORT: 'report',
         SYSTEM: 'system'
       }

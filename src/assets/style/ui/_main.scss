@@ -1,0 +1,36 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  .calendar_wrapper {
+    padding-bottom: 2rem;
+  }
+  .main_body {
+    display: flex;
+    justify-content: space-around;
+    min-width: 80rem;
+    .main_right {
+      .main_chart_floor {
+        display: flex;
+        &_chart {
+          margin-right: 0.5rem;
+        }
+        &_card {
+          &_item {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 15rem;
+          }
+          .card_contents_report {
+            display: flex;
+            justify-content: space-between;
+          }
+        }
+      }
+    }
+    .main_left {
+    }
+  }
+}

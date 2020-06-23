@@ -1,8 +1,8 @@
 <template>
   <div class="calendar type_row">
     <div class="calendar_title">
-      <span>FROM {{ startMonth.toUpperCase() }}</span>
-      <span>TODAY</span>
+      <span class="type_english_font">FROM {{ startMonth.toUpperCase() }}</span>
+      <span class="type_english_font">TODAY</span>
     </div>
     <div class="calendar_btn_wrapper">
       <div class="btn btn_svg btn_prev" @click="onPrev"><svg-prev-arrow /></div>

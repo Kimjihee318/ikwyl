@@ -1,5 +1,5 @@
 <template>
-  <div :id="localId"></div>
+  <div :id="localId" class="svg_wrapper"></div>
 </template>
 
 <script>
@@ -16,12 +16,13 @@ export default {
     FloorInfo: { type: Object, default: () => ({}) },
     Scale: { type: Object, default: () => ({}) },
     Unit: { type: Object, default: () => ({}) },
-    // ! FIX : realtime monitor에 user 없음
-    User: String,
     UserInfo: { type: Object, default: () => ({}) },
     // Database
     DataItems: { type: Array, default: () => [] }
   },
+  data: () => ({
+    needsSecondSvg: true
+  }),
   created() {
     this.localId = `${this.id || 'Floor_Structure'}__${this.safeId('')}`
   },
@@ -39,3 +40,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.svg_wrapper {
+  padding: 0;
+}
+</style>

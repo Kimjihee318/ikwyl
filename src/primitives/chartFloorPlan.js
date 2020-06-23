@@ -1,11 +1,11 @@
 export default {
   canvas: {
-    CanvasWidth: 584.5,
-    CanvasHeight: 260.5,
+    CanvasWidth: 440.5,
+    CanvasHeight: 200.5,
     CanvasBgColor: '#0f1333',
     CanvasBgPointColor: '#1a2157',
     CanvasBorderWeight: 1,
-    CanvasBorderColor: '#81a8e3',
+    CanvasBorderColor: ' rgba(192, 221, 255, 0.5)',
     CanvasChartX: 0,
     CanvasChartY: 0
   },
@@ -21,8 +21,8 @@ export default {
   unit: {
     BgFillColor: 'transparent',
     BgStrokeColor: '#2d519f90',
-    UnitWidth: 50,
-    UnitHeight: 50,
+    UnitWidth: 40,
+    UnitHeight: 40,
     UnitFillColor: '#1a2157',
     UnitFillPointColor: '#2d519f',
     UnitStroke: '#81a8e3',

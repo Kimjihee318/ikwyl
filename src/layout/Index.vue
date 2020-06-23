@@ -21,44 +21,4 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.layout {
-  &_header {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 23rem;
-    height: 3rem;
-
-    border-bottom: 1px solid #c0ddff;
-  }
-  &_contents {
-    position: absolute;
-    top: 3rem;
-    right: 0;
-    bottom: 3rem;
-    left: 23rem;
-    z-index: 0;
-  }
-  &_lnb {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 23rem;
-    z-index: 1;
-
-    padding: 1rem;
-    border-right: 1px solid #c0ddff;
-  }
-  .footer {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 23rem;
-    height: 3rem;
-
-    border-top: 1px solid #c0ddff;
-  }
-}
-</style>
+<style lang="scss"></style>

@@ -54,6 +54,10 @@ function getWeekDates() {
 
   return [start, end]
 }
+function integer(val) {
+  if (!val) return
+  return Number.isInteger(val) ? val : val.toFixed(2)
+}
 
 function mean(arr) {
   if (!arr || arr.length === 0) return
@@ -169,6 +173,7 @@ export default {
   filterDatesByCurrentWeek,
   getKeyofDateType,
   getWeekDates,
+  integer,
   mean,
   meanTime,
   onlyUnique,

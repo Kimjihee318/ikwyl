@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="comp_td_summary" :class="{ no_data: isNoData }">
     <ui-card>
-      <h3>Daily</h3>
-      <div>
-        {{ todaySHSInfo }}
+      <h3 class="light title type_english_font ui_card_title">Daily <br />Secondhand Smoke</h3>
+      <div class="msg_nodata">
+        <span>{{ todaySHSInfo }}</span>
       </div>
       <div v-for="(item, i) in todaySHS.quantity" class="report_today" :key="`report_t_q${i}`">
-        <div class="report_title">{{ item.title }}</div>
+        <div class="report_title ">{{ item.title }}</div>
         <div class="report_contents">{{ item.value }}</div>
       </div>
       <div v-for="(item, i) in todaySHS.time" class="report_today" :key="`report_t_t${i}`">
@@ -38,7 +38,7 @@ export default {
           value: ''
         },
         shsFloor: {
-          title: '같은층 간접 흡연 량',
+          title: '같은 층 간접 흡연 량',
           value: ''
         },
         shsSurround: {
@@ -59,7 +59,10 @@ export default {
   }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['userInfo']),
-    ...mapState(__C.STORE.NAMESPACE.REPORT, ['dailySHS', 'joinedSHSWithUserInfo'])
+    ...mapState(__C.STORE.NAMESPACE.REPORT, ['dailySHS', 'joinedSHSWithUserInfo']),
+    isNoData() {
+      return this.todaySHSMode === 'NO_DATA'
+    }
   },
   mounted() {
     this.setSHS()
@@ -80,7 +83,7 @@ export default {
       })
       // ! FIX FUNC NAME
       let avgUserFloorSHS = __F.propertyMean(this.todayUserFloorSHS, 'quantity')
-      this.todaySHS.quantity.shsFloor.value = avgUserFloorSHS
+      this.todaySHS.quantity.shsFloor.value = __F.integer(avgUserFloorSHS)
     },
     // [ Surround SHS ]
     setSurroundingRoomsSHS() {
@@ -91,7 +94,7 @@ export default {
         return d.unit === unit + 1 || d.unit === unit - 1 || d.unit === unit
       })
       let avgSurroundingSHS = __F.propertyMean(this.todaySurroundingSHS, 'quantity')
-      this.todaySHS.quantity.shsSurround.value = avgSurroundingSHS
+      this.todaySHS.quantity.shsSurround.value = __F.integer(avgSurroundingSHS)
     },
     // [ Daily SHS ]
     async setSHS() {
@@ -100,7 +103,7 @@ export default {
       let todaySHSKey = Object.keys(this.dailySHS).filter(d => __F.expressionCheckToday(new Date(d)))
       if (!todaySHSKey || todaySHSKey.length === 0) {
         this.todaySHSMode = 'NO_DATA'
-        this.todaySHSInfo = 'Please Add Data'
+        this.todaySHSInfo = 'Please Add Record'
         return
       }
 
@@ -108,7 +111,7 @@ export default {
       let avgSHSQauntity = __F.propertyMean(todaySHS, 'quantity')
       let avgSHSTime = todaySHS.map(d => __F.timeFormat('%H:%M %p', d.date))
       // set Quantity
-      this.todaySHS.quantity.shs.value = avgSHSQauntity
+      this.todaySHS.quantity.shs.value = __F.integer(avgSHSQauntity)
       // set Time
       this.todaySHS.time.dailyAvg.value = avgSHSTime
     }
@@ -116,4 +119,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '@/assets/style/ui/_summary.scss';
+</style>

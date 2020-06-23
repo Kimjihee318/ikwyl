@@ -1,0 +1,51 @@
+.btn {
+  &_circle {
+    all: unset;
+    align-items: center;
+    background-color: $blue_normal;
+    border-radius: 50%;
+    display: flex;
+    fill: $blue_lightest;
+    height: 2.5rem;
+    justify-content: center;
+    width: 2.5rem;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+}
+.clip-circle {
+  clip-path: circle(1rem at center);
+  width: 2rem;
+}
+.no {
+  &_padding {
+    padding: 0;
+  }
+  &_margin {
+    margin: 0;
+    margin-bottom: 0;
+  }
+}
+svg.type_move2right {
+  position: relative;
+  left: 0.1rem;
+}
+
+.type_english_font {
+  font-family: roboto;
+  &.thin {
+    font-weight: 100;
+  }
+  &.light {
+    font-weight: 300;
+  }
+  &.medium {
+    font-weight: 500;
+  }
+  &.bold {
+    font-weight: 700;
+  }
+}
+

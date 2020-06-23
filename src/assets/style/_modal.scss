@@ -1,0 +1,30 @@
+.modal_wrap {
+  align-items: center;
+  background-color: $gray_alpha_type_modal_bg_02;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+.modal {
+  background-color: $white;
+  border-radius: 2px;
+  color: #000000;
+  left: 50%;
+  position: fixed;
+  top: 50%;
+
+  &_title {
+    height: 2rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    color: #000000;
+    font-weight: bold;
+  }
+}
+.icon_close {
+  position: absolute;
+  left: 31.4rem;
+  top: 0.1rem;
+}

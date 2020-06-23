@@ -1,0 +1,36 @@
+.comp_td_summary {
+  position: relative;
+  &.no_data {
+    >div > *:not(.msg_nodata){
+      opacity: 0.3;
+    }
+  }
+  .msg_nodata {
+    align-items: center;
+    background: $pattern_diagonal_line;
+    color: $white;
+    display: flex;
+    font-size: 1.2rem;
+    height: 100%;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+.report {
+  &_today, &_cumulative {
+    display: flex;
+    justify-content: space-between;
+    &_title {
+      width: 10rem;
+    }
+  }
+}
+
+@media (max-width: 1439.98px) {
+
+}

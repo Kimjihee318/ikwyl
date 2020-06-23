@@ -1,5 +1,5 @@
 <template>
-  <div class="ui-card" :style="CardStyle">
+  <div class="ui_card" :style="CardStyle">
     <slot></slot>
   </div>
 </template>
@@ -12,12 +12,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.ui-card {
-  margin-bottom: 1rem;
-  padding: 1rem;
-  border: 1px solid rgba(192, 221, 255, 0.5);
-  line-height: 1.8rem;
-}
-</style>
