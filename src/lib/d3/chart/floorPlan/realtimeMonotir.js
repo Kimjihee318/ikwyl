@@ -8,8 +8,7 @@ export default {
       deep: true
     },
     BackgroundItem: {
-      handler(val, old) {
-        console.log(val, old)
+      handler(val) {
         if (!val || val.length === 0) return
         this.register(this.draw)
       },

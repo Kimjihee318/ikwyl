@@ -35,6 +35,7 @@ export default {
         .attr('id', `${this.localId}_second_svg`)
         .attr('class', 'canvas')
         .attr('width', this.Canvas.CanvasSecondSvgWidth)
+
         .attr('height', this.Canvas.CanvasSecondSvgHeight)
         .style('border', `solid ${this.Canvas.CanvasSecondSvgBorderWeight}px ${this.Canvas.CanvasSecondSvgBorderColor}`)
         .style(

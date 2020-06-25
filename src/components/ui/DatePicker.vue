@@ -116,7 +116,6 @@ export default {
     },
     // * 정체를 알아보자
     formOpend: function(val) {
-      console.log(val)
       if (!val) return
       this.initDate()
       this.initMonthFormat()

@@ -20,26 +20,30 @@ export default {
   }),
   methods: {
     drawColumnPlan() {
+      this.init()
       this.setBgDataItems()
       this.formatData()
       this.emitData()
       this.setScale()
       this.drawBgItems()
       this.drawChart()
+      this.drarBarTitle()
       this.drawBars()
     },
     drawBars() {
-      let boxGroup = this.chartArea
+      let boxGroup = this.secondChartArea
         .append('g')
         .attr('class', 'data_bar')
         .selectAll('g')
         .data(this.formattedSurroundingData)
         .enter()
 
-      let boxs = boxGroup.append('g').attr('class', (d, i) => `g_bar_${i}`)
-      // .attr('transform', d => {
-      //   return `translate(${}, ${})`
-      // })
+      let boxs = boxGroup
+        .append('g')
+        .attr('class', (d, i) => `g_bar_${i}`)
+        .attr('transform', d => {
+          return `translate(${120}, ${this.scaleBarBand(d.barPosition)})`
+        })
 
       boxs
         .append('g')
@@ -48,11 +52,34 @@ export default {
         .data(d => Array.from({ length: d.quantity }, () => null))
         .enter()
         .append('rect')
-        .attr('x', (d, i) => i * 4)
-        .attr('y', 0)
+        .attr('x', (d, i) => i * 5)
+        .attr('y', 0.5)
         .attr('width', this.Unit.UnitSmellRectWidth)
         .attr('height', this.Unit.UnitSmellRectHeight)
         .attr('fill', this.Unit.UnitSmellRectColor)
+    },
+    drarBarTitle() {
+      let boxGroup = this.secondChartArea
+        .selectAll('g')
+        .data(this.bgStructureData)
+        .enter()
+
+      let boxs = boxGroup
+        .append('g')
+        .attr('class', (d, i) => `bg_bar_${i}`)
+        .attr('transform', d => {
+          return `translate(${80}, ${this.scaleBarBand(d.barPosition)})`
+        })
+
+      boxs
+        .append('text')
+        .attr('x', this.scaleVBand.bandwidth() / 2)
+        .attr('y', -2)
+        .attr('fill', d => (d.unit === this.UserInfo.unit ? this.Unit.UnitTextColor : this.Unit.UnitStroke))
+        .style('font-size', this.Unit.UnitTextSize)
+        .style('text-anchor', 'end')
+        .style('alignment-baseline', 'hanging')
+        .text(d => `${d.unit}호`)
     },
     drawBgItems() {
       let boxGroup = this.chartArea
@@ -78,9 +105,9 @@ export default {
       boxs
         .append('text')
         .attr('x', this.scaleVBand.bandwidth() / 2)
-        .attr('y', -5)
+        .attr('y', -8)
         .attr('fill', d => (d.unit === this.UserInfo.unit ? this.Unit.UnitTextColor : this.Unit.UnitStroke))
-        .style('font-size', '0.7rem')
+        .style('font-size', this.Unit.UnitTextSize)
         .style('text-anchor', 'middle')
         .text(d => `${d.unit}호`)
     },
@@ -161,33 +188,36 @@ export default {
           switch (d.unit) {
             case this.UserInfo.unit - 1:
               d.coordinate = [0, vPosition]
-              d.barPosition = [2]
+              d.barPosition = [0]
               filteredDatas.push(d)
               break
             case this.UserInfo.unit:
               d.coordinate = [1, vPosition]
-              d.barPosition = [3]
+              d.barPosition = [2]
               filteredDatas.push(d)
               break
             case this.UserInfo.unit + 1:
               d.coordinate = [2, vPosition]
-              d.barPosition = [4]
+              d.barPosition = [3]
               filteredDatas.push(d)
               break
             case this.UserInfo.unit + 100:
               d.coordinate = [1, vPosition - 1]
-              d.barPosition = [1]
+              d.barPosition = [0]
               filteredDatas.push(d)
               break
             case this.UserInfo.unit - 100:
               d.coordinate = [1, vPosition + 1]
-              d.barPosition = [5]
+              d.barPosition = [4]
               filteredDatas.push(d)
               break
           }
         })
       }
       this.formattedSurroundingData = filteredDatas
+    },
+    init() {
+      this.bgStructureData = []
     },
     setBgDataItems() {
       let userFloor = this.UserInfo.floor
@@ -200,7 +230,7 @@ export default {
       let hLayoutArr = Array.from({ length: this.grid.h }, () => null)
       let vLayoutArr = Array.from({ length: this.grid.v }, () => null)
       let stUnit = this.UserInfo.unit
-      let hUnits = [stUnit - 1, stUnit, stUnit + 1] // ! FIX HERE
+      let hUnits = [stUnit - 1, stUnit, stUnit + 1] // ! FIX HERE 3칸으로 고정하고 진행, 2칸 부분 추가
       let vUnits =
         this.grid.v === 3
           ? [stUnit + 100, stUnit, stUnit - 100]
@@ -208,17 +238,25 @@ export default {
 
       // return truthy
       vUnits = vUnits.filter(d => d)
-
       hLayoutArr.forEach((d, i) => {
         this.bgStructureData.push({
           unit: hUnits[i],
           isUserUnit: hUnits[i] === stUnit,
-          coordinate: [i, this.grid.v === 3 ? 1 : 0]
+          coordinate: [i, this.grid.v === 3 ? 1 : 0],
+          barPosition: i + 1,
+          filterValue: true
         })
       })
       vLayoutArr.forEach((d, i) => {
-        this.bgStructureData.push({ unit: vUnits[i], isUserUnit: hUnits[i] === stUnit, coordinate: [1, i] })
+        this.bgStructureData.push({
+          unit: vUnits[i],
+          isUserUnit: hUnits[i] === stUnit,
+          coordinate: [1, i],
+          barPosition: i === 0 ? i : hLayoutArr.length + 1,
+          filterValue: vUnits[i] === stUnit ? false : true
+        })
       })
+      this.bgStructureData = this.bgStructureData.filter(d => d.filterValue)
     },
     setScale() {
       this.scaleBarBand = this.scaleHBand = d3

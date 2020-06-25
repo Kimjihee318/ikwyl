@@ -26,6 +26,7 @@ let CONSTANTS = function() {
       NAMESPACE: {
         ACCOUNT: 'account',
         APPLICATION: 'application',
+        CALENDAR: 'calendar',
         REPORT: 'report',
         SYSTEM: 'system'
       }

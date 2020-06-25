@@ -13,7 +13,11 @@ export default {
     ChartHPadding: 20,
     ChartVPadding: 40
   },
-  circle: {},
+  rect: {
+    RectFillColor: '#ffffff',
+    RectFillType: 'grad',
+    RectColorTypeGradient: ['#ffbd71', '#000000']
+  },
   // Draw data
   dataItems: [
     // !FIX ME, Add Primitive data

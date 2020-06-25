@@ -69,11 +69,11 @@ export default {
     floorSummary: [],
     formattedJoinedSHS: {},
     usedfloors: [],
-    selectedDates: [new Date(2020, 5, 21)],
     selectedDateSHS: [] // to FIX
   }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['userInfo']),
+    ...mapState(__C.STORE.NAMESPACE.CALENDAR, ['selectedDates']),
     ...mapState(__C.STORE.NAMESPACE.REPORT, ['dailySHS', 'joinedSHSWithUserInfo']),
     surroundingDataItems() {
       return this.selectedDateSHS
@@ -87,20 +87,32 @@ export default {
       return this.formattedJoinedSHS[propertyToday]
     }
   },
+  watch: {
+    selectedDates: {
+      handler(val) {
+        if (!val || val.length === 0) return
+        this.draw()
+      },
+      deep: true
+    }
+  },
   mounted() {
     this.getJoinedSHS()
   },
   methods: {
     ...mapActions(__C.STORE.NAMESPACE.REPORT, ['getJoinedSHSFromServer']),
+    draw() {
+      this.setSelectedDateSHS()
+      this.setFloorBgStructure()
+      this.setSurroundingFloorSHS()
+    },
     // [ JOINED SHS ]
     async getJoinedSHS() {
       console.log(`[SET JOINED]`)
       let isData = await this.getJoinedSHSFromServer()
       if (!isData) return
       this.formatJoinedSHS()
-      this.setSelectedDateSHS()
-      this.setFloorBgStructure()
-      this.setSurroundingFloorSHS(new Date())
+      this.draw()
     },
     formatJoinedSHS() {
       let copied = JSON.parse(JSON.stringify(this.joinedSHSWithUserInfo))
@@ -152,44 +164,45 @@ export default {
         })
       })
     },
-    setSurroundingFloorSHS(date) {
+    setSurroundingFloorSHS() {
+      if (Object.keys(this.formattedJoinedSHS).length === 0) return
+      let selectedDate = this.selectedDates[0]
       // ! FIX DATA NAME
-      let filteredDateKey = Object.keys(this.formattedJoinedSHS).filter(d => {
+
+      let filteredKeyOfSelectedDates = Object.keys(this.formattedJoinedSHS).filter(d => {
         return (
-          new Date(d).getFullYear() === date.getFullYear() &&
-          new Date(d).getMonth() === date.getMonth() &&
-          new Date(d).getDate() === date.getDate()
+          new Date(d).getFullYear() === selectedDate.getFullYear() &&
+          new Date(d).getMonth() === selectedDate.getMonth() &&
+          new Date(d).getDate() === selectedDate.getDate()
         )
-      })[0]
+      })
 
-      if (!filteredDateKey) {
-        let result = []
-        this.usedfloors.forEach(d => {
-          result.push({
-            floor: Number(d),
-            avgQuantity: { title: '층 평균 간접 흡연 량', value: '' },
-            noOfMembers: { title: '층 별 데이터 입력자 수', value: '' },
-            noOfTotalMembers: { title: '층 별 총 이용자 수', value: '' }
-          })
-        })
-
-        this.floorSummary = result
-        return
-      }
-      // ! TEST WHEN IS DATA
-      let selected = this.formattedJoinedSHS[filteredDateKey]
-      let floorKeys = Object.keys(this.formattedJoinedSHS[filteredDateKey])
       let result = []
-      floorKeys.forEach(d => {
+      this.usedfloors.forEach(d => {
         result.push({
           floor: Number(d),
-          avgQuantity: { title: '층 평균 간접 흡연 량', value: __F.propertyMean(selected[d], 'quantity') },
-          noOfMembers: { title: '층 별 데이터 입력자 수', value: selected[d].length },
-          noOfTotalMembers: { title: '층 별 총 이용자 수', value: selected[d].length }
+          avgQuantity: { title: '층 평균 간접 흡연 량', value: '' },
+          noOfMembers: { title: '층 별 데이터 입력자 수', value: '' },
+          noOfTotalMembers: { title: '층 별 총 이용자 수', value: '' }
         })
       })
 
       this.floorSummary = result
+
+      if (filteredKeyOfSelectedDates.length === 0) return
+      let key = filteredKeyOfSelectedDates[0]
+      let selected = this.formattedJoinedSHS[key]
+      let floorKeys = Object.keys(this.formattedJoinedSHS[key])
+      floorKeys.forEach(d => {
+        this.usedfloors.forEach((_d, _i) => {
+          if (Number(d) === this.floorSummary[_i].floor) {
+            let item = this.floorSummary[_i]
+            item.avgQuantity.value = __F.propertyMean(selected[d], 'quantity')
+            item.noOfMembers.value = selected[d].length
+            item.noOfTotalMembers.alue = selected[d].lengt
+          }
+        })
+      })
     }
   }
 }

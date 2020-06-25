@@ -13,7 +13,6 @@ export default {
 
     // Chart Data
     Canvas: { type: Object, default: () => ({}) },
-    FloorInfo: { type: Object, default: () => ({}) },
     Scale: { type: Object, default: () => ({}) },
     Unit: { type: Object, default: () => ({}) },
     UserInfo: { type: Object, default: () => ({}) },

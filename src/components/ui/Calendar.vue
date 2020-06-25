@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+import __C from '@/primitives/_constants_'
 import SvgPrevArrow from '@/assets/icons/arrow_back_ios-24px.svg'
 import SvgNextArrow from '@/assets/icons/arrow_forward_ios-24px.svg'
 export default {
@@ -50,12 +52,14 @@ export default {
       'November',
       'December'
     ],
-    selectedDate: [],
+    localSelectedDates: [],
     startMonth: null,
     visibleEndPosition: null, // ! CHECK
     visibleStandard: null
   }),
   computed: {
+    ...mapState(__C.STORE.NAMESPACE.CALENDAR, ['selectedDates']),
+
     isDisabled() {
       return this.dateItems.length > 15 ? true : false
     },
@@ -74,10 +78,10 @@ export default {
     this.initSelectedState()
   },
   methods: {
+    ...mapMutations(__C.STORE.NAMESPACE.CALENDAR, ['setSelectedDates']),
     init() {
       //! [FIX] Fix to DB DATA
-      let Today = JSON.parse(JSON.stringify(new Date()))
-
+      let Today = JSON.parse(JSON.stringify(new Date(new Date().setHours(0, 0, 0, 0))))
       let dateLength =
         new Date(Today).getDate() + new Date(new Date(Today).getFullYear(), new Date(Today).getMonth(), 0).getDate()
       this.dateItems = Array.from({ length: dateLength }, (d, i) => ({
@@ -85,7 +89,7 @@ export default {
         selected: false
       }))
 
-      this.selectedDate.push(new Date(Today))
+      this.setSelectedDates([{ date: new Date(Today), selected: null }])
       this.visibleEndPosition = this.dateItems.length
       this.startMonth = this.monthMap[new Date(new Date(Today).getFullYear(), new Date(Today).getMonth(), 0).getMonth()]
     },
@@ -118,11 +122,13 @@ export default {
       this.dateItems.forEach(d => {
         d.selected = allRselected ? false : true
       })
+      this.localSelectedDates = this.dateItems.filter(d => d.selected)
+      this.setSelectedDates(this.localSelectedDates)
     },
     initSelectedState() {
       this.dateItems.forEach(d => {
         let innerArr = []
-        this.selectedDate.forEach(_d => {
+        this.selectedDates.forEach(_d => {
           if (d.date.getTime() === _d.getTime()) {
             innerArr.push(true)
           } else {
@@ -140,76 +146,19 @@ export default {
       // 2. toggle
       this.dateItems.forEach(d => {
         if (d.date.getTime() === item.date.getTime()) {
-          // console.log(`[FILTER IN]`, d.selected)
           d.selected = !d.selected
-          // console.log(`[FILTER IN AFTER EVENT]`, d.selected)
+        } else {
+          d.selected = false
         }
       })
+
+      this.localSelectedDates = this.dateItems.filter(d => d.selected)
+      this.setSelectedDates(this.localSelectedDates)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.calendar {
-  // position: relative;
-  &.type_row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 5.6rem;
-    margin-bottom: 1rem;
-  }
-  .calendar_title {
-    display: flex;
-    justify-content: space-between;
-    width: 70rem;
-    margin-bottom: 1rem;
-  }
-  .calendar_btn_wrapper {
-    display: flex;
-    justify-content: space-around;
-
-    &_date {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      width: 70rem;
-    }
-    .btn {
-      &:hover {
-        cursor: pointer;
-      }
-
-      &_svg {
-        display: flex;
-        align-items: center;
-        fill: #516998;
-        &:hover {
-          fill: #c0ddf2;
-        }
-      }
-
-      &_date {
-        width: 3rem;
-        height: 3rem;
-        // background-color: #2d519f;
-        background-color: transparent;
-        border: 1px solid #516998;
-        border-radius: 50%;
-        font-weight: bold;
-        line-height: 3rem;
-        text-align: center;
-
-        &.active {
-          background-color: #2d519f;
-        }
-
-        &:hover {
-          background-color: rgba(45, 81, 159, 0.5);
-        }
-      }
-    }
-  }
-}
+@import '@/assets/style/ui/_calendar.scss';
 </style>

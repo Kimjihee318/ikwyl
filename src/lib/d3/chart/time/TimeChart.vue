@@ -35,3 +35,6 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+@import '@/assets/style/ui/_chartTime.scss';
+</style>

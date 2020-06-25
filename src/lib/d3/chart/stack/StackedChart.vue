@@ -14,7 +14,7 @@ export default {
     // Chart Data
     Canvas: { type: Object, default: () => ({}) },
     Chart: { type: Object, default: () => ({}) },
-    Circle: { type: Object, default: () => ({}) },
+    Rect: { type: Object, default: () => ({}) },
     // Database
     DataItems: { type: Array, default: () => [] }
   },

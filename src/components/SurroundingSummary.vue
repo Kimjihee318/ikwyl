@@ -80,7 +80,7 @@ export default {
 <style lang="scss" scoped>
 .surrounding_card {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 
   &_wrapper {
     vertical-align: bottom;

@@ -1,22 +1,27 @@
 <template>
   <div>
     <ui-card>
-      <h3 class="light type_english_font ui_card_title no_margin">Weekly <br />Secondhand Smoke</h3>
-      <chart-stack
-        :Canvas="stackedCanvas"
-        :Chart="stackedChart"
-        d
-        :Circle="stackedCircle"
-        :DataItems="stackedDataItems"
-      />
-      <div v-for="(item, i) in cumulativeSHS.quantity" class="report_cumulative" :key="`report_c_q${i}`">
-        <div class="report_title">{{ item.title }}</div>
-        <div class="report_contents">{{ item.value }}</div>
+      <div class="wrapper__chart wrapper__chart_stacked">
+        <h3 class="light type_english_font ui_card_title no_margin">Weekly <br />Secondhand Smoke</h3>
+        <chart-stack
+          :Canvas="stackedCanvas"
+          :Chart="stackedChart"
+          d
+          :Rect="stackedRect"
+          :DataItems="stackedDataItems"
+        />
+        <div v-for="(item, i) in cumulativeSHS.quantity" class="report_cumulative" :key="`report_c_q${i}`">
+          <div class="report_title">{{ item.title }}</div>
+          <div class="report_contents">{{ item.value }}</div>
+        </div>
       </div>
-      <chart-time :Canvas="timeCanvas" :Chart="timeChart" :Circle="timeCircle" :DataItems="timeDataItems" />
-      <div v-for="(item, i) in cumulativeSHS.time" class="report_cumulative" :key="`report_c_t${i}`">
-        <div class="report_title">{{ item.title }}</div>
-        <div class="report_contents">{{ item.value }}</div>
+      <div class="wrapper__chart wrapper__chart_time">
+        <h3 class="light type_english_font ui_card_title no_margin">Weekly Detection Time</h3>
+        <chart-time :Canvas="timeCanvas" :Chart="timeChart" :Circle="timeCircle" :DataItems="timeDataItems" />
+        <div v-for="(item, i) in cumulativeSHS.time" class="report_cumulative" :key="`report_c_t${i}`">
+          <div class="report_title">{{ item.title }}</div>
+          <div class="report_contents">{{ item.value }}</div>
+        </div>
       </div>
     </ui-card>
   </div>
@@ -43,25 +48,25 @@ export default {
     cumulativeSHS: {
       quantity: {
         shs: {
-          title: '평균 간접 흡연 량',
+          title: '주간 평균 간접 흡연 량',
           value: ''
         },
         shsFloor: {
-          title: '같은층 간접 흡연 량',
+          title: '주간 같은 층 간접 흡연 량',
           value: ''
         },
         shsSurround: {
-          title: '주위 간접 흡연 량',
+          title: '주간 주위 간접 흡연 량',
           value: ''
         }
       },
       time: {
         daily: {
-          title: '평균 감지 시간',
+          title: '주간 주요 감지 시간',
           value: ''
         },
         weekend: {
-          title: '주말 평균 감지 시간',
+          title: '주말 주요 감지 시간',
           value: ''
         }
       }
@@ -79,8 +84,8 @@ export default {
     stackedChart() {
       return _ChartStackedData.chart
     },
-    stackedCircle() {
-      return _ChartStackedData.circle
+    stackedRect() {
+      return _ChartStackedData.rect
     },
     stackedDataItems() {
       return this.userWeeklySHS

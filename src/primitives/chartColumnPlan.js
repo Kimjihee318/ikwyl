@@ -17,20 +17,11 @@ export default {
     CanvasSecondSvgChartX: 0,
     CanvasSecondSvgChartY: 0
   },
-  floorInfo: {
-    Userfloor: 10, // GET FROM DB
-    UserUnitNo: 10, // GET FROM DB
-    UnitNumbers: 12,
-    UnitsMaxSide: 7,
-    UnitsMinSide: null,
-    Sides: 2,
-    TopFloor: 10
-  },
   scale: {
     ScaleHBandInnerPadding: 0.5,
-    ScaleHBandOuterPadding: 0.1,
+    ScaleHBandOuterPadding: 0.2,
     ScaleVBandInnerPadding: 0.5,
-    ScaleVBandOuterPadding: 0.2
+    ScaleVBandOuterPadding: 0.3
   },
   unit: {
     BgFillColor: 'transparent',
@@ -44,8 +35,8 @@ export default {
     UnitTextColor: '#ffffff',
     UnitTextFont: null,
     UnitTextSize: '0.9rem',
-    UnitSmellRectWidth: 2,
-    UnitSmellRectHeight: 7,
+    UnitSmellRectWidth: 2.2,
+    UnitSmellRectHeight: 10.5,
     UnitSmellRectColor: '#ffffff'
   }
 }

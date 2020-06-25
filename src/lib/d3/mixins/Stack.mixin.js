@@ -14,7 +14,7 @@ export default {
     drawStacked() {
       this.setScale()
       this.drawAxis()
-      this.drawCircles()
+      this.drawRects()
     },
     setScale() {
       this.dataItems = JSON.parse(JSON.stringify(this.DataItems))
@@ -51,13 +51,33 @@ export default {
         .selectAll('text')
         .style('text-anchor', 'middle')
     },
-    drawCircles() {
+    drawRects() {
+      if (this.Rect.RectFillType !== 'Fill')
+        this.setClipPath(
+          this.chartArea,
+          this.Canvas.CanvasWidth - this.Chart.ChartHPadding,
+          this.Canvas.CanvasHeight - this.Chart.ChartVPadding,
+          this.scaleVClippath
+        )
+
       this.timeGroup = this.chartArea
         .append('g')
         .attr('class', `chart_group`)
+        .append('clipPath')
+        .attr('id', 'clip-bar-rects')
         .selectAll('g')
         .data(this.dataItems)
         .enter()
+
+      const clipPath = this.chartArea.append('g').attr('clip-path', `url(#clip-bar-rects)`)
+
+      clipPath
+        .append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', this.Canvas.CanvasWidth - this.Chart.ChartHPadding)
+        .attr('height', this.Canvas.CanvasHeight - this.Chart.ChartVPadding)
+        .style('fill', 'url(#bg-gradient)')
 
       this.timeGroup
         .append('g')
@@ -78,9 +98,9 @@ export default {
             .attr('y', (d, i) => {
               return this.Canvas.CanvasHeight - this.Chart.ChartVPadding - (2 + 4) * i
             })
-            .attr('width', 10)
-            .attr('height', 2)
-            .attr('fill', '#ffffff')
+            .attr('width', 100)
+            .attr('height', 100)
+            .attr('fill', this.Rect.RectFillType !== 'Fill' ? `url(#gradient_linear_${0})` : this.Rect.RectFillColor)
         })
     }
   }
