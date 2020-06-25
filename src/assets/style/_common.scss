@@ -13,7 +13,7 @@
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
-}
+  }
 }
 .clip-circle {
   clip-path: circle(1rem at center);
@@ -28,6 +28,7 @@
     margin-bottom: 0;
   }
 }
+
 svg.type_move2right {
   position: relative;
   left: 0.1rem;
@@ -49,3 +50,7 @@ svg.type_move2right {
   }
 }
 
+.wrap__card.no_data, .wrap__svg.no_data {
+  background: $pattern_diagonal_line;
+  opacity: 0.8;
+}

@@ -17,16 +17,11 @@ export default {
     floorCanvas() {
       return _ChartFloorData.canvas
     },
-    floorFloorInfo() {
-      return _ChartFloorData.floorInfo
+    floorUserInfo() {
+      return this.userInfo
     },
     floorUnit() {
       return _ChartFloorData.unit
-    },
-    propStyle() {
-      return {
-        marginBottom: `${0.75}rem`
-      }
     }
   },
   methods: {

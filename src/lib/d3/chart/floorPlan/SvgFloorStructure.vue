@@ -1,5 +1,5 @@
 <template>
-  <div :id="localId" class="floor_chart"></div>
+  <div :id="localId" class="chart_floor"></div>
 </template>
 
 <script>
@@ -13,10 +13,10 @@ export default {
 
     // Chart Data
     Canvas: { type: Object, default: () => ({}) },
-    FloorInfo: { type: Object, default: () => ({}) },
     BackgroundItem: { type: Array, default: () => [] },
     Unit: { type: Object, default: () => ({}) },
-    User: String,
+    UserInfo: { type: Object, default: () => ({}) },
+
     // Database
     DataItems: { type: Array, default: () => [] }
   },
@@ -38,7 +38,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.floor_chart {
-  margin-bottom: 0.5rem;
-}
+@import '@/assets/style/ui/_chartFloor.scss';
 </style>

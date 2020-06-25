@@ -51,6 +51,9 @@ export default {
     ready2draw4FloorStructure() {
       return Object.keys(this.BackgroundItem).length > 0 && Object.keys(this.Canvas).length > 0
     },
+    ready2draw4SurroundingStructure() {
+      return Object.keys(this.UserInfo).length > 0 && Object.keys(this.Canvas).length > 0
+    },
     register(drawer) {
       let requested = {
         num: this.execRequested.length + 1,

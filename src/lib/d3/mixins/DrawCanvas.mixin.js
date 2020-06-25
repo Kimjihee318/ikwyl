@@ -16,7 +16,10 @@ export default {
         .style('border', `solid ${this.Canvas.CanvasBorderWeight}px ${this.Canvas.CanvasBorderColor}`)
         .style(
           'background-color',
-          this.FloorInfo && this.FloorInfo.Userfloor === this.DataItems.floor
+          this.UserInfo &&
+            this.BackgroundItem &&
+            this.BackgroundItem.length !== 0 &&
+            this.UserInfo.floor === [...this.BackgroundItem[0].unit.toString()].map(n => +n)[0]
             ? this.Canvas.CanvasBgPointColor
             : this.Canvas.CanvasBgColor
         )
@@ -40,7 +43,7 @@ export default {
         .style('border', `solid ${this.Canvas.CanvasSecondSvgBorderWeight}px ${this.Canvas.CanvasSecondSvgBorderColor}`)
         .style(
           'background-color',
-          this.FloorInfo && this.FloorInfo.Userfloor === this.DataItems.floor
+          this.UserInfo && this.UserInfo.floor === this.DataItems.floor
             ? this.Canvas.CanvasSecondSvgBgPointColor
             : this.Canvas.CanvasSecondSvgBgColor
         )

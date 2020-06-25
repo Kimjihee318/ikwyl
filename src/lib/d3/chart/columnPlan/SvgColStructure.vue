@@ -1,12 +1,12 @@
 <template>
-  <div :id="localId" class="svg_wrapper"></div>
+  <div :id="localId" class="wrap__svg"></div>
 </template>
 
 <script>
 import CommonMixin from './importers'
 
 export default {
-  name: 'column-side-plan',
+  name: 'surrounding-plan',
   mixins: [CommonMixin],
   props: {
     id: String,
@@ -23,16 +23,15 @@ export default {
     needsSecondSvg: true
   }),
   created() {
-    this.localId = `${this.id || 'Floor_Structure'}__${this.safeId('')}`
+    this.localId = `${this.id || 'Surrounding_Structure'}__${this.safeId('')}`
   },
   mounted() {
     this.draw()
   },
   methods: {
     draw() {
-      if (!this.ready2draw()) return
+      if (!this.ready2draw4SurroundingStructure()) return
       this.clear()
-      // this.initData()
       this.drawCanvas()
       this.drawColumnPlan()
     }
@@ -40,7 +39,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.svg_wrapper {
+.wrap__svg {
   padding: 0;
 }
 </style>

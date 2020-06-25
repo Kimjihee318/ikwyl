@@ -11,8 +11,8 @@ export default {
     drawTimeChart() {
       this.rearrangeData()
       this.setScale()
-      this.drawChart()
       this.drawAxis()
+      this.drawChart()
     },
     drawAxis() {
       let xAxis = d3
@@ -61,14 +61,14 @@ export default {
 
       if (this.Circle.CircleFillType !== 'Fill') this.setRadialGradient(circleG, this.Circle.CircleColorTypeGradient)
 
-      circleG
-        .append('text')
-        .attr('class', (d, i) => `text_unit_${i}`)
-        .attr('x', d => this.scaleTime(d.time))
-        .attr('y', -10)
-        .text(d => d.time)
-        .attr('fill', this.Circle.CircleBorderColor)
-        .attr('text-anchor', 'middle')
+      // circleG
+      // .append('text')
+      // .attr('class', (d, i) => `text_unit_${i}`)
+      // .attr('x', d => this.scaleTime(d.time))
+      // .attr('y', -10)
+      // .text(d => d.time)
+      // .attr('fill', this.Circle.CircleBorderColor)
+      // .attr('text-anchor', 'middle')
 
       circleG
         .append('circle')
@@ -79,7 +79,6 @@ export default {
         .attr('fill', (d, i) =>
           this.Circle.CircleFillType !== 'Fill' ? `url(#gradient_radial_${i})` : this.Circle.CircleFillColor
         )
-        .attr('opacity', 0.5)
         .attr('stroke-width', 1)
         .attr('stroke', this.Circle.CircleBorderColor)
         .on('mouseover', (_, i, a) => {

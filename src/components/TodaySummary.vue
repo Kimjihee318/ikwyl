@@ -103,7 +103,7 @@ export default {
       let todaySHSKey = Object.keys(this.dailySHS).filter(d => __F.expressionCheckToday(new Date(d)))
       if (!todaySHSKey || todaySHSKey.length === 0) {
         this.todaySHSMode = 'NO_DATA'
-        this.todaySHSInfo = 'Please Add Record'
+        this.todaySHSInfo = 'Please Add Today Record'
         return
       }
 

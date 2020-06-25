@@ -14,10 +14,10 @@ export default {
     ChartVPadding: 50
   },
   circle: {
-    CircleRadius: 3,
+    CircleRadius: 4,
     CircleBackgroundColor: '#81a8e3',
-    CircleBorderColor: '#ffffff',
-    CircleFillColor: '#ffffff',
+    CircleBorderColor: '#ffbd71',
+    CircleFillColor: '#ffbd7150', // 'trasnparent'
     CircleFillType: 'Fill', // Grad
     CircleColorTypeGradient: ['#ffbd71', '#f1c8a5']
   },

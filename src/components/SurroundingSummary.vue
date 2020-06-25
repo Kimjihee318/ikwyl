@@ -1,6 +1,6 @@
 <template>
-  <div class="surrounding_card_wrapper">
-    <ui-card class="surrounding_card">
+  <div class="wrap__card wrap__card_surrounding" :class="{ no_data: isNoData }">
+    <ui-card class="card_surrounding">
       <chart-surrounding
         :Canvas="surroundingCanvas"
         :FloorInfo="surroundingFloorInfo"
@@ -10,14 +10,14 @@
         :DataItems="surroundingDataItems"
         @emit="setQuantity"
       />
-      <div class="surrounding_card_rightside">
-        <div class="surrounding_card_rightside_h_row">
+      <div class="card_surrounding_rightside">
+        <div class="card_surrounding_rightside_h_row">
           <div>같은 층 간접 흡연 평균</div>
           <div>
             <span>{{ avgHRow }}</span>
           </div>
         </div>
-        <div class="surrounding_card_rightside_v_row">
+        <div class="card_surrounding_rightside_v_row">
           <div>위 아래층 간접 흡연 평균</div>
           <div>
             <span>{{ avgVRow }}</span>
@@ -47,7 +47,8 @@ export default {
   },
   data: () => ({
     avgHRow: '',
-    avgVRow: ''
+    avgVRow: '',
+    isNoData: null
   }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['userInfo']),
@@ -67,7 +68,18 @@ export default {
       return _ChartSurroundingData.unit
     }
   },
-  mounted() {},
+  watch: {
+    dataItems: {
+      handler(val) {
+        if (!val || val.length === 0) {
+          this.isNoData = true
+          return
+        }
+        this.isNoData = false
+      },
+      deep: true
+    }
+  },
   methods: {
     setQuantity({ hRow, vRow }) {
       this.avgHRow = __F.mean(hRow)
@@ -78,13 +90,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.surrounding_card {
+.wrap__card_surrounding {
+  vertical-align: bottom;
+}
+.card_surrounding {
   display: flex;
   justify-content: space-around;
 
-  &_wrapper {
-    vertical-align: bottom;
-  }
   &_rightside {
     display: flex;
     flex-direction: column;

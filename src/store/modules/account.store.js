@@ -3,9 +3,7 @@ import __F from '@/primitives/_function_'
 import router from '@/routes/index'
 import accountApi from '@/service/service.account'
 
-console.log('ACCOUNT STORE IN')
 let ACCOUNT = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
-console.log('[STORE ACCOUNT]', ACCOUNT)
 export default {
   namespaced: true,
   state: {

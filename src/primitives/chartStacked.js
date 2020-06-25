@@ -14,9 +14,10 @@ export default {
     ChartVPadding: 40
   },
   rect: {
+    RectColorTypeGradient: ['#ffbd71', '#0f1333'],
     RectFillColor: '#ffffff',
-    RectFillType: 'grad',
-    RectColorTypeGradient: ['#ffbd71', '#000000']
+    RectFillType: 'hole_grad',
+    RectTextColor: '#ffbd71'
   },
   // Draw data
   dataItems: [

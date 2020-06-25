@@ -28,7 +28,9 @@ export default {
       this.drawUnit()
     },
     drawBgBox() {
-      let backItems = JSON.parse(JSON.stringify(this.BackgroundItem))
+      let backItems = JSON.parse(JSON.stringify(this.BackgroundItem)).map(d => ({
+        unit: Number(d.unit)
+      }))
 
       this.bgBoxGroup = this.chartArea
         .append('g')
@@ -55,23 +57,39 @@ export default {
     drawBgUnit() {
       this.bgBoxSelection.each((d, i, j) => {
         let _self = d3.select(j[i])
-
         _self
           .append('rect')
           .attr('x', 10)
-          .attr('y', 20)
+          .attr('y', 10)
           .attr('width', this.Unit.UnitWidth)
           .attr('height', this.Unit.UnitHeight)
           .attr('fill', this.Unit.BgFillColor)
-          .attr('stroke', this.Unit.BgStrokeColor)
+          .attr('stroke', () => (d.unit === this.UserInfo.unit ? '#ffffff' : this.Unit.BgStrokeColor))
           .attr('stroke-width', this.Unit.UnitStrokeWidth)
+
+        _self
+          .selectAll('line')
+          .data([
+            { x1: 0, y1: 0, x2: this.Unit.UnitWidth, y2: this.Unit.UnitHeight },
+            { x1: 0, y1: this.Unit.UnitHeight, x2: this.Unit.UnitWidth, y2: 0 }
+          ])
+          .enter()
+          .append('line')
+          .attr('transform', `translate(${10},${10})`)
+          .attr('x1', _d => _d.x1)
+          .attr('y1', _d => _d.y1)
+          .attr('x2', _d => _d.x2)
+          .attr('y2', _d => _d.y2)
+          .style('stroke-width', this.Unit.UnitStrokeWidth)
+          .style('stroke', this.Unit.BgStrokeColor)
+          .style('opacity', '0.6')
 
         _self
           .append('text')
           .attr('x', 10)
-          .attr('y', 10)
+          .attr('y', 0)
           .style('font-size', this.Unit.UnitTextSize)
-          .style('fill', this.Unit.UnitTextColor)
+          .style('fill', () => (d.unit === this.UserInfo.unit ? '#ffffff' : this.Unit.UnitTextColor))
           .text(`${d.unit}호`)
       })
     },
@@ -124,10 +142,10 @@ export default {
           .attr('height', this.Unit.UnitHeight)
           .attr(
             'fill',
-            this.FloorInfo.Userfloor === this.DataItems.floor ? this.Unit.UnitFillPointColor : this.Unit.UnitFillColor
+            this.UserInfo.floor === this.DataItems.floor ? this.Unit.UnitFillPointColor : this.Unit.UnitFillColor
           )
-          .attr('stroke', d => (d.userName === this.User ? '#ffffff' : this.Unit.UnitStroke))
-          .attr('stroke-width', d => (d.userName === this.User ? 2 : this.Unit.UnitStrokeWidth))
+          .attr('stroke', d => (d.userName === this.UserInfo.user ? '#ffffff' : this.Unit.UnitStroke))
+          .attr('stroke-width', d => (d.userName === this.UserInfo.user ? 2 : this.Unit.UnitStrokeWidth))
 
         _self
           .append('text')
@@ -158,15 +176,15 @@ export default {
         .range([0, this.Canvas.CanvasWidth])
         .round(true)
         .paddingInner(0.1)
-        .paddingOuter(0.1)
+        .paddingOuter(0.2)
 
       this.scaleVBand = d3
         .scaleBand()
         .domain(d3.range(this.grid.v))
         .range([0, this.Canvas.CanvasHeight])
         .round(true)
-        .paddingInner(0.4)
-        .paddingOuter(0.1)
+        .paddingInner(0.5)
+        .paddingOuter(0.3)
     }
   }
 }

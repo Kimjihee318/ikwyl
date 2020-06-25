@@ -42,7 +42,7 @@ export default {
 
       this.chartArea
         .append('g')
-        .attr('class', 'xAxis')
+        .attr('class', 'stack_xAxis')
         .attr(
           'transform',
           `translate(${this.Chart.ChartHPadding / 2}, ${this.Canvas.CanvasHeight - this.Chart.ChartVPadding})`
@@ -52,39 +52,22 @@ export default {
         .style('text-anchor', 'middle')
     },
     drawRects() {
-      if (this.Rect.RectFillType !== 'Fill')
-        this.setClipPath(
-          this.chartArea,
-          this.Canvas.CanvasWidth - this.Chart.ChartHPadding,
-          this.Canvas.CanvasHeight - this.Chart.ChartVPadding,
-          this.scaleVClippath
-        )
+      this.setLinearGradient4AllChart(this.chartArea, this.Rect.RectColorTypeGradient)
 
       this.timeGroup = this.chartArea
         .append('g')
-        .attr('class', `chart_group`)
-        .append('clipPath')
-        .attr('id', 'clip-bar-rects')
+        .attr('class', `stack_chart_group`)
+        .style('fill', 'url(#gradient_linear)')
         .selectAll('g')
         .data(this.dataItems)
         .enter()
 
-      const clipPath = this.chartArea.append('g').attr('clip-path', `url(#clip-bar-rects)`)
-
-      clipPath
-        .append('rect')
-        .attr('x', 0)
-        .attr('y', 0)
-        .attr('width', this.Canvas.CanvasWidth - this.Chart.ChartHPadding)
-        .attr('height', this.Canvas.CanvasHeight - this.Chart.ChartVPadding)
-        .style('fill', 'url(#bg-gradient)')
-
       this.timeGroup
         .append('g')
-        .attr('class', (d, i) => `date_${i}`)
+        .attr('class', (d, i) => `stack_date_group stack_date_${i}`)
         .attr('transform', d => {
           return `translate(${this.scaleTime(new Date(d.date)) +
-            this.Chart.ChartHPadding / 2}, ${-this.scaleVBand.bandwidth() - 5})`
+            this.Chart.ChartHPadding / 2}, ${-this.scaleVBand.bandwidth()})`
         })
         .each((d, i, j) => {
           let _self = d3.select(j[i])
@@ -95,13 +78,37 @@ export default {
             .enter()
             .append('rect')
             .attr('x', 0)
-            .attr('y', (d, i) => {
-              return this.Canvas.CanvasHeight - this.Chart.ChartVPadding - (2 + 4) * i
+            .attr('y', (_d, _i) => {
+              return this.Canvas.CanvasHeight - this.Chart.ChartVPadding - (3 + 4) * _i
             })
-            .attr('width', 100)
-            .attr('height', 100)
-            .attr('fill', this.Rect.RectFillType !== 'Fill' ? `url(#gradient_linear_${0})` : this.Rect.RectFillColor)
+            .attr('width', 10)
+            .attr('height', 4)
+
+          _self
+            .append('text')
+            .attr('class', `stack_text stack_text_${i}`)
+            .attr('x', 5)
+            .attr('y', this.Canvas.CanvasHeight - this.Chart.ChartVPadding - 50)
+            .text(d => d.quantity)
+            .attr('fill', this.Rect.RectTextColor)
+            .attr('text-anchor', 'middle')
+            .attr('opacity', 0)
         })
+      d3.select(`#${this.localId}`)
+        .on('mouseover', () =>
+          d3
+            .selectAll(`.stack_text`)
+            .transition()
+            .duration(100)
+            .attr('opacity', 1)
+        )
+        .on('mouseout', () =>
+          d3
+            .selectAll(`.stack_text`)
+            .transition()
+            .duration(100)
+            .attr('opacity', 0)
+        )
     }
   }
 }

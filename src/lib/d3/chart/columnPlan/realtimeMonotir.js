@@ -3,6 +3,7 @@ export default {
     DataItems: {
       handler(val) {
         if (!val || val.length === 0) return
+        this.isNoData = false
         this.register(this.draw)
       },
       deep: true

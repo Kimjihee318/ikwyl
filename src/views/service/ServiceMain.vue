@@ -14,23 +14,26 @@
         </div>
         <div class="main_chart_floor">
           <div class="main_chart_floor_chart">
-            <chart-floor
+            <div
+              class="wrap__svg"
               v-for="(bgItem, key) in floorBgItems"
-              :class="`key_${key}`"
+              :class="{ no_data: isNoData }"
               :key="`chart__${key}`"
-              :Canvas="floorCanvas"
-              :FloorInfo="floorFloorInfo"
-              :BackgroundItem="bgItem"
-              :Unit="floorUnit"
-              :User="user"
-              :DataItems="getfloorDataItem(key)"
-            ></chart-floor>
+            >
+              <chart-floor
+                :class="`key_${key}`"
+                :Canvas="floorCanvas"
+                :UserInfo="floorUserInfo"
+                :BackgroundItem="bgItem"
+                :Unit="floorUnit"
+                :DataItems="getfloorDataItem(key)"
+              ></chart-floor>
+            </div>
           </div>
-          <div class="main_chart_floor_card">
+          <div class="main_chart_floor_card wrap__card" :class="{ no_data: isNoData }">
             <ui-card
               v-for="(item, i) in floorSummary"
               class="main_chart_floor_card_item small_padding"
-              :card-style="propStyle"
               :style="styleCard(item)"
               :key="`floor_summary_${i}`"
             >
@@ -68,6 +71,8 @@ export default {
     floorBgStructure: {},
     floorSummary: [],
     formattedJoinedSHS: {},
+    isNoData: null,
+    localFloorDataItems: [],
     usedfloors: [],
     selectedDateSHS: [] // to FIX
   }),
@@ -92,6 +97,16 @@ export default {
       handler(val) {
         if (!val || val.length === 0) return
         this.draw()
+      },
+      deep: true
+    },
+    localFloorDataItems: {
+      handler(val) {
+        if (!val || val.length === 0) {
+          this.isNoData = true
+          return
+        }
+        this.isNoData = false
       },
       deep: true
     }
@@ -137,7 +152,9 @@ export default {
     },
     getfloorDataItem(item) {
       // FLOW가 정확히 이해되지 않음
-      return this.floorDataItems && Object.keys(this.floorDataItems).length > 0 ? this.floorDataItems[item] : []
+      let result = this.floorDataItems && Object.keys(this.floorDataItems).length > 0 ? this.floorDataItems[item] : []
+      this.localFloorDataItems = result
+      return result
     },
     setFloorBgStructure() {
       let floors = []

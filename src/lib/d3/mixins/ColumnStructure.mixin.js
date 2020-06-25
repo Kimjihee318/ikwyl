@@ -22,25 +22,27 @@ export default {
     drawColumnPlan() {
       this.init()
       this.setBgDataItems()
-      this.formatData()
-      this.emitData()
       this.setScale()
       this.drawBgItems()
+      this.drawBarTitle()
+
+      if (this.DataItems.length === 0) return
+      this.formatData()
+      this.emitData()
       this.drawChart()
-      this.drarBarTitle()
       this.drawBars()
     },
     drawBars() {
       let boxGroup = this.secondChartArea
         .append('g')
-        .attr('class', 'data_bar')
+        .attr('class', 'surrounding_data_bar')
         .selectAll('g')
         .data(this.formattedSurroundingData)
         .enter()
 
       let boxs = boxGroup
         .append('g')
-        .attr('class', (d, i) => `g_bar_${i}`)
+        .attr('class', (d, i) => `surrounding_g_bar_${i}`)
         .attr('transform', d => {
           return `translate(${120}, ${this.scaleBarBand(d.barPosition)})`
         })
@@ -58,7 +60,7 @@ export default {
         .attr('height', this.Unit.UnitSmellRectHeight)
         .attr('fill', this.Unit.UnitSmellRectColor)
     },
-    drarBarTitle() {
+    drawBarTitle() {
       let boxGroup = this.secondChartArea
         .selectAll('g')
         .data(this.bgStructureData)
@@ -66,7 +68,7 @@ export default {
 
       let boxs = boxGroup
         .append('g')
-        .attr('class', (d, i) => `bg_bar_${i}`)
+        .attr('class', (d, i) => `surrounding_bg_bar_${i}`)
         .attr('transform', d => {
           return `translate(${80}, ${this.scaleBarBand(d.barPosition)})`
         })
@@ -89,7 +91,7 @@ export default {
 
       let boxs = boxGroup
         .append('g')
-        .attr('class', (d, i) => `bg_box_${i}`)
+        .attr('class', (d, i) => `surrounding_bg_box_${i}`)
         .attr('transform', d => {
           return `translate(${this.scaleHBand(d.coordinate[0])}, ${this.scaleVBand(d.coordinate[1])})`
         })
@@ -99,8 +101,24 @@ export default {
         .attr('width', this.scaleHBand.bandwidth())
         .attr('height', this.scaleVBand.bandwidth())
         .attr('fill', this.Unit.BgFillColor)
-        .attr('stroke', this.Unit.BgStrokeColor)
+        .attr('stroke', d => (d.unit === this.UserInfo.unit ? '#ffffff' : this.Unit.BgStrokeColor))
         .attr('stroke-width', this.Unit.UnitStrokeWidth)
+
+      boxs
+        .selectAll('line')
+        .data([
+          { x1: 0, y1: 0, x2: this.scaleHBand.bandwidth(), y2: this.scaleVBand.bandwidth() },
+          { x1: 0, y1: this.scaleVBand.bandwidth(), x2: this.scaleHBand.bandwidth(), y2: 0 }
+        ])
+        .enter()
+        .append('line')
+        .attr('x1', d => d.x1)
+        .attr('y1', d => d.y1)
+        .attr('x2', d => d.x2)
+        .attr('y2', d => d.y2)
+        .style('stroke-width', this.Unit.UnitStrokeWidth)
+        .style('stroke', this.Unit.BgStrokeColor)
+        .style('opacity', '0.6')
 
       boxs
         .append('text')
@@ -114,14 +132,14 @@ export default {
     drawChart() {
       let boxGroup = this.chartArea
         .append('g')
-        .attr('class', 'data_box')
+        .attr('class', 'surrounding_data_box')
         .selectAll('g')
         .data(this.formattedSurroundingData)
         .enter()
 
       let boxs = boxGroup
         .append('g')
-        .attr('class', (d, i) => `box_${i}`)
+        .attr('class', (d, i) => `surrounding_box_${i}`)
         .attr('transform', d => {
           return `translate(${this.scaleHBand(d.coordinate[0])}, ${this.scaleVBand(d.coordinate[1])})`
         })

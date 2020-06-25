@@ -2,7 +2,7 @@ export default {
   canvas: {
     CanvasWidth: 200.5,
     CanvasHeight: 200.5,
-    CanvasBgColor: '#0f1333',
+    CanvasBgColor: 'transparent',
     CanvasBgPointColor: '#1a2157',
     CanvasBorderWeight: 0.5,
     CanvasBorderColor: 'transparent',
@@ -10,7 +10,7 @@ export default {
     CanvasChartY: 0,
     CanvasSecondSvgWidth: 200.5,
     CanvasSecondSvgHeight: 200.5,
-    CanvasSecondSvgBgColor: '#0f1333',
+    CanvasSecondSvgBgColor: 'transparent',
     CanvasSecondSvgBgPointColor: '#1a2157',
     CanvasSecondSvgBorderWeight: 0.5,
     CanvasSecondSvgBorderColor: 'transparent',
@@ -19,9 +19,9 @@ export default {
   },
   scale: {
     ScaleHBandInnerPadding: 0.5,
-    ScaleHBandOuterPadding: 0.2,
+    ScaleHBandOuterPadding: 0.1,
     ScaleVBandInnerPadding: 0.5,
-    ScaleVBandOuterPadding: 0.3
+    ScaleVBandOuterPadding: 0.25
   },
   unit: {
     BgFillColor: 'transparent',
@@ -31,7 +31,7 @@ export default {
     UnitFillColor: '#1a2157',
     UnitFillPointColor: '#2d519f',
     UnitStroke: '#81a8e3',
-    UnitStrokeWidth: 0.5,
+    UnitStrokeWidth: 1,
     UnitTextColor: '#ffffff',
     UnitTextFont: null,
     UnitTextSize: '0.9rem',
