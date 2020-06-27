@@ -22,6 +22,7 @@
       justify-content: space-around;
       align-items: center;
       width: 70rem;
+
     }
     .btn {
       &:hover {
@@ -48,13 +49,21 @@
         line-height: 3rem;
         text-align: center;
 
+        // * FOR CALENDAR ITEM HAS DATA
+        &.has_data {
+          // border-color:#2d519f;
+        }
+
         &.active {
           background-color: #2d519f;
         }
 
         &:hover {
-          background-color: rgba(45, 81, 159, 0.5);
+          background-color:'#2d519f';
         }
+
+        
+      
       }
     }
   }

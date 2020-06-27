@@ -11,7 +11,7 @@ export default {
     moudleMargin: 60,
     moduleGroupPadding: 20,
     size: 47,
-    timeGroupWidth: [],
+    timeGroupWidth: []
   }),
 
   methods: {
@@ -38,9 +38,7 @@ export default {
           })
 
           let x = i === 0 ? 0 : (chartSize / eachFullLength) * eachBeforeLength
-          this.timeGroupWidth.push(
-            (chartSize / this.fullLength) * this.dataSet[i].values.length,
-          )
+          this.timeGroupWidth.push((chartSize / this.fullLength) * this.dataSet[i].values.length)
           return `translate(${this.chartPadding / 2 + x}, 0)`
         })
         .each((d, i, j) => {
@@ -57,10 +55,7 @@ export default {
             .attr('y1', 0)
             .attr('x2', this.timeGroupWidth[i] - this.chartPadding / 1.3)
             .attr('y2', 0)
-            .attr(
-              'transform',
-              `translate(${this.chartPadding / 1.3 - 15}, ${this.size + 21.5})`,
-            )
+            .attr('transform', `translate(${this.chartPadding / 1.3 - 15}, ${this.size + 21.5})`)
             .attr('stroke', '#bcbcbc')
             .attr('stroke-width', 0.5)
 
@@ -68,11 +63,7 @@ export default {
           d3.select(j[i])
             .append('text')
             .text(d.key)
-            .attr(
-              'transform',
-              `translate(${(this.timeGroupWidth[i] - this.chartPadding) /
-                2}, ${this.size + 35})`,
-            )
+            .attr('transform', `translate(${(this.timeGroupWidth[i] - this.chartPadding) / 2}, ${this.size + 35})`)
             .style('font-size', 11)
             .attr('text-alignment', 'middle')
 
@@ -116,15 +107,10 @@ export default {
         .style('font-size', 11)
 
       vesselText
-        .attr(
-          'x',
-          (d, i, j) => (this.size - j[i].getBoundingClientRect().width) / 2,
-        )
+        .attr('x', (d, i, j) => (this.size - j[i].getBoundingClientRect().width) / 2)
         .attr(
           'y',
-          (d, i, j) =>
-            (this.size - j[i].getBoundingClientRect().height) / 2 +
-            j[i].getBoundingClientRect().height / 1.3,
+          (d, i, j) => (this.size - j[i].getBoundingClientRect().height) / 2 + j[i].getBoundingClientRect().height / 1.3
         )
         .attr('fill', d => d.bgColor)
         .attr('alignmnet-baseline', 'hanging')
@@ -138,10 +124,7 @@ export default {
 
       planDate
         .attr('x', 0)
-        .attr(
-          'x',
-          (d, i, j) => (this.size - j[i].getBoundingClientRect().width) / 2,
-        )
+        .attr('x', (d, i, j) => (this.size - j[i].getBoundingClientRect().width) / 2)
         .attr('y', this.size + 15)
         .attr('alignmnet-baseline', 'middle')
 
@@ -169,10 +152,7 @@ export default {
         .attr('width', this.size * 1.2)
         .attr('height', this.size * 1.2)
         .attr('opacity', 1)
-        .attr(
-          'xlink:href',
-          d => `${this.__HOST_NAME_RESOURCE}/TCO/PAUs/${d.PAU}.png`,
-        )
+        .attr('xlink:href', d => `${this.__HOST_NAME_RESOURCE}/TCO/PAUs/${d.PAU}.png`)
         .style('cursor', 'pointer')
         .on('mouseover', d => {
           d3.select(`#${d.PAU}`)
@@ -185,10 +165,7 @@ export default {
           d3.select(`#${d.PAU}`)
             .transition()
             .duration(200)
-            .attr(
-              'transform',
-              `translate(${-this.size * 0.1},${-this.size * 1.1})`,
-            )
+            .attr('transform', `translate(${-this.size * 0.1},${-this.size * 1.1})`)
             .attr('opacity', 1)
         })
 
@@ -200,15 +177,15 @@ export default {
               target: 'slide-modal',
               component: 'ServiceSvgTabs',
               id: 168,
-              no: 'LIBSVGTB-0001',
+              no: 'LIBSVGTB-0001'
             },
             filters: {
-              MOD: d.MOD,
+              MOD: d.MOD
             },
             iFilters: {
               filterString: ``,
-              inputFilter: '',
-            },
+              inputFilter: ''
+            }
           }
           this.$emit('request-action', request_)
         })
@@ -219,10 +196,7 @@ export default {
         .attr('y', 3)
         .style('font-size', 10)
         .attr('fill', '#757575')
-        .attr(
-          'x',
-          (d, i, j) => (this.size - j[i].getBoundingClientRect().width) / 2,
-        )
+        .attr('x', (d, i, j) => (this.size - j[i].getBoundingClientRect().width) / 2)
     },
 
     drawLegend() {
@@ -249,10 +223,7 @@ export default {
       let legend = legends
         .append('g')
         .attr('class', d => `${this.localId}__Legends__${d.value}`)
-        .attr(
-          'transform',
-          (d, i) => 'translate(' + 0 + ', ' + (i * 15 + 42) + ')',
-        )
+        .attr('transform', (d, i) => 'translate(' + 0 + ', ' + (i * 15 + 42) + ')')
 
       legend
         .append('rect')
@@ -270,6 +241,6 @@ export default {
         .attr('fill', '#333')
         .attr('x', this.legendRect + 7 + 7)
         .style('font-size', 9)
-    },
-  },
+    }
+  }
 }

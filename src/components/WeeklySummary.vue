@@ -1,13 +1,13 @@
 <template>
   <div>
-    <ui-card>
+    <ui-card class="wrap__card" :class="{ no_data: isNoData }">
       <div class="wrapper__chart wrapper__chart_stacked">
         <h3 class="light type_english_font ui_card_title no_margin">Weekly <br />Secondhand Smoke</h3>
         <chart-stack
           :Canvas="stackedCanvas"
           :Chart="stackedChart"
-          d
           :Rect="stackedRect"
+          :SelectedDate="stackedSelectedDate"
           :DataItems="stackedDataItems"
         />
         <div v-for="(item, i) in cumulativeSHS.quantity" class="report_cumulative" :key="`report_c_q${i}`">
@@ -17,7 +17,13 @@
       </div>
       <div class="wrapper__chart wrapper__chart_time">
         <h3 class="light type_english_font ui_card_title no_margin">Weekly Detection Time</h3>
-        <chart-time :Canvas="timeCanvas" :Chart="timeChart" :Circle="timeCircle" :DataItems="timeDataItems" />
+        <chart-time
+          :Canvas="timeCanvas"
+          :Chart="timeChart"
+          :Circle="timeCircle"
+          :SelectedDate="stackedSelectedDate"
+          :DataItems="timeDataItems"
+        />
         <div v-for="(item, i) in cumulativeSHS.time" class="report_cumulative" :key="`report_c_t${i}`">
           <div class="report_title">{{ item.title }}</div>
           <div class="report_contents">{{ item.value }}</div>
@@ -71,11 +77,13 @@ export default {
         }
       }
     },
+    isNoData: null,
     userWeeklySHS: [],
     weeklySHS: []
   }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['userInfo']),
+    ...mapState(__C.STORE.NAMESPACE.CALENDAR, ['selectedDates']),
     ...mapState(__C.STORE.NAMESPACE.REPORT, ['joinedSHSWithUserInfo']),
 
     stackedCanvas() {
@@ -86,6 +94,9 @@ export default {
     },
     stackedRect() {
       return _ChartStackedData.rect
+    },
+    stackedSelectedDate() {
+      return this.selectedDates[0]
     },
     stackedDataItems() {
       return this.userWeeklySHS
@@ -104,9 +115,16 @@ export default {
     }
   },
   watch: {
-    userWeeklySHS: {
+    // userWeeklySHS: {
+    //   handler(val) {
+    //     if (!val || val.length === 0) return
+    //   },
+    //   deep: true
+    // }
+    selectedDates: {
       handler(val) {
         if (!val || val.length === 0) return
+        this.setCumulativeSHS()
       },
       deep: true
     }
@@ -119,15 +137,24 @@ export default {
 
     async getJoinedSHS() {
       console.log(`[FUNC WEEKLY JOINED]`)
+      //! FIX ME | 요청 중복 확인
       let isData = await this.getJoinedSHSFromServer()
       if (!isData) return
       this.setCumulativeSHS()
     },
+    init() {
+      this.cumulativeSHS.time.daily.value = ''
+      this.cumulativeSHS.time.weekend.value = ''
+    },
     setCumulativeSHS() {
       let unit = this.userInfo.unit
-      this.weeklySHS = __F.filterDatesByCurrentWeek(this.joinedSHSWithUserInfo, 'date')
+
+      this.weeklySHS = __F.filterDatesOfSeletedWeek(this.joinedSHSWithUserInfo, 'date', this.selectedDates[0])
       this.userWeeklySHS = this.weeklySHS.filter(d => d.useremail === this.userInfo.useremail)
       this.userWeeklySHS.forEach(d => (d.date = new Date(d.date)))
+      // no data
+      this.isNoData = this.userWeeklySHS.length === 0 ? true : false
+
       let weeklyFloorSHS = this.weeklySHS.filter(d => d.floor === this.userInfo.floor)
       let weeklySurroundingSHS = weeklyFloorSHS.filter(d => {
         return d.unit === unit + 1 || d.unit === unit - 1 || d.unit === unit
@@ -153,8 +180,13 @@ export default {
               __F.mean(weekendSHSTime.map(d => d.getMinutes()))
             )}`
           : ''
-      this.cumulativeSHS.time.daily.value = avgWeeklySHSTime
-      this.cumulativeSHS.time.weekend.value = avgWeekendSHSTime
+
+      if (this.isNoData) {
+        this.init()
+      } else {
+        this.cumulativeSHS.time.daily.value = avgWeeklySHSTime
+        this.cumulativeSHS.time.weekend.value = avgWeekendSHSTime
+      }
     }
   }
 }

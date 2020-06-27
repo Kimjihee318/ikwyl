@@ -4,7 +4,8 @@ import RealtimeMonitor from './realtimeMonotir'
 // Chart
 import Canvas from '../../mixins/DrawCanvas.mixin'
 import Column from '../../mixins/ColumnStructure.mixin'
+import Filter from '../../mixins/DrawFilters.mixin'
 
 export default {
-  mixins: [Canvas, Column, Controller, RealtimeMonitor, SafeIdMixin]
+  mixins: [Canvas, Column, Controller, Filter, RealtimeMonitor, SafeIdMixin]
 }

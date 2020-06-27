@@ -12,6 +12,7 @@ export default {
       this.rearrangeData()
       this.setScale()
       this.drawAxis()
+      if (this.DataItems === 0) return
       this.drawChart()
     },
     drawAxis() {

@@ -10,7 +10,7 @@
         <div
           v-for="(item, i) in reversedDateItems"
           class="btn btn_date"
-          :class="{ active: item.selected }"
+          :class="getClass(item)"
           :key="`date_${i}`"
           :title="getMonthName(item.date)"
           @click="setFilter(item)"
@@ -34,6 +34,9 @@ export default {
   components: {
     SvgPrevArrow,
     SvgNextArrow
+  },
+  props: {
+    dateHasData: { type: Array, default: () => [] }
   },
   data: () => ({
     dateItems: [],
@@ -92,6 +95,14 @@ export default {
       this.setSelectedDates([{ date: new Date(Today), selected: null }])
       this.visibleEndPosition = this.dateItems.length
       this.startMonth = this.monthMap[new Date(new Date(Today).getFullYear(), new Date(Today).getMonth(), 0).getMonth()]
+    },
+    getClass(item) {
+      let hasDatas = []
+      this.dateHasData.forEach(d => {
+        hasDatas.push(d.getTime() === item.date.getTime() ? true : false)
+      })
+
+      return { active: item.selected, has_data: hasDatas.includes(true) }
     },
     getDate(item) {
       return new Date(item).getDate()

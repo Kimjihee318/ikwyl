@@ -17,6 +17,12 @@ export default {
     CanvasSecondSvgChartX: 0,
     CanvasSecondSvgChartY: 0
   },
+  rect: {
+    RectColorTypeGradient: ['#0f1333', '#ffbd71'],
+    RectFillColor: '#ffffff',
+    RectFillType: 'whole_gradation',
+    RectTextColor: '#ffbd71'
+  },
   scale: {
     ScaleHBandInnerPadding: 0.5,
     ScaleHBandOuterPadding: 0.1,
@@ -31,7 +37,7 @@ export default {
     UnitFillColor: '#1a2157',
     UnitFillPointColor: '#2d519f',
     UnitStroke: '#81a8e3',
-    UnitStrokeWidth: 1,
+    UnitStrokeWidth: 0.5,
     UnitTextColor: '#ffffff',
     UnitTextFont: null,
     UnitTextSize: '0.9rem',

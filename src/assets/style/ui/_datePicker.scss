@@ -1,0 +1,78 @@
+.date_picker {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  input[type='text'] {
+    height: 1rem;
+  }
+  &_modal_wrapper {
+    // position: relative;
+    // top: -1.3rem;
+    // left: 11rem;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // z-index: 2;
+  }
+  &_modal {
+    padding: 1rem;
+    padding-bottom: 0;
+    color: #000000;
+    div.month_name {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      .prev, .next {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        svg {
+          // fill: $blue_normal;
+          transform:scale(0.8, 0.8);
+          -webkit-transform:scale(0.8, 0.8);
+          -moz-transform:scale(0.8, 0.8);
+          -ms-transform:scale(0.8, 0.8);
+          -o-transform:scale(0.8, 0.8);
+        }
+      }
+    }
+    div.week_row {
+      display: flex;
+      justify-content: space-between;
+    }
+    div.date_rowNcol {
+      margin-bottom: 1rem;
+      .date_week_row {
+        display: flex;
+        justify-content: space-between;
+        .date_date_cell {
+          cursor: pointer;
+          font-weight: 400;
+          height:1.5rem;
+          line-height:1.5rem;
+          margin: .2rem;
+          text-align: center;
+          width:1.5rem;
+
+          &.today {
+            background-color: $blue_normal;
+            border-radius: 50%;
+            color: $white;
+            font-weight: 500;
+            font-size: 80%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            -o-border-radius: 50%;
+          }
+        }
+      }
+    }
+    div.buttons {
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+}

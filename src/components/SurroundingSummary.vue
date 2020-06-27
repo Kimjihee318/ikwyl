@@ -3,7 +3,7 @@
     <ui-card class="card_surrounding">
       <chart-surrounding
         :Canvas="surroundingCanvas"
-        :FloorInfo="surroundingFloorInfo"
+        :Rect="surroundingRect"
         :Scale="surroundingScale"
         :Unit="surroundingUnit"
         :UserInfo="userInfo"
@@ -58,8 +58,8 @@ export default {
     surroundingDataItems() {
       return this.dataItems
     },
-    surroundingFloorInfo() {
-      return _ChartSurroundingData.floorInfo
+    surroundingRect() {
+      return _ChartSurroundingData.rect
     },
     surroundingScale() {
       return _ChartSurroundingData.scale
@@ -73,6 +73,7 @@ export default {
       handler(val) {
         if (!val || val.length === 0) {
           this.isNoData = true
+          this.init()
           return
         }
         this.isNoData = false
@@ -81,6 +82,10 @@ export default {
     }
   },
   methods: {
+    init() {
+      this.avgHRow = ''
+      this.avgVRow = ''
+    },
     setQuantity({ hRow, vRow }) {
       this.avgHRow = __F.mean(hRow)
       this.avgVRow = __F.mean(vRow)

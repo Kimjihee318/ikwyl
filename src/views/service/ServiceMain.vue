@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="main_top calendar_wrapper">
-      <Calendar />
+      <Calendar :dateHasData="dateHasData" />
     </div>
     <div class="main_body">
       <div class="main_left">
@@ -14,21 +14,17 @@
         </div>
         <div class="main_chart_floor">
           <div class="main_chart_floor_chart">
-            <div
-              class="wrap__svg"
+            <chart-floor
               v-for="(bgItem, key) in floorBgItems"
-              :class="{ no_data: isNoData }"
+              :class="`key_${key}`"
               :key="`chart__${key}`"
-            >
-              <chart-floor
-                :class="`key_${key}`"
-                :Canvas="floorCanvas"
-                :UserInfo="floorUserInfo"
-                :BackgroundItem="bgItem"
-                :Unit="floorUnit"
-                :DataItems="getfloorDataItem(key)"
-              ></chart-floor>
-            </div>
+              :Canvas="floorCanvas"
+              :Rect="floorRect"
+              :UserInfo="floorUserInfo"
+              :Unit="floorUnit"
+              :BackgroundItem="bgItem"
+              :DataItems="getfloorDataItem(key)"
+            ></chart-floor>
           </div>
           <div class="main_chart_floor_card wrap__card" :class="{ no_data: isNoData }">
             <ui-card
@@ -72,7 +68,6 @@ export default {
     floorSummary: [],
     formattedJoinedSHS: {},
     isNoData: null,
-    localFloorDataItems: [],
     usedfloors: [],
     selectedDateSHS: [] // to FIX
   }),
@@ -80,16 +75,19 @@ export default {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['userInfo']),
     ...mapState(__C.STORE.NAMESPACE.CALENDAR, ['selectedDates']),
     ...mapState(__C.STORE.NAMESPACE.REPORT, ['dailySHS', 'joinedSHSWithUserInfo']),
-    surroundingDataItems() {
-      return this.selectedDateSHS
-    },
     floorBgItems() {
       return this.floorBgStructure
     },
     floorDataItems() {
-      let today = new Date()
-      let propertyToday = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+      let selectedDate = this.selectedDates[0]
+      let propertyToday = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
       return this.formattedJoinedSHS[propertyToday]
+    },
+    surroundingDataItems() {
+      return this.selectedDateSHS
+    },
+    dateHasData() {
+      return Object.keys(this.formattedJoinedSHS).map(d => new Date(d))
     }
   },
   watch: {
@@ -97,16 +95,6 @@ export default {
       handler(val) {
         if (!val || val.length === 0) return
         this.draw()
-      },
-      deep: true
-    },
-    localFloorDataItems: {
-      handler(val) {
-        if (!val || val.length === 0) {
-          this.isNoData = true
-          return
-        }
-        this.isNoData = false
       },
       deep: true
     }
@@ -147,14 +135,9 @@ export default {
 
       this.formattedJoinedSHS = result
     },
-    setSelectedDateSHS() {
-      this.selectedDateSHS = __F.getKeyofDateType(this.formattedJoinedSHS, this.selectedDates)
-    },
     getfloorDataItem(item) {
       // FLOW가 정확히 이해되지 않음
-      let result = this.floorDataItems && Object.keys(this.floorDataItems).length > 0 ? this.floorDataItems[item] : []
-      this.localFloorDataItems = result
-      return result
+      return this.floorDataItems && Object.keys(this.floorDataItems).length > 0 ? this.floorDataItems[item] : []
     },
     setFloorBgStructure() {
       let floors = []
@@ -180,6 +163,10 @@ export default {
           })
         })
       })
+    },
+    setSelectedDateSHS() {
+      this.selectedDateSHS = __F.getKeyofDateType(this.formattedJoinedSHS, this.selectedDates)
+      this.isNoData = this.selectedDateSHS.length === 0 ? true : false
     },
     setSurroundingFloorSHS() {
       if (Object.keys(this.formattedJoinedSHS).length === 0) return
@@ -214,9 +201,9 @@ export default {
         this.usedfloors.forEach((_d, _i) => {
           if (Number(d) === this.floorSummary[_i].floor) {
             let item = this.floorSummary[_i]
-            item.avgQuantity.value = __F.propertyMean(selected[d], 'quantity')
-            item.noOfMembers.value = selected[d].length
-            item.noOfTotalMembers.alue = selected[d].lengt
+            item.avgQuantity.value = __F.integer(__F.propertyMean(selected[d], 'quantity'))
+            item.noOfMembers.value = __F.integer(selected[d].length)
+            item.noOfTotalMembers.alue = __F.integer(selected[d].length)
           }
         })
       })

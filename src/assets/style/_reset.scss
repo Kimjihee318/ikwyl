@@ -14,8 +14,21 @@ body {
   font-weight: 300;
 }
 
+button {
+  // all: unset;
+  border: 1px solid $gray_border;
+  border-radius: 2px;
+  padding: 0.5rem;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+}
+
 ::-webkit-scrollbar {
-  width: 2px;
+  width: 5px;
   height: 10px;
   background: transparent;
   box-shadow: none;
@@ -27,6 +40,11 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: $blue_lightest;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

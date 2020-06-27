@@ -19,6 +19,13 @@
   clip-path: circle(1rem at center);
   width: 2rem;
 }
+
+.icon {
+  &.color_white {
+    fill: $white;
+  }
+}
+
 .no {
   &_padding {
     padding: 0;
@@ -50,7 +57,7 @@ svg.type_move2right {
   }
 }
 
-.wrap__card.no_data, .wrap__svg.no_data {
+.wrap__card.no_data, .wrap__svg.no_data, .wrapper__chart.no_data {
   background: $pattern_diagonal_line;
   opacity: 0.8;
 }

@@ -1,15 +1,14 @@
 import * as d3 from 'd3'
 
-function isSelectedDate() {
-  // let today = new Date()
-  // return (
-  //   date.getFullYear() === today.getFullYear() &&
-  //   date.getMonth() === today.getMonth() &&
-  //   date.getDate() === today.getDate()
-  // )
+function isSelectedDate(date, selectedDate) {
+  return (
+    date.getFullYear() === selectedDate.getFullYear() &&
+    date.getMonth() === selectedDate.getMonth() &&
+    date.getDate() === selectedDate.getDate()
+  )
 }
 
-function expressionCheckToday(date) {
+function isToday(date) {
   let today = new Date()
   return (
     date.getFullYear() === today.getFullYear() &&
@@ -18,9 +17,15 @@ function expressionCheckToday(date) {
   )
 }
 
-function filterDatesByCurrentWeek(arr, prop) {
+function filterDatesOfCurrentWeek(arr, prop) {
   if (!arr || arr.length === 0) return
-  let [start, end] = getWeekDates()
+  let [start, end] = getWeekDates(new Date())
+  return arr.filter(d => +new Date(d[prop]) >= +start && +new Date(d[prop]) < +end)
+}
+
+function filterDatesOfSeletedWeek(arr, prop, date) {
+  if (!arr || arr.length === 0) return
+  let [start, end] = getWeekDates(date)
   return arr.filter(d => +new Date(d[prop]) >= +start && +new Date(d[prop]) < +end)
 }
 
@@ -39,21 +44,22 @@ function getKeyofDateType(arr, dates) {
 
   return selected
 }
-function getWeekDates() {
-  let now = new Date()
-  let dayOfWeek = now.getDay() //0-6
-  let numDay = now.getDate()
 
-  let start = new Date(now) //copy
+function getWeekDates(date) {
+  let dayOfWeek = date.getDay() //0-6
+  let numDay = date.getDate()
+
+  let start = new Date(date) //copy
   start.setDate(numDay - dayOfWeek)
   start.setHours(0, 0, 0, 0)
 
-  let end = new Date(now) //copy
+  let end = new Date(date) //copy
   end.setDate(numDay + (7 - dayOfWeek))
   end.setHours(0, 0, 0, 0)
 
   return [start, end]
 }
+
 function integer(val) {
   if (!val) return
   return Number.isInteger(val) ? val : val.toFixed(2)
@@ -169,8 +175,9 @@ function toCamel(o) {
 
 export default {
   isSelectedDate,
-  expressionCheckToday,
-  filterDatesByCurrentWeek,
+  isToday,
+  filterDatesOfCurrentWeek,
+  filterDatesOfSeletedWeek,
   getKeyofDateType,
   getWeekDates,
   integer,

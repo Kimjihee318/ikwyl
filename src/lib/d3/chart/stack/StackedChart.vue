@@ -15,6 +15,7 @@ export default {
     Canvas: { type: Object, default: () => ({}) },
     Chart: { type: Object, default: () => ({}) },
     Rect: { type: Object, default: () => ({}) },
+    SelectedDate: { type: Date },
     // Database
     DataItems: { type: Array, default: () => [] }
   },
@@ -26,7 +27,7 @@ export default {
   },
   methods: {
     draw() {
-      if (!this.ready2draw()) return
+      if (!this.ready2draw4NoDataItems()) return
       this.clear()
       // this.initData()
       this.drawCanvas()

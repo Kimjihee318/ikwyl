@@ -26,16 +26,22 @@ export default {
       this.drawBgItems()
       this.drawBarTitle()
 
-      if (this.DataItems.length === 0) return
+      if (!this.DataItems || this.DataItems.length === 0) return
       this.formatData()
       this.emitData()
       this.drawChart()
       this.drawBars()
     },
     drawBars() {
+      this.setLinearGradient(this.secondChartArea, this.Rect.RectColorTypeGradient, 0, this.Rect.RectFillType, null, [
+        100,
+        100
+      ])
+
       let boxGroup = this.secondChartArea
         .append('g')
         .attr('class', 'surrounding_data_bar')
+        .style('fill', 'url(#gradient_linear)')
         .selectAll('g')
         .data(this.formattedSurroundingData)
         .enter()
@@ -43,6 +49,7 @@ export default {
       let boxs = boxGroup
         .append('g')
         .attr('class', (d, i) => `surrounding_g_bar_${i}`)
+
         .attr('transform', d => {
           return `translate(${120}, ${this.scaleBarBand(d.barPosition)})`
         })
@@ -58,7 +65,7 @@ export default {
         .attr('y', 0.5)
         .attr('width', this.Unit.UnitSmellRectWidth)
         .attr('height', this.Unit.UnitSmellRectHeight)
-        .attr('fill', this.Unit.UnitSmellRectColor)
+      // .attr('fill', this.Unit.UnitSmellRectColor)
     },
     drawBarTitle() {
       let boxGroup = this.secondChartArea

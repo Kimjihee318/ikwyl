@@ -17,6 +17,9 @@ export default {
     floorCanvas() {
       return _ChartFloorData.canvas
     },
+    floorRect() {
+      return _ChartFloorData.rect
+    },
     floorUserInfo() {
       return this.userInfo
     },

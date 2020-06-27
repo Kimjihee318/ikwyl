@@ -129,6 +129,13 @@ export default {
           )}, 
           ${this.scaleVBand(rowNo)})`
         })
+
+      dataItems.forEach((d, i) => {
+        this.setLinearGradient(this.boxSelection, this.Rect.RectColorTypeGradient, 0, this.Rect.RectFillType, i, [
+          0,
+          10
+        ])
+      })
     },
     drawUnit() {
       this.boxSelection.each((d, i, j) => {
@@ -137,36 +144,27 @@ export default {
         _self
           .append('rect')
           .attr('x', 10)
-          .attr('y', 20)
+          .attr('y', 10)
           .attr('width', this.Unit.UnitWidth)
           .attr('height', this.Unit.UnitHeight)
-          .attr(
-            'fill',
-            this.UserInfo.floor === this.DataItems.floor ? this.Unit.UnitFillPointColor : this.Unit.UnitFillColor
-          )
-          .attr('stroke', d => (d.userName === this.UserInfo.user ? '#ffffff' : this.Unit.UnitStroke))
-          .attr('stroke-width', d => (d.userName === this.UserInfo.user ? 2 : this.Unit.UnitStrokeWidth))
-
-        _self
-          .append('text')
-          .attr('x', 10)
-          .attr('y', 10)
-          .style('font-size', this.Unit.UnitTextSize)
-          .style('fill', this.Unit.UnitTextColor)
-        // .text(`${d.unit}호`)
+          .attr('fill', _d => (_d.user === this.UserInfo.user ? this.Unit.UnitFillPointColor : this.Unit.UnitFillColor))
+          .attr('stroke', _d => {
+            return _d.user === this.UserInfo.user ? '#ffffff' : this.Unit.UnitStroke
+          })
+          .attr('stroke-width', _d => (_d.user === this.UserInfo.user ? 1 : this.Unit.UnitStrokeWidth))
 
         _self
           .append('g')
+          .style('fill', (d, i) => `url(#gradient_linear_${i})`)
           .attr('class', 'floor_group_rect_shs_quantity')
           .selectAll('rect')
           .data(Array.from({ length: d.quantity }, () => null))
           .enter()
           .append('rect')
-          .attr('x', (d, i) => 10 + i * 4)
-          .attr('y', 30 + this.Unit.UnitWidth)
+          .attr('x', (_d, _i) => 10 + _i * 5)
+          .attr('y', this.Unit.UnitWidth + 20)
           .attr('width', this.Unit.UnitSmellRectWidth)
           .attr('height', this.Unit.UnitSmellRectHeight)
-          .attr('fill', this.Unit.UnitSmellRectColor)
       })
     },
     setScale() {

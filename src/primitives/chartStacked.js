@@ -2,7 +2,7 @@ export default {
   canvas: {
     CanvasWidth: 400.5,
     CanvasHeight: 150.5,
-    CanvasBgColor: '#0f1333',
+    CanvasBgColor: 'transparent',
     CanvasBgPointColor: '#1a2157',
     CanvasBorderWeight: 0,
     CanvasBorderColor: '#81a8e3',
@@ -16,7 +16,7 @@ export default {
   rect: {
     RectColorTypeGradient: ['#ffbd71', '#0f1333'],
     RectFillColor: '#ffffff',
-    RectFillType: 'hole_grad',
+    RectFillType: 'whole_gradation',
     RectTextColor: '#ffbd71'
   },
   // Draw data

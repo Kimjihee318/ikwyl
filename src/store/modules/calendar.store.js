@@ -1,6 +1,7 @@
 export default {
   namespaced: true,
   state: {
+    // * Array has only item
     selectedDates: []
   },
   mutations: {

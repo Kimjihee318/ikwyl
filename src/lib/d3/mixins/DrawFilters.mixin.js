@@ -16,48 +16,47 @@ export default {
         .attr('width', width)
         .attr('height', height - vScale(55))
     },
-    setLinearGradient(selection, color) {
+    setLinearGradient(selection, color, angle, fillType, idx, offset) {
       let gradientLinear = selection
         .append('g')
         .append('defs')
         .append('linearGradient')
-        .attr('gradientTransform', 'rotate(90)')
-        .attr('id', `gradient_linear`)
-
+        .attr('gradientTransform', `rotate(${angle})`)
+        .attr('id', typeof idx === 'number' ? `gradient_linear_${idx}` : 'gradient_linear')
+        .attr('gradientUnits', fillType === 'whole_gradation' ? 'userSpaceOnUse' : null)
       gradientLinear
         .append('stop')
-        .attr('offset', '0%')
+        .attr('offset', `${offset[0]}%`)
         .attr('stop-color', color[0])
         .attr('stop-opacity', 1)
 
       gradientLinear
         .append('stop')
-        .attr('offset', '100%')
+        .attr('offset', `${offset[1]}%`)
         .attr('stop-color', color[1])
-        .attr('stop-opacity', 0)
-    },
-
-    setLinearGradient4AllChart(selection, color) {
-      let gradientLinear = selection
-        .append('g')
-        .append('defs')
-        .append('linearGradient')
-        .attr('gradientTransform', 'rotate(90)')
-        .attr('id', `gradient_linear`)
-        .attr('gradientUnits', 'userSpaceOnUse')
-
-      gradientLinear
-        .append('stop')
-        .attr('offset', '20%')
-        .attr('stop-color', color[0])
         .attr('stop-opacity', 1)
-
-      gradientLinear
-        .append('stop')
-        .attr('offset', '40%')
-        .attr('stop-color', color[1])
-        .attr('stop-opacity', 0)
     },
+    // setLinearGradient4AllChart(selection, color) {
+    //   let gradientLinear = selection
+    //     .append('g')
+    //     .append('defs')
+    //     .append('linearGradient')
+    //     .attr('gradientTransform', 'rotate(90)')
+    //     .attr('id', `gradient_linear`)
+    //     .attr('gradientUnits', 'userSpaceOnUse')
+
+    //   gradientLinear
+    //     .append('stop')
+    //     .attr('offset', '20%')
+    //     .attr('stop-color', color[0])
+    //     .attr('stop-opacity', 1)
+
+    //   gradientLinear
+    //     .append('stop')
+    //     .attr('offset', '40%')
+    //     .attr('stop-color', color[1])
+    //     .attr('stop-opacity', 0)
+    // },
 
     setRadialGradient(selction, color) {
       let gradientRadial = selction

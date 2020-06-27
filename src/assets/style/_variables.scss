@@ -1,21 +1,24 @@
 // * LAYOUT
 $lnb_width: 20rem;
 
+// * DETAIL
+$border_radius: 3px;
+
 // * COLOR
 $white : #ffffff;
 $white_alpha01 : rgba(255,255,255,0.3);
 $gray01 : #f4f5f5;
 $gray02 : #e0e0df;
 $gray03 : #bdbcbc;
-$gray035 : #999999;
 $gray04 : #757575;
-$gray05 : #333;
+$gray05 : #333333;
 $gray_alpha01 : rgba(255, 255, 255, 0.8);
 $gray_alpha02 : rgba(255, 255, 255, 0.6);
 $gray_alpha_type_modal_bg_01: rgba(144, 144, 144, 0.5);
 $gray_alpha_type_modal_bg_02: rgba(144, 144, 144, 0.25);
 $gray_alpha_type_modal_bg_03: rgba(144, 144, 144, 0.1);
 $gray_alpha_type_modal_bg_05: rgba(100, 100, 100, 0.1);
+$gray_border: #dddddd;
 
 $blue_bg: #0f1333;
 $blue_normal: #2d519f;
@@ -30,3 +33,7 @@ $pink_normal: #e15cff;
 $orange_light: #ff915c;
 
 $pattern_diagonal_line: repeating-linear-gradient(-45deg, $gray_alpha_type_modal_bg_05, $gray_alpha_type_modal_bg_05 8px, transparent 0, transparent 20px);
+
+// * FONT STYLE
+$title_01: 1.5rem;
+$title_02: 1.1rem;

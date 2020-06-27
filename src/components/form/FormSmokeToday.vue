@@ -1,28 +1,35 @@
 <template>
   <div class="form_sh">
     <div class="form_sh_contents">
-      <div class="date_picker_wrapper">
+      <div class="wrap__date_picker">
         <date-picker v-model="date" :inputType="false" />
       </div>
-      <div class="board_wrapper">
+      <div class="wrap__board">
         <div class="form_sh_contents_card_wrapper type_today">
+          <div class="title">간접 흡연 감지량 기록 하기</div>
           <div class="form_sh_contents_card type_today">
             <div class="form_sh_contents_card_contents">
-              <div class="time">{{ stringDate }}</div>
+              <div class="header_time">{{ formattedDate }}</div>
               <div class="input_type_between">
-                <label>간접 흡연 정도</label>
-                <input v-model="quantity" type="number" />
+                <label
+                  >간접 흡연 감지량<span class="icon color_white"><icon-help /></span
+                ></label>
+                <input v-model="quantity" max="10" type="number" />
               </div>
             </div>
             <button class="form_sh_contents_card_button" @click="onUpload('add')">Upload</button>
           </div>
         </div>
         <div class="form_sh_contents_card_wrapper type_board">
-          <div v-for="(item, i) in selectedDates" class="form_sh_contents_card" :key="`daily_sh_${i}`">
+          <div class="title">{{ selectedDate }}</div>
+          <div v-if="hasNoData" class="msg_no_data">
+            데이터가 입력되지 않았습니다.
+          </div>
+          <div v-for="(item, i) in selectedDateItems" class="form_sh_contents_card type_board" :key="`daily_sh_${i}`">
             <div class="form_sh_contents_card_contents">
               <div>{{ timeFormat(item.date) }}</div>
               <div v-if="mode === 'READ'" class="input_type_between">
-                <label>간접 흡연 정도</label>
+                <label>간접 흡연 감지량</label>
                 <span>{{ item.quantity }}</span>
               </div>
               <input
@@ -53,23 +60,33 @@ import * as d3 from 'd3'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import __C from '@/primitives/_constants_'
 import DatePicker from '@/components/ui/DatePicker.vue'
+import IconHelp from '@/assets/icons/help-24px.svg'
+
 export default {
   name: 'form-sh-smoke',
   components: {
-    DatePicker
+    DatePicker,
+    IconHelp
   },
   data: () => ({
     date: new Date(),
     mode: __C.FORM.EDIT_MODE_READ,
     quantity: 0,
     blockTimeWidth: null,
-    selectedDates: null
+    selectedDateItems: null
   }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user', 'email']),
     ...mapState(__C.STORE.NAMESPACE.REPORT, ['dailySHS']),
-    stringDate() {
-      return d3.timeFormat('%Y년 %m월 %d일 %H:%M %p')(this.date)
+    hasNoData() {
+      return !this.selectedDateItems || this.selectedDateItems.length === 0 ? true : false
+    },
+    formattedDate() {
+      return d3.timeFormat('%Y년 %m월 %d일')(this.date)
+      // return d3.timeFormat('%Y년 %m월 %d일 %H:%M %p')(this.date)
+    },
+    selectedDate() {
+      return d3.timeFormat('%Y년 %m월 %d일')(this.date)
     }
     // selectedDateSHS() {
     //   console.log(`[DATA]`, this.dailySHS)
@@ -123,8 +140,8 @@ export default {
           (this.date.getTime() - new Date(d).getTime()) / (60 * 60 * 1000) < 24 &&
           (this.date.getTime() - new Date(d).getTime()) / (60 * 60 * 1000) >= 0
       )
-      // console.log(selectedKey)
-      this.selectedDates = this.dailySHS[selectedKey]
+
+      this.selectedDateItems = this.dailySHS[selectedKey] ? this.dailySHS[selectedKey] : []
     },
     timeFormat(item) {
       return d3.timeFormat('%Y년 %m월 %d일 %H:%M %p')(item)
@@ -159,71 +176,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.form_sh {
-  color: #000000;
-  button {
-    border: 1px solid #ddd;
-    padding: 0.5rem;
-    padding-top: 0.1rem;
-    padding-bottom: 0.1rem;
-  }
-  &_contents {
-    .board_wrapper {
-      display: flex;
-      justify-content: space-between;
-    }
-    .date_picker_wrapper {
-      display: flex;
-      justify-content: center;
-    }
-    &_card {
-      align-items: center;
-      display: flex;
-      flex-direction: column;
-      height: 7rem;
-      justify-content: center;
-      &_buttons {
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
-      }
-      &_contents {
-        margin-bottom: 1rem;
-        > div {
-          margin-bottom: 0.4rem;
-        }
-        > .input_type_between {
-          display: flex;
-          justify-content: space-between;
-
-          input {
-            width: 4rem;
-          }
-        }
-      }
-      &.type_today {
-        align-items: center;
-        border: 1px solid #ddd;
-        display: flex;
-        flex-direction: column;
-        height: 10rem;
-        justify-content: space-around;
-        padding: 1rem;
-      }
-    }
-    &_card_wrapper {
-      width: 50%;
-      &.type_board {
-        height: 14rem;
-        overflow-y: scroll;
-      }
-      &.type_today {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-    }
-  }
-}
+@import '@/assets/style/ui/_formTodaySmoke.scss';
 </style>

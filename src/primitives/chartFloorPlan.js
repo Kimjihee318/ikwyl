@@ -9,14 +9,11 @@ export default {
     CanvasChartX: 0,
     CanvasChartY: 0
   },
-  floorInfo: {
-    Userfloor: 9, // GET FROM DB
-    UserUnitNo: 1, // GET FROM DB
-    UnitNumbers: 12,
-    UnitsMaxSide: 7,
-    UnitsMinSide: null,
-    Sides: 2,
-    TopFloor: 10
+  rect: {
+    RectColorTypeGradient: ['#0f1333', '#ffbd71'],
+    RectFillColor: '#ffffff',
+    RectFillType: 'whole_gradation',
+    RectTextColor: '#ffbd71'
   },
   unit: {
     BgFillColor: 'transparent',
@@ -24,15 +21,14 @@ export default {
     UnitWidth: 38,
     UnitHeight: 38,
     UnitFillColor: '#1a2157',
-    UnitFillPointColor: '#2d519f',
+    UnitFillPointColor: '#1a2157',
     UnitStroke: '#81a8e3',
-    UnitStrokeWidth: 1,
+    UnitStrokeWidth: 0.5,
     UnitTextColor: '#81a8e3',
     UnitTextFont: null,
     UnitTextSize: '0.8rem',
     UnitSmellRectWidth: 2,
-    UnitSmellRectHeight: 10,
+    UnitSmellRectHeight: 9,
     UnitSmellRectColor: '#ffffff'
-  },
-  structure: {}
+  }
 }

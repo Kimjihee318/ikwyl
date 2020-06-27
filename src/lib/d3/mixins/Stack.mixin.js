@@ -14,11 +14,13 @@ export default {
     drawStacked() {
       this.setScale()
       this.drawAxis()
+      if (this.dataItems.length === 0) return
+
       this.drawRects()
     },
     setScale() {
       this.dataItems = JSON.parse(JSON.stringify(this.DataItems))
-      this.extentTime = __F.getWeekDates()
+      this.extentTime = __F.getWeekDates(this.SelectedDate)
 
       this.scaleTime = d3
         .scaleTime()
@@ -50,9 +52,18 @@ export default {
         .call(xAxis)
         .selectAll('text')
         .style('text-anchor', 'middle')
+
+      this.chartArea
+        .append('g')
+        .attr('class', 'stack_header')
+        .attr('transform', `translate(${this.Chart.ChartHPadding / 2 + 10}, ${17})`)
+        .append('text')
+        .text(`${this.SelectedDate.getMonth() + 1}월`)
+        .attr('fill', '#c0ddff')
+        .style('text-anchor', 'middle')
     },
     drawRects() {
-      this.setLinearGradient4AllChart(this.chartArea, this.Rect.RectColorTypeGradient)
+      this.setLinearGradient(this.chartArea, this.Rect.RectColorTypeGradient, 90, this.Rect.RectFillType, null, [0, 50])
 
       this.timeGroup = this.chartArea
         .append('g')
@@ -81,8 +92,9 @@ export default {
             .attr('y', (_d, _i) => {
               return this.Canvas.CanvasHeight - this.Chart.ChartVPadding - (3 + 4) * _i
             })
-            .attr('width', 10)
+            .attr('width', 9)
             .attr('height', 4)
+          // .attr('fill', 'red')
 
           _self
             .append('text')

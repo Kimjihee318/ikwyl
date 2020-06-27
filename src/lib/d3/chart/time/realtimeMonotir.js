@@ -1,8 +1,7 @@
 export default {
   watch: {
     DataItems: {
-      handler(val) {
-        if (!val || val.length === 0) return
+      handler() {
         this.register(this.draw)
       },
       deep: true
@@ -24,6 +23,13 @@ export default {
     Circle: {
       handler(val) {
         if (!val || Object.keys(val).length === 0) return
+        this.register(this.draw)
+      },
+      deep: true
+    },
+    SelectedDate: {
+      handler(val) {
+        if (!val) return
         this.register(this.draw)
       },
       deep: true

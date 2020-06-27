@@ -1,6 +1,5 @@
 <template>
   <div class="date_picker">
-    <!-- // TODO slot으로 수정 -->
     <!-- 
       // * 인자로 이벤트를 넣을때 $event를 넣는다. 
       // * key가 눌러질 때는 key event, input박스안에 포인터 있을때 focus event, 포인터 뗏을땐 blur event
@@ -24,7 +23,7 @@
               <div
                 v-for="(_item, _i) in items"
                 class="date_date_cell"
-                :class="today_pointer(_item)"
+                :class="cellStyle(_item)"
                 :key="`day_${_i}`"
                 @click="select(_item)"
               >
@@ -65,6 +64,7 @@ export default {
     daysOfMonth: [],
     firstDayOfMonth: null,
     formattedMonth: [],
+    isActive: false,
     isBlurred: false,
     monthMap: [
       'January',
@@ -198,16 +198,18 @@ export default {
         // })
       })
     },
-    today_pointer(item) {
+    cellStyle(item) {
       if (typeof item === 'string') return
       let today = new Date()
+
       return {
-        point:
+        today:
           item.getFullYear() === today.getFullYear() &&
           item.getMonth() === today.getMonth() &&
           item.getDate() === today.getDate()
             ? true
-            : false
+            : false,
+        active: true
       }
     }
   }
@@ -215,56 +217,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.date_picker {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  input[type='text'] {
-    height: 1rem;
-  }
-  &_modal_wrapper {
-    // position: relative;
-    // top: -1.3rem;
-    // left: 11rem;
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
-    // z-index: 2;
-  }
-  &_modal {
-    width: 16rem;
-    height: 14rem;
-    padding: 1rem;
-    color: #000000;
-    div.month_name {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 1rem;
-    }
-    div.week_row {
-      display: flex;
-      justify-content: space-between;
-    }
-    div.date_rowNcol {
-      margin-bottom: 1rem;
-      .date_week_row {
-        display: flex;
-        justify-content: space-between;
-        .date_date_cell {
-          width: calc(100% / 7);
-          cursor: pointer;
-          text-align: center;
-
-          &.point {
-            border: 1px solid #ff1232;
-          }
-        }
-      }
-    }
-    div.buttons {
-      display: flex;
-      justify-content: space-around;
-    }
-  }
-}
+@import '@/assets/style/ui/_datePicker.scss';
 </style>
