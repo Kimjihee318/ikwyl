@@ -12,7 +12,8 @@
               <div class="header_time">{{ formattedDate }}</div>
               <div class="input_type_between">
                 <label
-                  >간접 흡연 감지량<span class="icon color_white"><icon-help /></span
+                  >간접 흡연 감지량<span class="icon color_white"
+                    ><icon-help title="간접 흡연의 정도를 1부터 10 사이의 숫자로 기록합니다."/></span
                 ></label>
                 <input v-model="quantity" max="10" type="number" />
               </div>

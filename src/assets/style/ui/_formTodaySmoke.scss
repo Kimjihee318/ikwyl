@@ -134,12 +134,18 @@
       }
 
       &.type_board {
+        background-color: $gray_alpha03;
         border: 1px solid $blue_lightest;
         height: 10rem;
         font-weight: 400;
         margin-bottom: 1rem;
         padding: 1rem;
         width: 18rem;
+
+        .form_sh_contents_card_buttons > button{
+          background-color: $blue_alpha01;
+          border-color: $blue_light;
+        }
       }
     }
   }
