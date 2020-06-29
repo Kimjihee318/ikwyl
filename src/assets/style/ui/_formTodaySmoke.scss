@@ -127,9 +127,46 @@
         -ms-border-radius: $border_radius;
         -o-border-radius: $border_radius;
 
-        input[type=number] {
-          height: 1.7rem;
-          line-height: 1.6rem;
+        .input_type_between {
+          label > span.has_tooltip {
+            &:after {
+              content: '간접 흡연의 정도를 1부터 10 사이의 숫자로 기록합니다.';
+              //display: none;
+              background-color: $white;
+              border: 1px solid $gray03;
+              border-radius: $border_radius;
+              color: $black;
+              font-size: 1rem;
+              font-weight: 400;
+              height: 4.5rem;
+              line-height: 1.5rem;
+              padding: .4rem;
+              position: absolute;
+              visibility: hidden;
+              // transition:  visibility 2s;
+              width: 8rem;
+              z-index: 1;
+              // -webkit-transition:  visibility 2s;
+              // -moz-transition:  visibility 2s;
+              // -ms-transition:  visibility 2s;
+              // -o-transition:  visibility 2s;
+              -webkit-border-radius: $border_radius;
+              -moz-border-radius: $border_radius;
+              -ms-border-radius: $border_radius;
+              -o-border-radius: $border_radius;
+            }
+
+            &:hover {
+              &:after {
+                // display: block;
+                visibility: visible;
+              }
+            }
+          }
+          input[type=number] {
+            height: 1.7rem;
+            line-height: 1.6rem;
+          }
         }
       }
 

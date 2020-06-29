@@ -3,9 +3,9 @@ import Controller from '../../mixins/Controller.mixin'
 import RealtimeMonitor from './realtimeMonotir'
 // Chart
 import Canvas from '../../mixins/DrawCanvas.mixin'
-import Stack from '../../mixins/DrawStackChart.mixin'
+import Circle from '../../mixins/DrawCircleChart.mixin'
 import Filters from '../../mixins/DrawFilters.mixin'
 
 export default {
-  mixins: [Canvas, Controller, Filters, RealtimeMonitor, SafeIdMixin, Stack]
+  mixins: [Canvas, Circle, Controller, Filters, RealtimeMonitor, SafeIdMixin]
 }

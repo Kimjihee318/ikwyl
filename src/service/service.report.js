@@ -5,13 +5,16 @@ async function getReport(data, callback) {
   callback(res ? res.data : {})
 }
 async function putReport(data) {
-  await axios('report').put('/', data)
+  let res = await axios('report').put('/', data)
+  if (res) return true
 }
 async function upReport(data) {
-  await axios('report').post('/', data)
+  let res = await axios('upreport').post('/', data)
+  if (res) return true
 }
 async function delReport(id) {
-  await axios('report').delete('/', { params: { id: id } })
+  let res = await axios('report').delete('/', { params: id })
+  if (res) return true
 }
 
 // * [ USER JOIN SHS ]

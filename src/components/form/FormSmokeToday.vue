@@ -12,42 +12,52 @@
               <div class="header_time">{{ formattedDate }}</div>
               <div class="input_type_between">
                 <label
-                  >간접 흡연 감지량<span class="icon color_white"
-                    ><icon-help title="간접 흡연의 정도를 1부터 10 사이의 숫자로 기록합니다."/></span
+                  >간접 흡연 감지량<span class="icon color_white has_tooltip"><icon-help class="icon_help"/></span
                 ></label>
                 <input v-model="quantity" max="10" type="number" />
               </div>
             </div>
-            <button class="form_sh_contents_card_button" @click="onUpload('add')">Upload</button>
+            <button class="form_sh_contents_card_button" :disabled="modeDate === 'FUTURE'" @click="onUpload('add')">
+              Upload
+            </button>
           </div>
         </div>
         <div class="form_sh_contents_card_wrapper type_board">
           <div class="title">{{ selectedDate }}</div>
-          <div v-if="hasNoData" class="msg_no_data">
+          <div v-if="hasNoData && modeDate !== 'FUTURE'" class="msg_no_data">
             데이터가 입력되지 않았습니다.
+          </div>
+          <div v-if="modeDate === 'FUTURE'" class="msg_no_data">
+            오늘 이후의 데이터는 입력할 수 없습니다.
           </div>
           <div v-for="(item, i) in selectedDateItems" class="form_sh_contents_card type_board" :key="`daily_sh_${i}`">
             <div class="form_sh_contents_card_contents">
               <div>{{ timeFormat(item.date) }}</div>
-              <div v-if="mode === 'READ'" class="input_type_between">
+              <div class="input_type_between">
                 <label>간접 흡연 감지량</label>
-                <span>{{ item.quantity }}</span>
+                <span v-if="mode === 'READ'">{{ item.quantity }}</span>
+                <!-- //? STUDY -->
+                <!-- // * v-for안에서 v-model 사용할때 @input="@ => {}" 사용 -->
+                <!-- <input v-else v-model="item.quantity" max="10" type="number" /> -->
+                <input
+                  v-else
+                  max="10"
+                  type="number"
+                  :value="item.quantity"
+                  @input="
+                    e => {
+                      updateAttr(item.formateddate, i, 'quantity', e.target.value)
+                    }
+                  "
+                />
               </div>
-              <input
-                v-else-if="mode === 'MOD'"
-                :value="item.quantity"
-                @input="
-                  e => {
-                    updateAttr(i, 'quantity', e.target.value)
-                  }
-                "
-                type="number"
-              />
             </div>
             <div class="form_sh_contents_card_buttons">
               <button v-if="mode === 'READ'" @click="onEdit()">Edit</button>
-              <button v-if="mode === 'MOD'" @click="onUpload('edit')">Upload</button>
-              <button @click="onDelte('delete')">Delete</button>
+              <button v-if="mode === 'MOD'" @click="onUpload('edit', { key: item.formateddate, idx: i })">
+                Upload
+              </button>
+              <button @click="onUpload('del', { key: item.formateddate, idx: i })">Delete</button>
             </div>
           </div>
         </div>
@@ -60,6 +70,7 @@
 import * as d3 from 'd3'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import __C from '@/primitives/_constants_'
+import __F from '@/primitives/_function_'
 import DatePicker from '@/components/ui/DatePicker.vue'
 import IconHelp from '@/assets/icons/help-24px.svg'
 
@@ -70,10 +81,11 @@ export default {
     IconHelp
   },
   data: () => ({
+    blockTimeWidth: null,
     date: new Date(),
     mode: __C.FORM.EDIT_MODE_READ,
+    modeDate: '',
     quantity: 0,
-    blockTimeWidth: null,
     selectedDateItems: null
   }),
   computed: {
@@ -89,25 +101,33 @@ export default {
     selectedDate() {
       return d3.timeFormat('%Y년 %m월 %d일')(this.date)
     }
-    // selectedDateSHS() {
-    //   console.log(`[DATA]`, this.dailySHS)
+    // setSelectedDateSHS() {
     //   Object.keys(this.dailySHS).forEach(d => {
-    //     console.log(`[FOREACH PARAMETER]`, d)
-    //     console.log(this.date.getTime() - d.getTime() < 86400)
     //   })
     //   return this.dailySHS
     // }
   },
+
   watch: {
-    date: function() {
-      this.selectedDateSHS()
+    date: {
+      handler(val) {
+        this.setSelectedDateSHS()
+        if (val.getTime() > new Date().getTime()) {
+          this.modeDate = 'FUTURE'
+        }
+      },
+      deep: true
     },
-    dailySHS: function() {
-      this.selectedDateSHS()
+    dailySHS: {
+      handler(val) {
+        if (!val || val.length === 0) return
+        this.setSelectedDateSHS()
+      },
+      deep: true
     }
   },
   mounted() {
-    this.getReportFromServer()
+    this.init()
     // this.getBlockRectWidth()
   },
   methods: {
@@ -121,56 +141,59 @@ export default {
     getBlockRectWidth() {
       this.blockTimeWidth = document.querySelector('.time').getClientRects()[0].width
     },
-    onUpload(mod) {
+    init() {
+      this.date = new Date()
+    },
+    onEdit() {
+      this.mode = __C.FORM.EDIT_MODE_MOD
+    },
+    onUpload(mod, payload) {
       // upload logic
       switch (mod) {
         case 'add':
           this.putReport()
           break
         case 'edit':
-          this.upReport()
+          this.mode = __C.FORM.EDIT_MODE_READ
+          this.upReport(payload)
           break
         case 'del':
-          this.delReport()
+          this.delReport(payload)
           break
       }
     },
-    selectedDateSHS() {
-      let selectedKey = Object.keys(this.dailySHS).filter(
-        d =>
-          (this.date.getTime() - new Date(d).getTime()) / (60 * 60 * 1000) < 24 &&
-          (this.date.getTime() - new Date(d).getTime()) / (60 * 60 * 1000) >= 0
-      )
-
+    setSelectedDateSHS() {
+      let selectedKey = Object.keys(this.dailySHS).filter(d => __F.isSelectedDate(new Date(d), this.date))
       this.selectedDateItems = this.dailySHS[selectedKey] ? this.dailySHS[selectedKey] : []
     },
     timeFormat(item) {
       return d3.timeFormat('%Y년 %m월 %d일 %H:%M %p')(item)
     },
-    updateAttr(i, prop, val) {
-      let updata = { idx: i, property: prop, value: parseFloat(val) }
+    updateAttr(key, idx, prop, val) {
+      let updata = { key: key.toString(), idx: idx, property: prop, value: parseFloat(val) }
       this.setDailySHSItem(updata)
     },
     async putReport() {
+      if (this.date.getTime() > new Date()) {
+        this.modeDate = 'FUTURE'
+        return
+      }
       let data = {
         user: this.user,
         useremail: this.email,
         date: this.date,
         quantity: parseFloat(this.quantity)
       }
-      await this.putReport2Server(data)
+      let res = await this.putReport2Server(data)
+      if (res) this.getReportFromServer()
     },
-    async upReport() {
-      let data = {
-        date: this.date,
-        quantity: parseFloat(this.quantity)
-      }
-      await this.putReport2Server(data)
+    async upReport(payload) {
+      let res = await this.upReport2Server(payload)
+      if (res) this.getReportFromServer()
     },
-    async delReport() {
-      let id
-      // * ADD ID VALUE
-      await this.putReport2Server(id)
+    async delReport(payload) {
+      let res = await this.delReport2Server(payload)
+      if (res) this.getReportFromServer()
     }
   }
 }

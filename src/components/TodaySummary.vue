@@ -1,5 +1,5 @@
 <template>
-  <div class="comp_td_summary" :class="{ no_data: isNoData }">
+  <div class="comp_td_summary wrap__card" :class="{ no_data: isNoData }">
     <ui-card>
       <h3 class="light title type_english_font ui_card_title">Daily <br />Secondhand Smoke</h3>
       <div v-if="isNoData" class="msg_nodata">

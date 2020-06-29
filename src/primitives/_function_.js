@@ -1,10 +1,10 @@
 import * as d3 from 'd3'
 
-function isSelectedDate(date, selectedDate) {
+function isSelectedDate(val, selectedDate) {
   return (
-    date.getFullYear() === selectedDate.getFullYear() &&
-    date.getMonth() === selectedDate.getMonth() &&
-    date.getDate() === selectedDate.getDate()
+    val.getFullYear() === selectedDate.getFullYear() &&
+    val.getMonth() === selectedDate.getMonth() &&
+    val.getDate() === selectedDate.getDate()
   )
 }
 

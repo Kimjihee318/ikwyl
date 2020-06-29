@@ -14,7 +14,7 @@
             <div class="next" @click="next"><svg-next-arrow /></div>
           </div>
           <div class="week_row">
-            <div v-for="(item, i) in weekMap" :key="`week_${i}`">
+            <div class="week_cell" v-for="(item, i) in weekMap" :key="`week_${i}`">
               {{ item }}
             </div>
           </div>

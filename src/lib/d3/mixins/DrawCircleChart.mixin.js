@@ -11,12 +11,12 @@ export default {
     scaleTime: () => {}
   }),
   methods: {
-    drawStacked() {
+    drawCircle() {
       this.setScale()
       this.drawAxis()
       if (this.dataItems.length === 0) return
 
-      this.drawRects()
+      this.drawCircles()
     },
     setScale() {
       this.dataItems = JSON.parse(JSON.stringify(this.DataItems))
@@ -62,7 +62,7 @@ export default {
         .attr('fill', '#c0ddff')
         .style('text-anchor', 'middle')
     },
-    drawRects() {
+    drawCircles() {
       this.setLinearGradient(this.chartArea, this.Rect.RectColorTypeGradient, 90, this.Rect.RectFillType, null, [0, 50])
 
       this.timeGroup = this.chartArea
@@ -84,17 +84,12 @@ export default {
           let _self = d3.select(j[i])
 
           _self
-            .selectAll('rect')
-            .data(Array.from({ length: d.quantity }, () => null))
-            .enter()
-            .append('rect')
-            .attr('x', 0)
-            .attr('y', (_d, _i) => {
+            .append('circle')
+            .attr('cx', 0)
+            .attr('cy', (_d, _i) => {
               return this.Canvas.CanvasHeight - this.Chart.ChartVPadding - (3 + 4) * _i
             })
-            .attr('width', 9)
-            .attr('height', 4)
-          // .attr('fill', 'red')
+            .attr('r', 4)
 
           _self
             .append('text')

@@ -22,8 +22,9 @@ export default {
       }, {})
       state.dailySHS = result
     },
-    setDailySHSItem(state, { idx, property, value }) {
-      state.dailySHS[idx][property] = value
+    setDailySHSItem(state, { key, idx, property, value }) {
+      console.log('TEST MODEL', state.dailySHS[key][idx])
+      state.dailySHS[key][idx][property] = value
     },
     setJoinedSHS(state, payload) {
       state.joinedSHSWithUserInfo = payload
@@ -36,6 +37,7 @@ export default {
         let useremail = { useremail: rootState.account.email }
         await reportApi.getReport(useremail, res => {
           let formattedData = __F.obj2Lowercase(res.data)
+          console.log(`GET FILE`, formattedData)
           commit('setDailySHS', formattedData)
         })
         return true
@@ -45,21 +47,35 @@ export default {
     },
     async putReport2Server(vuex, userData) {
       try {
-        await reportApi.putReport(userData, null)
+        let res = await reportApi.putReport(userData, null)
+        if (res) return true
       } catch (err) {
         console.log('[AXIOS ERROR]', err)
       }
     },
-    async upReport2Server(userData) {
+    async upReport2Server({ state }, { key, idx }) {
+      console.log(`TEST UP REPORT`, state.dailySHS[key][idx])
+      let changed = state.dailySHS[key][idx]
+      let data = {
+        id: changed.id,
+        quantity: changed.quantity
+      }
       try {
-        await reportApi.upReport(userData, null)
+        let res = await reportApi.upReport(data, null)
+        if (res) return true
       } catch (err) {
         console.log('[AXIOS ERROR]', err)
       }
     },
-    async delReport2Server(id) {
+    async delReport2Server({ state }, { key, idx }) {
       try {
-        await reportApi.delReport(id, null)
+        let selected = state.dailySHS[key][idx]
+        let id = {
+          id: selected.id
+        }
+        console.log(id)
+        let res = await reportApi.delReport(id, null)
+        if (res) return true
       } catch (err) {
         console.log('[AXIOS ERROR]', err)
       }

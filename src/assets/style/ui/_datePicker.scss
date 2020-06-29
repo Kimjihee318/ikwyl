@@ -20,13 +20,21 @@
     color: #000000;
     div.month_name {
       align-items: center;
+      // background-color: $blue_lightest;
+      border-radius: $border_radius;
       // color: $blue_normal;
       display: flex;
+      // fill: $blue_normal;
       font-weight: 700;
       justify-content: space-around;
       margin-bottom: 1rem;
+      
+      -webkit-border-radius: $border_radius;
+      -moz-border-radius: $border_radius;
+      -ms-border-radius: $border_radius;
+      -o-border-radius: $border_radius;
 
-      .prev, .next {
+      .prev,.next {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -43,6 +51,15 @@
     div.week_row {
       display: flex;
       justify-content: space-between;
+
+      .week_cell {
+        font-weight: 400;
+        height:1.5rem;
+        line-height:1.5rem;
+        margin: .2rem;
+        text-align: center;
+        width:1.5rem;
+      }
     }
     div.date_rowNcol {
       margin-bottom: 1rem;
@@ -73,8 +90,9 @@
 
             &:after {
               content: 'Today';
-              // color: $blue_normal;
+              color: $blue_normal;
               display: block;
+              font-weight: 500;
               position: relative;
               left: -.4rem;
               width: 2rem;
