@@ -75,43 +75,48 @@ export default {
 
       this.timeGroup
         .append('g')
+        .append('text')
+        .attr('class', (d, i) => `stack_text stack_text_${i}`)
+        .attr('transform', d => {
+          return `translate(${this.scaleTime(new Date(d.date)) +
+            this.Chart.ChartHPadding / 2}, ${-this.scaleVBand.bandwidth() + 6})`
+        })
+        .attr('x', 8 + 6)
+        .attr('y', d => {
+          return this.Canvas.CanvasHeight - this.Chart.ChartVPadding - 3 * d.quantity
+        })
+        .text(d => d.quantity)
+        .attr('fill', this.Rect.RectTextColor)
+        .attr('text-anchor', 'middle')
+        .attr('alignment-baseline', 'center')
+        .attr('opacity', 0)
+
+      this.timeGroup
+        .append('g')
         .attr('class', (d, i) => `stack_date_group stack_date_${i}`)
         .attr('transform', d => {
           return `translate(${this.scaleTime(new Date(d.date)) +
             this.Chart.ChartHPadding / 2}, ${-this.scaleVBand.bandwidth()})`
         })
-        .each((d, i, j) => {
-          let _self = d3.select(j[i])
-
-          _self
-            .append('circle')
-            .attr('cx', 0)
-            .attr('cy', (_d, _i) => {
-              return this.Canvas.CanvasHeight - this.Chart.ChartVPadding - (3 + 4) * _i
-            })
-            .attr('r', 4)
-
-          _self
-            .append('text')
-            .attr('class', `stack_text stack_text_${i}`)
-            .attr('x', 5)
-            .attr('y', this.Canvas.CanvasHeight - this.Chart.ChartVPadding - 50)
-            .text(d => d.quantity)
-            .attr('fill', this.Rect.RectTextColor)
-            .attr('text-anchor', 'middle')
-            .attr('opacity', 0)
+        .append('circle')
+        .attr('cx', 0)
+        .attr('cy', d => {
+          return this.Canvas.CanvasHeight - this.Chart.ChartVPadding - 3 * d.quantity
         })
-      d3.select(`#${this.localId}`)
-        .on('mouseover', () =>
+        .attr('r', 3)
+        .attr('stroke', this.Rect.RectTextColor)
+        .attr('fill', this.Rect.RectTextColor)
+        .attr('opacity', 0.7)
+        .on('mouseover', (d, i) =>
           d3
-            .selectAll(`.stack_text`)
+            .select(`.stack_text_${i}`)
             .transition()
             .duration(100)
             .attr('opacity', 1)
         )
-        .on('mouseout', () =>
+        .on('mouseout', (d, i) =>
           d3
-            .selectAll(`.stack_text`)
+            .select(`.stack_text_${i}`)
             .transition()
             .duration(100)
             .attr('opacity', 0)

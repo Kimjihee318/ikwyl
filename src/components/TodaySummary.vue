@@ -9,10 +9,10 @@
         <div class="report_title ">{{ item.title }}</div>
         <div class="report_contents">{{ item.value }}</div>
       </div>
-      <div v-for="(item, i) in todaySHS.time" class="report_today" :key="`report_t_t${i}`">
+      <div v-for="(item, i) in todaySHS.time" class="report_today type_time" :key="`report_t_t${i}`">
         <div class="report_title">{{ item.title }}</div>
         <div class="report_contents">
-          <span v-for="(_item, _i) in item.value" :key="`shs_time_${_i}`">{{ _item }}</span>
+          <span v-for="(_item, _i) in item.value" class="time_item" :key="`shs_time_${_i}`">{{ _item }} </span>
         </div>
       </div>
     </ui-card>

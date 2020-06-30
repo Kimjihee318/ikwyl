@@ -1,6 +1,13 @@
 <template>
-  <div>
-    footer
+  <div class="wrap__footer">
+    <div>
+      <div>Github</div>
+      <div></div>
+      <div></div>
+    </div>
+    <div>
+      Copyrightⓒ 2020 JIHEE KIM All rights reserved.
+    </div>
   </div>
 </template>
 

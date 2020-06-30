@@ -1,6 +1,6 @@
 export default {
   canvas: {
-    CanvasWidth: 440.5,
+    CanvasWidth: 460.5,
     CanvasHeight: 200.5,
     CanvasBgColor: 'transparent',
     CanvasBgPointColor: 'transparent',

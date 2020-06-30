@@ -8,8 +8,6 @@
   }
   .main_body {
     display: flex;
-    justify-content: space-around;
-    min-width: 80rem;
     .main_right {
       .main_chart_floor {
         display: flex;
@@ -22,6 +20,20 @@
             flex-direction: column;
             justify-content: space-between;
             width: 15rem;
+          }
+          .card_contents_floor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .info_my_floor {
+              background-color: $orange_point;
+              color: $black;
+              height: 1.2rem;
+              line-height: 1.2rem;
+              font-size: .8rem;
+              font-weight: 500;
+              padding: 0 1rem 0 1rem;
+            }
           }
           .card_contents_report {
             display: flex;

@@ -37,7 +37,6 @@ export default {
         let useremail = { useremail: rootState.account.email }
         await reportApi.getReport(useremail, res => {
           let formattedData = __F.obj2Lowercase(res.data)
-          console.log(`GET FILE`, formattedData)
           commit('setDailySHS', formattedData)
         })
         return true

@@ -136,6 +136,15 @@ export default {
           10
         ])
       })
+
+      // if (!this.isUserFloor) return
+      // this.chartArea
+      //   .append('g')
+      //   .attr('class', 'label')
+      //   .attr('transform', 'translate(-2, -3)')
+      //   .append('path')
+      //   .attr('d', 'M19 3H5v18l7-3 7 3V3z')
+      //   .attr('fill', '#ffbd71')
     },
     drawUnit() {
       this.boxSelection.each((d, i, j) => {

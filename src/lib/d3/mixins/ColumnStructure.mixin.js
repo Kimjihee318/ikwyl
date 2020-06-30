@@ -7,7 +7,7 @@ export default {
     formattedSurroundingData: [],
     // GRID
     grid: {
-      h: 3, // FIX
+      h: null, // FIX
       v: null // FIX
     },
     grid4Bar: {
@@ -246,6 +246,15 @@ export default {
     },
     setBgDataItems() {
       let userFloor = this.UserInfo.floor
+      let stUnit = this.UserInfo.unit
+      let stUnitArr = stUnit.toString().split('')
+      let stUnitNo = stUnitArr.length < 4 ? +stUnitArr[0] : +(stUnitArr[0] + stUnitArr[1])
+      if (stUnitNo === this.UserInfo.maxunitno || stUnitNo === 1) {
+        this.grid.v = 2
+      } else {
+        this.grid.v = 3
+      }
+
       if (userFloor === this.UserInfo.maxfloor || userFloor === 1) {
         this.grid.v = 2
       } else {
@@ -254,8 +263,15 @@ export default {
 
       let hLayoutArr = Array.from({ length: this.grid.h }, () => null)
       let vLayoutArr = Array.from({ length: this.grid.v }, () => null)
-      let stUnit = this.UserInfo.unit
-      let hUnits = [stUnit - 1, stUnit, stUnit + 1] // ! FIX HERE 3칸으로 고정하고 진행, 2칸 부분 추가
+
+      let hUnits
+      if (stUnitNo === this.UserInfo.maxunitno) {
+        hUnits = [stUnit - 1, stUnit]
+      } else if (stUnitNo === 1) {
+        hUnits = [stUnit, stUnit + 1]
+      } else {
+        hUnits = [stUnit - 1, stUnit, stUnit + 1]
+      }
       let vUnits =
         this.grid.v === 3
           ? [stUnit + 100, stUnit, stUnit - 100]

@@ -6,7 +6,7 @@
 import CommonMixin from './importers'
 
 export default {
-  name: 'sh-smoking-stack',
+  name: 'sh-smoking-circle',
   mixins: [CommonMixin],
   props: {
     id: String,

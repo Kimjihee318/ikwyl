@@ -2,9 +2,10 @@
   position: relative;
   &.no_data {
     >div > *:not(.msg_nodata){
-      opacity: 0.3;
+      // opacity: 0.3;
     }
   }
+
   .msg_nodata {
     align-items: center;
     background: $pattern_diagonal_line;
@@ -28,6 +29,23 @@
     &_title {
       width: 10rem;
     }
+  }
+
+  &_today.type_time {
+    
+    .report_contents {
+      overflow: hidden;
+      overflow-wrap: break-word;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 17rem;
+      > .time_item {
+        margin-right: .2rem;
+      }
+    }
+    
+  
+    
   }
 }
 

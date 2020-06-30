@@ -3,7 +3,7 @@
     <ui-card class="wrap__card" :class="{ no_data: isNoData }">
       <div class="wrapper__chart wrapper__chart_stacked">
         <h3 class="light type_english_font ui_card_title no_margin">Weekly <br />Secondhand Smoke</h3>
-        <chart-stack
+        <chart-circle
           :Canvas="stackedCanvas"
           :Chart="stackedChart"
           :Rect="stackedRect"
@@ -24,29 +24,32 @@
           :SelectedDate="stackedSelectedDate"
           :DataItems="timeDataItems"
         />
-        <div v-for="(item, i) in cumulativeSHS.time" class="report_cumulative" :key="`report_c_t${i}`">
+        <!-- <div v-for="(item, i) in cumulativeSHS.time" class="report_cumulative" :key="`report_c_t${i}`">
           <div class="report_title">{{ item.title }}</div>
-          <div class="report_contents">{{ item.value }}</div>
-        </div>
+          <span v-for="(_item, _i) in item.value" class="report_contents" :key="`report_c_t_item_${_i}`">{{
+            _item
+          }}</span>
+        </div> -->
       </div>
     </ui-card>
   </div>
 </template>
 
 <script>
+import * as d3 from 'd3'
 import { mapState, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_.js'
 import __F from '@/primitives/_function_'
 import _ChartStackedData from '@/primitives/chartStacked'
 import _ChartTimeData from '@/primitives/chartTime'
-import ChartStack from '@/lib/d3/chart/stack/StackedChart.vue'
+import ChartCircle from '@/lib/d3/chart/cilrcle/CircleChart'
 import ChartTime from '@/lib/d3/chart/time/TimeChart.vue'
 import UiCard from '@/components/ui/Card.vue'
 
 export default {
   name: 'weekly-summary',
   components: {
-    ChartStack,
+    ChartCircle,
     ChartTime,
     UiCard
   },
@@ -115,12 +118,6 @@ export default {
     }
   },
   watch: {
-    // userWeeklySHS: {
-    //   handler(val) {
-    //     if (!val || val.length === 0) return
-    //   },
-    //   deep: true
-    // }
     selectedDates: {
       handler(val) {
         if (!val || val.length === 0) return
@@ -171,21 +168,11 @@ export default {
       let weeklySHSTime = this.weeklySHS.map(d => new Date(d.date))
       let weekendSHSTime = weeklySHSTime.filter(d => d.getDay() <= 5)
 
-      let avgWeeklySHSTime = `${Math.floor(__F.mean(weeklySHSTime.map(d => d.getHours())))}:${Math.floor(
-        __F.mean(weeklySHSTime.map(d => d.getMinutes()))
-      )}` // !FIX AM / PM 추가
-      let avgWeekendSHSTime =
-        weekendSHSTime.length !== 0
-          ? `${Math.floor(__F.mean(weekendSHSTime.map(d => d.getHours())))}: ${Math.floor(
-              __F.mean(weekendSHSTime.map(d => d.getMinutes()))
-            )}`
-          : ''
-
       if (this.isNoData) {
         this.init()
       } else {
-        this.cumulativeSHS.time.daily.value = avgWeeklySHSTime
-        this.cumulativeSHS.time.weekend.value = avgWeekendSHSTime
+        this.cumulativeSHS.time.daily.value = weeklySHSTime.map(d => d3.timeFormat('%H:%M %p')(d))
+        this.cumulativeSHS.time.weekend.value = weekendSHSTime.map(d => d3.timeFormat('%H:%M %p')(d))
       }
     }
   }

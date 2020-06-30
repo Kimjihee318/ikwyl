@@ -21,6 +21,13 @@ export default {
     // Database
     DataItems: { type: Array, default: () => [] }
   },
+  computed: {
+    isUserFloor() {
+      if (!this.BackgroundItem || !this.BackgroundItem[0]) return false
+      let floor = this.BackgroundItem[0].unit.toString().split('')
+      return this.UserInfo.floor === (floor.length < 4 ? +floor[0] : +(floor[0] + floor[1]))
+    }
+  },
   created() {
     this.localId = `${this.id || 'Floor_Structure'}__${this.safeId('')}`
   },
@@ -31,6 +38,7 @@ export default {
     draw() {
       if (!this.ready2draw4FloorStructure()) return
       this.clear()
+      this.$emit('labelVisible', this.isUserFloor)
       // this.initData()
       this.drawCanvas()
       this.drawFloor()

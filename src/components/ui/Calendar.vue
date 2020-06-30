@@ -2,7 +2,7 @@
   <div class="calendar type_row">
     <div class="calendar_title">
       <span class="type_english_font">FROM {{ startMonth.toUpperCase() }}</span>
-      <span class="type_english_font">TODAY</span>
+      <span class="type_english_font">{{ `${thisMonth.toUpperCase()}  TODAY` }}</span>
     </div>
     <div class="calendar_btn_wrapper">
       <div class="btn btn_svg btn_prev" @click="onPrev"><svg-prev-arrow /></div>
@@ -17,7 +17,7 @@
         >
           {{ getDate(item.date) }}
         </div>
-        <div class="btn btn_date" @click="toggleSelectAll">ALL</div>
+        <!-- <div class="btn btn_date" @click="toggleSelectAll">ALL</div> -->
       </div>
       <div class="btn btn_svg btn_next" :disabled="isDisabled" @click="onNext"><svg-next-arrow /></div>
     </div>
@@ -56,7 +56,8 @@ export default {
       'December'
     ],
     localSelectedDates: [],
-    startMonth: null,
+    startMonth: '',
+    thisMonth: '',
     visibleEndPosition: null, // ! CHECK
     visibleStandard: null
   }),
@@ -95,6 +96,7 @@ export default {
       this.setSelectedDates([{ date: new Date(Today), selected: null }])
       this.visibleEndPosition = this.dateItems.length
       this.startMonth = this.monthMap[new Date(new Date(Today).getFullYear(), new Date(Today).getMonth(), 0).getMonth()]
+      this.thisMonth = this.monthMap[new Date(new Date(Today).getFullYear(), new Date(Today).getMonth(), 1).getMonth()]
     },
     getClass(item) {
       let hasDatas = []

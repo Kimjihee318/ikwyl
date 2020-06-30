@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_.js'
 import IconAccount from '@/assets/icons/account_circle-24px.svg'
 import IconAdd from '@/assets/icons/add-24px.svg'
@@ -74,13 +74,19 @@ export default {
     SystemNavigation,
     UiModal
   },
-  data: () => ({
-    modalOpened: false
-  }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user', 'userInfo', 'permission']),
     ...mapState(__C.STORE.NAMESPACE.APPLICATION, ['window']),
+    ...mapState(__C.STORE.NAMESPACE.COMMON, ['lnb']),
     ...mapState(__C.STORE.NAMESPACE.SYSTEM, ['isSystemMod']),
+    modalOpened: {
+      get() {
+        return this.lnb.modalOpened
+      },
+      set(val) {
+        this.setModalOpened(val)
+      }
+    },
     userUpperCase() {
       return this.user.toUpperCase()
     },
@@ -94,9 +100,10 @@ export default {
   },
   methods: {
     ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['getUserInfoFromServer', 'getUserPermissionFromServer']),
+    ...mapMutations(__C.STORE.NAMESPACE.COMMON, ['setModalOpened']),
 
     onAdd() {
-      this.modalOpened = true
+      this.setModalOpened(true)
     },
     onSvc() {
       this.$store.commit(`${__C.STORE.NAMESPACE.SYSTEM}/setSysMod`, false)

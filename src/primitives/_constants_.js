@@ -27,6 +27,7 @@ let CONSTANTS = function() {
         ACCOUNT: 'account',
         APPLICATION: 'application',
         CALENDAR: 'calendar',
+        COMMON: 'common',
         REPORT: 'report',
         SYSTEM: 'system'
       }

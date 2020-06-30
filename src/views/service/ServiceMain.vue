@@ -13,7 +13,7 @@
           <surrounding-summary :dataItems="surroundingDataItems" />
         </div>
         <div class="main_chart_floor">
-          <div class="main_chart_floor_chart">
+          <div class="main_chart_floor_chart wrap__svg" :class="{ no_data: isNoData }">
             <chart-floor
               v-for="(bgItem, key) in floorBgItems"
               :class="`key_${key}`"
@@ -34,7 +34,10 @@
               :key="`floor_summary_${i}`"
             >
               <template>
-                <div class="card_contents_floor">{{ item.floor }} 층</div>
+                <div class="card_contents_floor">
+                  <span>{{ item.floor }} 층</span>
+                  <span v-if="item.floor === userInfo.floor" class="info_my_floor">my floor</span>
+                </div>
                 <div>
                   <div v-for="(_item, _i) in item" class="card_contents_report" :key="`rep_${_i}`">
                     <div class="card_contents_report_title">{{ _item.title }}</div>
@@ -74,6 +77,7 @@ export default {
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['userInfo']),
     ...mapState(__C.STORE.NAMESPACE.CALENDAR, ['selectedDates']),
+    ...mapState(__C.STORE.NAMESPACE.COMMON, ['lnb']),
     ...mapState(__C.STORE.NAMESPACE.REPORT, ['dailySHS', 'joinedSHSWithUserInfo']),
     floorBgItems() {
       return this.floorBgStructure
@@ -91,6 +95,15 @@ export default {
     }
   },
   watch: {
+    'lnb.modalOpened': {
+      handler(val) {
+        if (val === true) return
+        if (val === false) {
+          this.getJoinedSHS()
+        }
+      },
+      deep: true
+    },
     selectedDates: {
       handler(val) {
         if (!val || val.length === 0) return
@@ -99,6 +112,7 @@ export default {
       deep: true
     }
   },
+
   mounted() {
     this.getJoinedSHS()
   },
@@ -185,9 +199,9 @@ export default {
       this.usedfloors.forEach(d => {
         result.push({
           floor: Number(d),
-          avgQuantity: { title: '층 평균 간접 흡연 량', value: '' },
-          noOfMembers: { title: '층 별 데이터 입력자 수', value: '' },
-          noOfTotalMembers: { title: '층 별 총 이용자 수', value: '' }
+          avgQuantity: { title: '평균 간접 흡연 량', value: '' },
+          noOfMembers: { title: '데이터 입력자 수', value: '' },
+          noOfTotalMembers: { title: '총 이용자 수', value: '' }
         })
       })
 
