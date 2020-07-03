@@ -4,6 +4,7 @@
       <div class="wrapper__chart wrapper__chart_stacked">
         <h3 class="light type_english_font ui_card_title no_margin">Weekly <br />Secondhand Smoke</h3>
         <chart-circle
+          class="chart"
           :Canvas="stackedCanvas"
           :Chart="stackedChart"
           :Rect="stackedRect"
@@ -18,6 +19,7 @@
       <div class="wrapper__chart wrapper__chart_time">
         <h3 class="light type_english_font ui_card_title no_margin">Weekly Detection Time</h3>
         <chart-time
+          class="chart"
           :Canvas="timeCanvas"
           :Chart="timeChart"
           :Circle="timeCircle"

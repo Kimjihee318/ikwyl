@@ -25,6 +25,7 @@ $gray_border: #dddddd;
 
 $blue_bg: #0f1333;
 $blue_normal: #2d519f;
+// $blue_normal: #5a81ff;
 $blue_light: #81a8e3;
 $blue_lightest: #c0ddff;
 $blue_alpha01: rgba(192, 221, 255, 0.5);
@@ -35,6 +36,7 @@ $pink_normal: #e15cff;
 
 $orange_light: #ff915c;
 $orange_point: #ffbd71;
+$orange_point_alpha01: #ffbd71b3;
 
 
 $pattern_diagonal_line: repeating-linear-gradient(-45deg, $gray_alpha_type_modal_bg_05, $gray_alpha_type_modal_bg_05 8px, transparent 0, transparent 20px);

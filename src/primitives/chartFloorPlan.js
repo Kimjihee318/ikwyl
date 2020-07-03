@@ -20,15 +20,15 @@ export default {
     BgStrokeColor: '#2d519f90',
     UnitWidth: 38,
     UnitHeight: 38,
-    UnitFillColor: '#1a2157',
-    UnitFillPointColor: '#1a2157',
-    UnitStroke: '#81a8e3',
+    UnitFillColor: '#2d519fb3',
+    UnitFillPointColor: '#5a81ff50',
+    UnitStroke: 'traslparent',
     UnitStrokeWidth: 0.5,
     UnitTextColor: '#81a8e3',
     UnitTextFont: null,
     UnitTextSize: '0.8rem',
     UnitSmellRectWidth: 2,
-    UnitSmellRectHeight: 9,
+    UnitSmellRectHeight: 7,
     UnitSmellRectColor: '#ffffff'
   }
 }

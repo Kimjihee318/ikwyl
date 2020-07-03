@@ -43,13 +43,14 @@
         margin-right: .2rem;
       }
     }
-    
-  
-    
   }
 }
 
 .wrapper__chart {
+  > div.chart {
+    display: flex;
+    justify-content: center;
+  }
   &_stacked {
     border-bottom: 1px dotted $blue_alpha01;
     margin-bottom: 1.6rem;

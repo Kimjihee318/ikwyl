@@ -154,6 +154,7 @@ export default {
       return this.floorDataItems && Object.keys(this.floorDataItems).length > 0 ? this.floorDataItems[item] : []
     },
     setFloorBgStructure() {
+      if (!this.userInfo.floor) return
       let floors = []
       switch (this.userInfo.floor) {
         case this.userInfo.maxfloor:
@@ -170,12 +171,14 @@ export default {
       this.usedfloors = floors
 
       floors.forEach(f => {
-        Object.assign(this.floorBgStructure, {
-          [f]: Array.from({ length: this.userInfo.maxunitno }, (u, i) => {
+        this.$set(
+          this.floorBgStructure,
+          f,
+          Array.from({ length: this.userInfo.maxunitno }, (u, i) => {
             let idx = i + 1
             return { unit: i + 1 >= 10 ? `${f}${idx}` : `${f}0${idx}` }
           })
-        })
+        )
       })
     },
     setSelectedDateSHS() {

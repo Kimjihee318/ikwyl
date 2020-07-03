@@ -4,6 +4,7 @@ import router from '@/routes/index'
 import accountApi from '@/service/service.account'
 
 let ACCOUNT = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
+console.log(`START STORE`, ACCOUNT)
 export default {
   namespaced: true,
   state: {
@@ -23,32 +24,39 @@ export default {
     userInfoIdx: null
   },
   mutations: {
+    setAccount(state, payload) {
+      state.email = payload.user.email
+      state.token = payload.user.token
+      state.user = payload.user.displayName
+    },
+    setIdx(state, payload) {
+      state.userInfoIdx = payload
+    },
     setPermissionState(state, payload) {
-      if (!payload.ISPERMISSION) return
+      if (!payload || !payload.ISPERMISSION) {
+        state.permission = __C.FULL_ACCESS_PERMISSION.SERVICE
+        return
+      }
       state.permission = __C.FULL_ACCESS_PERMISSION.SYSTEM
+    },
+    setUserInfo(state, { key, value }) {
+      state.userInfo[key] = value
     },
     setUserInfoItem(state, payload) {
       let key = Object.keys(payload)
       if (key.length === 0) return
       state.userInfo[key[0]] = payload[key[0]]
-    },
-    setIdx(state, payload) {
-      state.userInfoIdx = payload
     }
   },
   actions: {
     // * [ LOGIN / LOGOUT ]
-    async login({ state }) {
-      await accountApi.setAccount2LocalStorage(() => {
-        let getAccount = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
-        ACCOUNT = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
-        console.log(`[GET ACCOUNT]`, getAccount)
-        console.log(`[ACCOUNT]`, ACCOUNT)
-        console.log(`[1]`, state)
+    async login({ commit }) {
+      await accountApi.setAccount2LocalStorage(res => {
+        commit('setAccount', res)
+        ACCOUNT = res
         if (!ACCOUNT) return
         ACCOUNT.isNewUser ? router.push({ path: '/userinfo' }) : router.push({ path: '/main' })
       })
-      console.log(`[2]`, state)
     },
     async logout() {
       await accountApi.delAccount2LocalStorage(({ isEmpty }) => {
@@ -61,17 +69,21 @@ export default {
         useremail: state.email
       }
       await accountApi.getUserPermission(email, res => {
-        commit('setPermissionState', res.data[0])
+        commit('setPermissionState', res.data.length === 0 ? null : res.data[0])
       })
     },
     // * [ USER INFO ]
     async getUserInfoFromServer({ commit, state }, callback) {
+      console.log(`[GET USER INFO]`)
       let userEmail = { useremail: state.email }
       await accountApi.getUserInfo(userEmail, res => {
+        let mode
+        mode = res.data.length === 0 ? __C.FORM.EDIT_MODE_NEW : __C.FORM.EDIT_MODE_READ
+        if (callback) callback(mode)
+        if (res.data.length === 0) return
         let formattedObj = __F.obj2Lowercase(res.data)
         commit('setIdx', formattedObj.id)
         state.userInfo = formattedObj
-        if (callback) callback(formattedObj)
       })
     },
     async addUserInfo2Server({ state }) {

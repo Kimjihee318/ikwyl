@@ -23,6 +23,14 @@ const router = new VueRouter({
           }
         },
         {
+          path: 'userinfo',
+          name: 'userinfo',
+          component: () => import('@/components/form/FormUserInfo.vue'),
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
           path: 'system',
           name: 'system',
           redirect: '/system/userinfo',
@@ -37,7 +45,7 @@ const router = new VueRouter({
           children: [
             {
               path: 'userinfo',
-              name: 'userinfo',
+              name: 'sys_userinfo',
               component: () => import('@/views/system/SystemUserInfoBoard.vue'),
               meta: {
                 requiresAuth: true

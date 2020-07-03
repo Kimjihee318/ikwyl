@@ -18,6 +18,7 @@ async function setAccount2LocalStorage(callback) {
       user: user,
       isNewUser: isNewUser
     }
+    // console.log(`AUTH SERVICE`, account)
     localStorage.setItem(__C.LOCAL_STORAGE_NAME.ACCOUNT, JSON.stringify(account))
     let getLocalSTAccount = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
     callback(getLocalSTAccount)

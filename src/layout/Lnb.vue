@@ -1,6 +1,5 @@
 <template>
   <div class="comp_lnb">
-    <div class="logo"></div>
     <div class="account_info">
       <div class="user">
         <div v-if="checkBreakPoint" class="user_img">
@@ -8,14 +7,14 @@
         </div>
         <div class="user_name">{{ userUpperCase }}</div>
       </div>
-      <div v-if="checkBreakPoint" class="card_style">
+      <!-- <div v-if="checkBreakPoint" class="card_style">
         <div class="card_style_red"></div>
         <div class="card_style_blue"></div>
-      </div>
+      </div> -->
       <div v-if="checkBreakPoint" class="building">
-        <div class="building_name">{{ userInfo.buildingname }}</div>
+        <div class="building_name">{{ buildingName }}</div>
         <div class="building_unit">
-          {{ `${userInfo.buildingno}동 ${userInfo.unit}호` }}
+          {{ `${buildingNo}동 ${unit}호` }}
         </div>
       </div>
     </div>
@@ -29,19 +28,23 @@
     </ui-modal>
 
     <div class="service_nav">
-      <div class="service_nav_item sys_button" title="admin page">
-        <button v-if="permission === 'SYS_ADMIN' && !isSystemMod" class="btn btn_circle" @click="onSys">
-          <icon-admin class="type_move2right" />
-        </button>
-        <button v-if="isSystemMod" class="btn btn_circle" @click="onSvc">
-          <icon-change />
-        </button>
-      </div>
       <div class="service_nav_item" title="user information" @click="onMove">
-        <button class="btn btn_circle"><icon-account /></button>
+        <icon-account class="icon" />
+        <span>user information</span>
       </div>
       <div class="service_nav_item" title="link">
-        <button class="btn btn_circle"><icon-send class="type_move2right" /></button>
+        <icon-send class="icon type_move2right" />
+        <span>link</span>
+      </div>
+      <div class="service_nav_item" @click="onSys(permission === 'SYS_ADMIN' && !isSystemMod ? 'sys' : 'svc')">
+        <template v-if="permission === 'SYS_ADMIN' && !isSystemMod">
+          <icon-admin class="icon type_move2right" />
+          <span>admin</span>
+        </template>
+        <template v-if="isSystemMod">
+          <icon-change class="icon" />
+          <span>home</span>
+        </template>
       </div>
     </div>
     <div class="sys">
@@ -79,6 +82,7 @@ export default {
     ...mapState(__C.STORE.NAMESPACE.APPLICATION, ['window']),
     ...mapState(__C.STORE.NAMESPACE.COMMON, ['lnb']),
     ...mapState(__C.STORE.NAMESPACE.SYSTEM, ['isSystemMod']),
+
     modalOpened: {
       get() {
         return this.lnb.modalOpened
@@ -87,11 +91,28 @@ export default {
         this.setModalOpened(val)
       }
     },
+    buildingName() {
+      return this.userInfo.buildingname
+    },
+    buildingNo() {
+      return this.userInfo.buildingno
+    },
+    unit() {
+      return this.userInfo.unit
+    },
     userUpperCase() {
       return this.user.toUpperCase()
     },
     checkBreakPoint() {
+      console.log(`[BREAK POINT]`, this.window.width)
       return this.window.width > 1439.98
+    }
+  },
+  watch: {
+    buildingName: {
+      handler(val) {
+        console.log(`[WATCH]`, val)
+      }
     }
   },
   mounted() {
@@ -105,14 +126,14 @@ export default {
     onAdd() {
       this.setModalOpened(true)
     },
-    onSvc() {
-      this.$store.commit(`${__C.STORE.NAMESPACE.SYSTEM}/setSysMod`, false)
-      this.$router.push({ path: '/' })
-    },
-    onSys() {
-      if (this.permission === __C.FULL_ACCESS_PERMISSION.SYSTEM)
+    onSys(path) {
+      if (path === 'sys' && this.permission === __C.FULL_ACCESS_PERMISSION.SYSTEM) {
         this.$store.commit(`${__C.STORE.NAMESPACE.SYSTEM}/setSysMod`, true)
-      this.$router.push({ path: 'system' })
+        this.$router.push({ path: 'system' })
+      } else {
+        this.$store.commit(`${__C.STORE.NAMESPACE.SYSTEM}/setSysMod`, false)
+        this.$router.push({ path: '/' })
+      }
     },
     onMove() {
       this.$router.push({ path: '/userinfo' })

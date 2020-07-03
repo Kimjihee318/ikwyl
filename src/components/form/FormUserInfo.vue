@@ -1,7 +1,7 @@
 <template>
   <div class="user_info">
     <div class="user_info_form_wrapper">
-      <h4>USER INFO</h4>
+      <h4>User Information</h4>
       <template v-if="mode === 'READ'">
         <div><label>주소</label>{{ address }}</div>
         <div><label>빌딩 명</label>{{ buildingName }}</div>
@@ -9,10 +9,9 @@
         <div><label>층수</label>{{ floor }}</div>
         <div><label>호수</label>{{ unit }}</div>
         <div><label>최고층</label>{{ maxFloor }}</div>
-        <div><label>층별 총 호수</label>{{ maxUnitNo }}</div>
+        <div><label>층 별 총 호수</label>{{ maxUnitNo }}</div>
         <div class="btn_wrapper">
           <div class="btn_user_info" @click="onAction('MOD')">수정</div>
-          <div class="btn_user_info" @click="onAction('DEL')">삭제</div>
         </div>
       </template>
       <template v-else>
@@ -22,7 +21,7 @@
         <div><label>층수</label><input v-model="floor" type="text" /></div>
         <div><label>호수</label><input v-model="unit" type="text" /></div>
         <div><label>최고층</label><input v-model="maxFloor" type="text" /></div>
-        <div><label>층별 총 호수</label><input v-model="maxUnitNo" type="text" /></div>
+        <div><label>층 별 총 호수</label><input v-model="maxUnitNo" type="text" /></div>
         <div class="btn_wrapper">
           <div v-if="mode === 'NEW'" class="btn_user_info" @click="onAction('ADD')">확인</div>
           <div v-else-if="mode === 'MOD'" class="btn_user_info" @click="onAction('EDIT')">확인</div>
@@ -33,7 +32,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_'
 export default {
   name: 'form-user-info',
@@ -48,7 +47,7 @@ export default {
         return this.userInfo.address
       },
       set(val) {
-        this.userInfo.address = val
+        this.setUserInfo({ key: 'address', value: val })
       }
     },
     buildingName: {
@@ -56,7 +55,7 @@ export default {
         return this.userInfo.buildingname
       },
       set(val) {
-        this.userInfo.buildingname = val
+        this.setUserInfo({ key: 'buildingname', value: val })
       }
     },
     buildingNo: {
@@ -64,7 +63,7 @@ export default {
         return this.userInfo.buildingno
       },
       set(val) {
-        this.userInfo.buildingno = parseFloat(val)
+        this.setUserInfo({ key: 'buildingno', value: parseFloat(val) })
       }
     },
     floor: {
@@ -72,7 +71,7 @@ export default {
         return this.userInfo.floor
       },
       set(val) {
-        this.userInfo.floor = parseFloat(val)
+        this.setUserInfo({ key: 'floor', value: parseFloat(val) })
       }
     },
     maxFloor: {
@@ -80,7 +79,7 @@ export default {
         return this.userInfo.maxfloor
       },
       set(val) {
-        this.userInfo.maxfloor = parseFloat(val)
+        this.setUserInfo({ key: 'maxfloor', value: parseFloat(val) })
       }
     },
     maxUnitNo: {
@@ -88,7 +87,7 @@ export default {
         return this.userInfo.maxunitno
       },
       set(val) {
-        this.userInfo.maxunitno = parseFloat(val)
+        this.setUserInfo({ key: 'maxunitno', value: parseFloat(val) })
       }
     },
     unit: {
@@ -96,7 +95,7 @@ export default {
         return this.userInfo.unit
       },
       set(val) {
-        this.userInfo.unit = parseFloat(val)
+        this.setUserInfo({ key: 'unit', value: parseFloat(val) })
       }
     }
   },
@@ -107,10 +106,13 @@ export default {
     })
   },
   methods: {
+    ...mapMutations(__C.STORE.NAMESPACE.ACCOUNT, ['setUserInfo']),
     ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['addUserInfo2Server', 'getUserInfoFromServer', 'upUserInfo2Server']),
     onAction(mod) {
       switch (mod) {
         case __C.BUTTON.EDIT_MODE_ADD:
+          console.log('ADD IN')
+
           this.addUserInfo2Server()
           this.mode = __C.FORM.EDIT_MODE_READ
           break
@@ -131,37 +133,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user_info {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  &_form_wrapper {
-    h4 {
-      margin: 0;
-      margin-bottom: 1rem;
-    }
-    width: 20rem;
-    background-color: #ffffff;
-    color: #000000;
-    padding: 0.5rem;
-
-    > div {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-      &.btn_wrapper {
-        justify-content: center;
-        margin-top: 1rem;
-        margin-bottom: 0;
-      }
-    }
-
-    .btn_user_info {
-      border: 1px solid #000000;
-      padding-right: 1rem;
-      padding-left: 1rem;
-    }
-  }
-}
+@import '@/assets/style/ui/userInfo.scss';
 </style>

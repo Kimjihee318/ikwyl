@@ -5,6 +5,7 @@ export default {
     bgStructureData: [],
     dataItems: {},
     formattedSurroundingData: [],
+    formattedBarData: [],
     // GRID
     grid: {
       h: null, // FIX
@@ -16,7 +17,8 @@ export default {
     },
     scaleBarBand: () => {},
     scaleHBand: () => {},
-    scaleVBand: () => {}
+    scaleVBand: () => {},
+    stUnitNo: ''
   }),
   methods: {
     drawColumnPlan() {
@@ -28,6 +30,7 @@ export default {
 
       if (!this.DataItems || this.DataItems.length === 0) return
       this.formatData()
+      this.formatBarData()
       this.emitData()
       this.drawChart()
       this.drawBars()
@@ -43,13 +46,14 @@ export default {
         .attr('class', 'surrounding_data_bar')
         .style('fill', 'url(#gradient_linear)')
         .selectAll('g')
-        .data(this.formattedSurroundingData)
+        .data(this.formattedBarData)
         .enter()
 
       let boxs = boxGroup
         .append('g')
-        .attr('class', (d, i) => `surrounding_g_bar_${i}`)
-
+        .attr('class', (d, i) => {
+          return `surrounding_g_bar_${i}`
+        })
         .attr('transform', d => {
           return `translate(${120}, ${this.scaleBarBand(d.barPosition)})`
         })
@@ -84,7 +88,7 @@ export default {
         .append('text')
         .attr('x', this.scaleVBand.bandwidth() / 2)
         .attr('y', -2)
-        .attr('fill', d => (d.unit === this.UserInfo.unit ? this.Unit.UnitTextColor : this.Unit.UnitStroke))
+        .attr('fill', d => (d.unit === this.UserInfo.unit ? this.Unit.UnitTextPointColor : this.Unit.UnitTextColor))
         .style('font-size', this.Unit.UnitTextSize)
         .style('text-anchor', 'end')
         .style('alignment-baseline', 'hanging')
@@ -131,7 +135,7 @@ export default {
         .append('text')
         .attr('x', this.scaleVBand.bandwidth() / 2)
         .attr('y', -8)
-        .attr('fill', d => (d.unit === this.UserInfo.unit ? this.Unit.UnitTextColor : this.Unit.UnitStroke))
+        .attr('fill', d => (d.unit === this.UserInfo.unit ? this.Unit.UnitTextPointColor : this.Unit.UnitTextColor))
         .style('font-size', this.Unit.UnitTextSize)
         .style('text-anchor', 'middle')
         .text(d => `${d.unit}호`)
@@ -203,37 +207,46 @@ export default {
         vRow: unitInVRow
       })
     },
+    formatBarData() {
+      let copiedData = JSON.parse(JSON.stringify(this.DataItems))
+      copiedData.forEach(d => {
+        for (let key in d) {
+          d[key].forEach(_d => {
+            this.bgStructureData.forEach(_bd => {
+              if (_bd.unit !== _d.unit) return
+              this.formattedBarData.push({ unit: _d.unit, barPosition: _bd.barPosition, quantity: _d.quantity })
+            })
+          })
+        }
+      })
+    },
     formatData() {
       this.dataItems = JSON.parse(JSON.stringify(this.DataItems[0]))
       let filteredDatas = []
       for (let key in this.dataItems) {
         this.dataItems[key].forEach(d => {
-          // ! FIX 3개라고 가정하고 만듦 2수정
-          let vPosition = this.grid.v === 3 ? 1 : 0 // 미완성
+          let vPosition = this.UserInfo.floor === this.UserInfo.maxfloor ? 0 : 1
+          let xPosition = this.grid.h === 2 && this.stUnitNo === 1 ? 0 : 1
+
           switch (d.unit) {
             case this.UserInfo.unit - 1:
-              d.coordinate = [0, vPosition]
-              d.barPosition = [0]
+              d.coordinate = [xPosition, vPosition]
               filteredDatas.push(d)
               break
             case this.UserInfo.unit:
-              d.coordinate = [1, vPosition]
-              d.barPosition = [2]
+              d.coordinate = [xPosition, vPosition]
               filteredDatas.push(d)
               break
             case this.UserInfo.unit + 1:
-              d.coordinate = [2, vPosition]
-              d.barPosition = [3]
+              d.coordinate = [xPosition, vPosition]
               filteredDatas.push(d)
               break
             case this.UserInfo.unit + 100:
-              d.coordinate = [1, vPosition - 1]
-              d.barPosition = [0]
+              d.coordinate = [xPosition, vPosition - 1]
               filteredDatas.push(d)
               break
             case this.UserInfo.unit - 100:
-              d.coordinate = [1, vPosition + 1]
-              d.barPosition = [4]
+              d.coordinate = [xPosition, vPosition + 1]
               filteredDatas.push(d)
               break
           }
@@ -247,12 +260,20 @@ export default {
     setBgDataItems() {
       let userFloor = this.UserInfo.floor
       let stUnit = this.UserInfo.unit
-      let stUnitArr = stUnit.toString().split('')
-      let stUnitNo = stUnitArr.length < 4 ? +stUnitArr[0] : +(stUnitArr[0] + stUnitArr[1])
-      if (stUnitNo === this.UserInfo.maxunitno || stUnitNo === 1) {
-        this.grid.v = 2
+      let stUnitNoArr = stUnit
+        .toString()
+        .split('')
+        .slice(-2)
+
+      this.stUnitNo = +stUnitNoArr.reduce((v, c) => {
+        c = v + c
+        return c
+      }, '')
+
+      if (this.stUnitNo === this.UserInfo.maxunitno || this.stUnitNo === 1) {
+        this.grid.h = 2
       } else {
-        this.grid.v = 3
+        this.grid.h = 3
       }
 
       if (userFloor === this.UserInfo.maxfloor || userFloor === 1) {
@@ -265,9 +286,9 @@ export default {
       let vLayoutArr = Array.from({ length: this.grid.v }, () => null)
 
       let hUnits
-      if (stUnitNo === this.UserInfo.maxunitno) {
+      if (this.stUnitNo === this.UserInfo.maxunitno) {
         hUnits = [stUnit - 1, stUnit]
-      } else if (stUnitNo === 1) {
+      } else if (this.stUnitNo === 1) {
         hUnits = [stUnit, stUnit + 1]
       } else {
         hUnits = [stUnit - 1, stUnit, stUnit + 1]
@@ -283,16 +304,18 @@ export default {
         this.bgStructureData.push({
           unit: hUnits[i],
           isUserUnit: hUnits[i] === stUnit,
-          coordinate: [i, this.grid.v === 3 ? 1 : 0],
+          coordinate: [i, userFloor === this.UserInfo.maxfloor ? 0 : 1],
           barPosition: i + 1,
           filterValue: true
         })
       })
       vLayoutArr.forEach((d, i) => {
+        let xPosition = this.grid.h === 2 && this.stUnitNo === 1 ? 0 : 1
+
         this.bgStructureData.push({
           unit: vUnits[i],
           isUserUnit: hUnits[i] === stUnit,
-          coordinate: [1, i],
+          coordinate: [xPosition, i],
           barPosition: i === 0 ? i : hLayoutArr.length + 1,
           filterValue: vUnits[i] === stUnit ? false : true
         })

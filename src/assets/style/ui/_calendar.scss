@@ -41,10 +41,11 @@
       &_date {
         width: 3rem;
         height: 3rem;
-        // background-color: #2d519f;
-        background-color: transparent;
+        background-color: #2d519f35;
+        // background-color: transparent;
         border: 1px solid #516998;
         border-radius: 50%;
+        color: $blue_light;
         font-weight: bold;
         line-height: 3rem;
         text-align: center;
@@ -55,7 +56,11 @@
         }
 
         &.active {
-          background-color: #2d519f;
+          background-color: $blue_normal;
+          border-color: $gray03;
+          color: $white;
+          font-size: 110%;
+          font-weight: 400;
         }
 
         &:hover {

@@ -241,6 +241,7 @@ export default {
 
         this.$set(this.formattedMonth, row, newRow)
         // * Set 사용법 참고
+        // * set(arr, index, value)
         // https://stackoverflow.com/questions/45644781/update-value-in-multidimensional-array-in-vue
         // * 2 STEP | 왜 안되는지 알아낸다.
         // this.formattedMonth.map(row => {
