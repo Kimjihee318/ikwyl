@@ -23,7 +23,6 @@ export default {
       state.dailySHS = result
     },
     setDailySHSItem(state, { key, idx, property, value }) {
-      console.log('TEST MODEL', state.dailySHS[key][idx])
       state.dailySHS[key][idx][property] = value
     },
     setJoinedSHS(state, payload) {
@@ -53,7 +52,6 @@ export default {
       }
     },
     async upReport2Server({ state }, { key, idx }) {
-      console.log(`TEST UP REPORT`, state.dailySHS[key][idx])
       let changed = state.dailySHS[key][idx]
       let data = {
         id: changed.id,

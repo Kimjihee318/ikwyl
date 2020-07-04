@@ -17,11 +17,11 @@
       <template v-else>
         <div><label>주소</label><input v-model="address" type="text" /></div>
         <div><label>빌딩 명</label><input v-model="buildingName" type="text" /></div>
-        <div><label>동</label><input v-model="buildingNo" type="text" /></div>
-        <div><label>층수</label><input v-model="floor" type="text" /></div>
-        <div><label>호수</label><input v-model="unit" type="text" /></div>
-        <div><label>최고층</label><input v-model="maxFloor" type="text" /></div>
-        <div><label>층 별 총 호수</label><input v-model="maxUnitNo" type="text" /></div>
+        <div><label>동</label><input v-model="buildingNo" type="number" /></div>
+        <div><label>층수</label><input v-model="floor" type="number" /></div>
+        <div><label>호수</label><input v-model="unit" type="number" /></div>
+        <div><label>최고층</label><input v-model="maxFloor" type="number" /></div>
+        <div><label>층 별 총 호수</label><input v-model="maxUnitNo" type="number" /></div>
         <div class="btn_wrapper">
           <div v-if="mode === 'NEW'" class="btn_user_info" @click="onAction('ADD')">확인</div>
           <div v-else-if="mode === 'MOD'" class="btn_user_info" @click="onAction('EDIT')">확인</div>
@@ -101,7 +101,6 @@ export default {
   },
   mounted() {
     this.getUserInfoFromServer(mode => {
-      console.log(mode)
       this.mode = mode
     })
   },

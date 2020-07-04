@@ -121,6 +121,7 @@ export default {
     draw() {
       this.setSelectedDateSHS()
       this.setFloorBgStructure()
+      this.setIsNodata()
       this.setSurroundingFloorSHS()
     },
     // [ JOINED SHS ]
@@ -158,7 +159,10 @@ export default {
       let floors = []
       switch (this.userInfo.floor) {
         case this.userInfo.maxfloor:
-          floors = [this.userInfo.floor - 1, this.userInfo.floor]
+          floors =
+            this.userInfo.floor === this.userInfo.maxfloor
+              ? [this.userInfo.floor]
+              : [this.userInfo.floor - 1, this.userInfo.floor]
           break
         case 1:
           floors = [this.userInfo.floor, this.userInfo.floor + 1]
@@ -181,9 +185,21 @@ export default {
         )
       })
     },
+    setIsNodata() {
+      if (!this.selectedDateSHS || this.selectedDateSHS.length === 0 || !this.selectedDateSHS[0]) {
+        this.isNoData = true
+        return
+      }
+      let filteredFloors = Object.keys(this.selectedDateSHS[0])
+        .filter(key => this.usedfloors.includes(Number(key)))
+        .reduce((obj, key) => {
+          obj[key] = this.selectedDateSHS[0][key]
+          return obj
+        }, {})
+      this.isNoData = Object.keys(filteredFloors).length !== 0 ? false : true
+    },
     setSelectedDateSHS() {
       this.selectedDateSHS = __F.getKeyofDateType(this.formattedJoinedSHS, this.selectedDates)
-      this.isNoData = this.selectedDateSHS.length === 0 ? true : false
     },
     setSurroundingFloorSHS() {
       if (Object.keys(this.formattedJoinedSHS).length === 0) return

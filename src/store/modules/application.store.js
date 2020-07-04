@@ -2,8 +2,8 @@ export default {
   namespaced: true,
   state: {
     window: {
-      width: window.innerWidth,
-      height: window.innerHeight
+      width: 0,
+      height: 0
     }
   },
   mutations: {

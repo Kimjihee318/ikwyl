@@ -37,25 +37,25 @@ export default {
     },
     drawBars() {
       this.setLinearGradient(this.secondChartArea, this.Rect.RectColorTypeGradient, 0, this.Rect.RectFillType, null, [
-        100,
-        100
+        0,
+        5
       ])
 
       let boxGroup = this.secondChartArea
         .append('g')
         .attr('class', 'surrounding_data_bar')
-        .style('fill', 'url(#gradient_linear)')
         .selectAll('g')
         .data(this.formattedBarData)
         .enter()
 
       let boxs = boxGroup
         .append('g')
+        .style('fill', 'url(#gradient_linear)')
         .attr('class', (d, i) => {
           return `surrounding_g_bar_${i}`
         })
         .attr('transform', d => {
-          return `translate(${120}, ${this.scaleBarBand(d.barPosition)})`
+          return `translate(${150}, ${this.scaleBarBand(d.barPosition)})`
         })
 
       boxs
@@ -277,7 +277,7 @@ export default {
       }
 
       if (userFloor === this.UserInfo.maxfloor || userFloor === 1) {
-        this.grid.v = 2
+        this.grid.v = userFloor === this.UserInfo.maxfloor && userFloor === 1 ? 1 : 2
       } else {
         this.grid.v = 3
       }
@@ -293,10 +293,22 @@ export default {
       } else {
         hUnits = [stUnit - 1, stUnit, stUnit + 1]
       }
-      let vUnits =
-        this.grid.v === 3
-          ? [stUnit + 100, stUnit, stUnit - 100]
-          : [userFloor === 1 ? stUnit + 100 : null, stUnit, userFloor === this.UserInfo.maxfloor ? stUnit - 100 : null]
+      let vUnits
+      switch (this.grid.v) {
+        case 3:
+          vUnits = [stUnit + 100, stUnit, stUnit - 100]
+          break
+        case 2:
+          vUnits = [
+            userFloor === 1 ? stUnit + 100 : null,
+            stUnit,
+            userFloor === this.UserInfo.maxfloor ? stUnit - 100 : null
+          ]
+          break
+        case 1:
+          vUnits = [stUnit]
+          break
+      }
 
       // return truthy
       vUnits = vUnits.filter(d => d)

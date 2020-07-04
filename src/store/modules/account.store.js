@@ -4,7 +4,6 @@ import router from '@/routes/index'
 import accountApi from '@/service/service.account'
 
 let ACCOUNT = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
-console.log(`START STORE`, ACCOUNT)
 export default {
   namespaced: true,
   state: {
@@ -24,9 +23,25 @@ export default {
     userInfoIdx: null
   },
   mutations: {
+    reset(state) {
+      state.email = ''
+      state.permission = null
+      state.token = ''
+      state.user = ''
+      state.userInfo = {
+        address: '',
+        buildingname: '',
+        buildingno: '',
+        floor: '',
+        maxunitno: '',
+        maxfloor: '',
+        unit: ''
+      }
+      state.userInfoIdx = ''
+    },
     setAccount(state, payload) {
       state.email = payload.user.email
-      state.token = payload.user.token
+      state.token = payload.token
       state.user = payload.user.displayName
     },
     setIdx(state, payload) {
@@ -50,17 +65,19 @@ export default {
   },
   actions: {
     // * [ LOGIN / LOGOUT ]
-    async login({ commit }) {
+    async login({ state, commit }) {
       await accountApi.setAccount2LocalStorage(res => {
         commit('setAccount', res)
         ACCOUNT = res
         if (!ACCOUNT) return
         ACCOUNT.isNewUser ? router.push({ path: '/userinfo' }) : router.push({ path: '/main' })
+        console.log(`STATE:`, state)
       })
     },
-    async logout() {
+    async logout({ commit }) {
       await accountApi.delAccount2LocalStorage(({ isEmpty }) => {
         if (isEmpty) console.log('GOOD')
+        commit('reset')
       })
     },
     // * [ PERMISSION ]

@@ -104,15 +104,7 @@ export default {
       return this.user.toUpperCase()
     },
     checkBreakPoint() {
-      console.log(`[BREAK POINT]`, this.window.width)
       return this.window.width > 1439.98
-    }
-  },
-  watch: {
-    buildingName: {
-      handler(val) {
-        console.log(`[WATCH]`, val)
-      }
     }
   },
   mounted() {

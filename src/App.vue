@@ -10,10 +10,11 @@ import { mapMutations } from 'vuex'
 export default {
   name: 'App',
   created() {
-    if (!localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT)) return
+    // if (!localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT)) return
     window.addEventListener('resize', this.handleResize)
     this.handleResize()
   },
+  watch: {},
   destroyed() {
     window.removeEventListener('resize', this.handleResize)
   },
