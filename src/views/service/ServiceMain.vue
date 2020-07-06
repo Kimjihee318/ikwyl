@@ -110,6 +110,14 @@ export default {
         this.draw()
       },
       deep: true
+    },
+    userInfo: {
+      handler(val) {
+        console.log(`WATCH USIF`, val)
+        if (!val || Object.keys(val).length === 0) return
+        this.getJoinedSHS()
+      },
+      deep: true
     }
   },
 
@@ -124,14 +132,7 @@ export default {
       this.setIsNodata()
       this.setSurroundingFloorSHS()
     },
-    // [ JOINED SHS ]
-    async getJoinedSHS() {
-      console.log(`[SET JOINED]`)
-      let isData = await this.getJoinedSHSFromServer()
-      if (!isData) return
-      this.formatJoinedSHS()
-      this.draw()
-    },
+
     formatJoinedSHS() {
       let copied = JSON.parse(JSON.stringify(this.joinedSHSWithUserInfo))
 
@@ -240,6 +241,15 @@ export default {
           }
         })
       })
+    },
+    // [ JOINED SHS ]
+    async getJoinedSHS() {
+      console.log(`[GET JOINED] 02`)
+      console.log(`[GET JOINED] userInfo`, this.userInfo)
+      let isData = await this.getJoinedSHSFromServer()
+      if (!isData) return
+      this.formatJoinedSHS()
+      this.draw()
     }
   }
 }

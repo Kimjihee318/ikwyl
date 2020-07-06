@@ -82,7 +82,9 @@ const router = new VueRouter({
       meta: {
         requiresAuth: true
       }
-    }
+    },
+    { path: '/404', component: () => import('@/views/service/Service404.vue') },
+    { path: '*', redirect: '/404' }
   ]
 })
 

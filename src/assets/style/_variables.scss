@@ -1,11 +1,16 @@
 // * LAYOUT
 $lnb_width: 20rem;
 
+// * FONT STYLE
+$title01: 1.5rem;
+$title02: 1.1rem;
+
 // * DETAIL
 $border_radius: 3px;
 
 // * COLOR
 $white : #ffffff;
+$white01 : rgb(250,250,250);
 $white_alpha01 : rgba(255,255,255,0.3);
 
 $black: #000000;
@@ -20,27 +25,28 @@ $gray_alpha03 : rgba(240, 240, 240, 0.3);
 $gray_alpha_type_modal_bg_01: rgba(144, 144, 144, 0.5);
 $gray_alpha_type_modal_bg_02: rgba(144, 144, 144, 0.25);
 $gray_alpha_type_modal_bg_03: rgba(144, 144, 144, 0.1);
+$gray_alpha_type_modal_bg_04: rgba(200, 200, 200, 0.1);
 $gray_alpha_type_modal_bg_05: rgba(100, 100, 100, 0.1);
+$gray_alpha_type_modal_bg_06: #fafafa;
 $gray_border: #dddddd;
 
 $blue_bg: #0f1333;
+// $blue_bg_header: #0f1333;
 $blue_normal: #2d519f;
 // $blue_normal: #5a81ff;
 $blue_light: #81a8e3;
 $blue_lightest: #c0ddff;
+$blue_lightest02: #e2efff;
 $blue_alpha01: rgba(192, 221, 255, 0.5);
 $blue_alpha02: rgba(192, 221, 255, 0.3);
-
+$blue_alpha03: rgba(192, 221, 255, 0.2);
 $pink_light: #e684ff;
 $pink_normal: #e15cff;
-
+$orange: #ff7430;
 $orange_light: #ff915c;
 $orange_point: #ffbd71;
 $orange_point_alpha01: #ffbd71b3;
-
+$gradient_blue2orange: -webkit-linear-gradient(-79deg, #0041d8, #8593ff, #ffa851,#ffbf51);
 
 $pattern_diagonal_line: repeating-linear-gradient(-45deg, $gray_alpha_type_modal_bg_05, $gray_alpha_type_modal_bg_05 8px, transparent 0, transparent 20px);
 
-// * FONT STYLE
-$title_01: 1.5rem;
-$title_02: 1.1rem;

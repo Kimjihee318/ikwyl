@@ -18,8 +18,8 @@ async function delReport(id) {
 }
 
 // * [ USER JOIN SHS ]
-async function getJoinedSHS(callback) {
-  let res = await axios('joinreport').get('/')
+async function getJoinedSHS(userInfo, callback) {
+  let res = await axios('joinreport').post('/', userInfo)
   callback(res ? res.data : {})
 }
 

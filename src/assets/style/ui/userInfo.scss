@@ -1,46 +1,230 @@
 .user_info {
-  align-items: center;
   border-radius: 5px;
   display: flex;
   font-weight: 400;
+  height: 26rem;
   justify-content: center;
+  margin-top: 10rem;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
-  &_form_wrapper{
-    h4 {
-      margin: 0;
-      margin-bottom: 1rem;
-      // text-transform: uppercase;
-    }
-    width: 20rem;
-    background-color: #ffffff;
-    color: #000000;
-    padding: 0.5rem;
 
-    > div {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-      &.btn_wrapper {
-        justify-content: space-around;
-        margin-top: 1rem;
-        margin-bottom: 0;
+  &_form_wrapper{
+    background-color: $white01;
+    color: $black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.2rem;
+    width: 52rem;
+    -webkit-border-radius: $border_radius;
+    -moz-border-radius: $border_radius;
+    -ms-border-radius: $border_radius;
+    -o-border-radius: $border_radius;
+
+    .title{
+      font-family: roboto;
+      margin: 0;
+      margin-bottom: 1.7rem;
+      font-size: $title01;
+      // text-transform: uppercase;
+
+      &.type_sub {
+        font-size: $title01;
+        font-weight: 400;
       }
     }
 
-    .btn_user_info {
-      background-color: $blue_alpha01 ;
-      border-radius: $border_radius;
-      border: 1px solid $blue_light;
-      color: $blue_bg;
-      cursor: pointer;
-      padding: 0 1rem 0 1rem;
-      -webkit-border-radius: $border_radius;
-      -moz-border-radius: $border_radius;
-      -ms-border-radius: $border_radius;
-      -o-border-radius: $border_radius;
-}
+    .wrap__info {
+      display: flex;
+      justify-content: space-between;
+      .group {
+        background-color: $gray_alpha_type_modal_bg_04;
+        border: 1px solid $blue_lightest;
+        border-radius: $border_radius;
+        padding: .5rem 1rem;
+        width: 48%;
+        -webkit-border-radius: $border_radius;
+        -moz-border-radius: $border_radius;
+        -ms-border-radius: $border_radius;
+        -o-border-radius: $border_radius;
+        .wrap__input {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 0.3rem;
+          position: relative;
+          label {
+            align-items: center;
+            color: $blue_bg;
+            display: flex;
+            justify-content: flex-start;
+    
+            &[data-label-has-icon='unit'] {
+              &:before {
+                content: '호수는 100단위를 기준으로 합니다.';
+                background-color: $blue_lightest02;
+                border: 1px solid $blue_lightest;
+                border-radius: 3px;
+                color: black;
+                display: none;
+                font-size: .9rem;
+                height: 3rem;
+                line-height: 1.4rem;
+                padding: .5rem;
+                position: absolute;
+                top: 0;
+                left: 1.7rem;
+                width: 9rem;
+                z-index: 1;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                -ms-border-radius: 3px;
+                -o-border-radius: 3px;
+    }
+            }
+    
+            &[data-label-has-icon='floor'] {
+              &:before {
+                content: '자신이 사는 층 수를 입력해주세요.';
+                background-color: $blue_lightest02;
+                border: 1px solid $blue_lightest;
+                border-radius: 3px;
+                color: black;
+                display: none;
+                font-size: .9rem;
+                height: 3rem;
+                line-height: 1.4rem;
+                padding: .5rem;
+                position: absolute;
+                top: 0;
+                left: 1.7rem;
+                width: 9rem;
+                z-index: 1;
+              }
+            }
+          
+            &[data-label-has-icon='max_floor'] {
+              &:before {
+                content: '건물의 총 층 수를 입력해주세요.';
+                background-color: $blue_lightest02;
+                border: 1px solid $blue_lightest;
+                border-radius: 3px;
+                color: black;
+                display: none;
+                font-size: .9rem;
+                height: 3rem;
+                line-height: 1.4rem;
+                padding: .5rem;
+                position: absolute;
+                top: 0;
+                left: 1.7rem;
+                width: 9rem;
+                z-index: 1;
+              }
+            }
+            
+            &[data-label-has-icon='max_unit_no'] {
+              &:before {
+                content: '자신이 사는 층의 총 방의 수를 입력해주세요.';
+                background-color: $blue_lightest02;
+                border: 1px solid $blue_lightest;
+                border-radius: 3px;
+                color: black;
+                display: none;
+                font-size: .9rem;
+                height: 3rem;
+                line-height: 1.4rem;
+                padding: .5rem;
+                position: absolute;
+                top: 0;
+                left: 1.7rem;
+                width: 9rem;
+                z-index: 1;
+              }
+            }
+            
+            &:hover {
+              &[data-label-has-icon='unit'] {
+                &:before {
+                  display: block;
+                }
+              }
+              &[data-label-has-icon='floor'] {
+                &:before {
+                  display: block;
+                }
+              }
+              &[data-label-has-icon='max_floor'] {
+                &:before {
+                  display: block;
+                }
+              }
+              &[data-label-has-icon='max_unit_no'] {
+                &:before {
+                  display: block;
+                }
+              }
+            }
+            .icon {
+              cursor: pointer;
+              fill: $blue_light;
+              position: relative;
+              top: 1px;
+              right: 3px;
+              transform: scale(0.8,0.8);
+              -webkit-transform: scale(0.8,0.8);
+              -moz-transform: scale(0.8,0.8);
+              -ms-transform: scale(0.8,0.8);
+              -o-transform: scale(0.8,0.8);
+              // &:hover {
+    
+              // }
+            }
+          }
+          .form_has_add {
+            display: flex;
+            .icon {
+              fill: $blue_normal;
+            }
+          }
+          input, select {
+            border: 1px solid $blue_lightest;
+            
+          }
+          input {
+            width: 11.6rem;
+          }
+          select {
+            width: 10rem;
+          }
+        }
+      }
+    }
+    
+
+    .wrap__btn {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      margin-bottom: 0;
+
+      .btn_user_info {
+        background-color: $blue_alpha01 ;
+        border-radius: $border_radius;
+        border: 1px solid $blue_light;
+        color: $blue_bg;
+        cursor: pointer;
+        text-align: center;
+        padding: 0 1rem 0 1rem;
+        -webkit-border-radius: $border_radius;
+        -moz-border-radius: $border_radius;
+        -ms-border-radius: $border_radius;
+        -o-border-radius: $border_radius;
+      }
+    }
+
+    
   }
 }

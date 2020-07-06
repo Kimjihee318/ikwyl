@@ -79,9 +79,14 @@ export default {
     },
 
     // * [ USER JOIN SHS ]
-    async getJoinedSHSFromServer({ commit }) {
+    async getJoinedSHSFromServer({ rootState, commit }) {
       try {
-        await reportApi.getJoinedSHS(res => {
+        let userInfo = {
+          buildingname: rootState.account.userInfo.buildingname,
+          buildingno: rootState.account.userInfo.buildingno
+        }
+        await reportApi.getJoinedSHS(userInfo, res => {
+          console.log(`TEST 01`, res.data)
           let formattedData = __F.obj2Lowercase(res.data)
           commit('setJoinedSHS', formattedData)
         })

@@ -7,7 +7,7 @@ export default {
     boxSelection: null,
     bgBoxGroup: null,
     boxGroup: null,
-    emptyUnitNo: 2, // FIX
+    emptyUnits: 2, // FIX
     // GRID
     grid: {
       h: 7, // FIX
@@ -41,15 +41,15 @@ export default {
 
       this.bgBoxSelection = this.bgBoxGroup
         .append('g')
-        .attr('class', (d, i) => `bg_box_${this.maxUnitNo - i - this.emptyUnitNo}`)
+        .attr('class', (d, i) => `bg_box_${this.maxUnitNo - i - this.emptyUnits}`)
         .attr('transform', (d, i) => {
           let inverseNo = this.maxUnitNo - i
-          let rowNo = Math.floor((inverseNo - this.emptyUnitNo - 1) / this.grid.h)
+          let rowNo = Math.floor((inverseNo - this.emptyUnits - 1) / this.grid.h)
           return `translate(${this.scaleHBand(
             (rowNo === 1
-              ? i + this.emptyUnitNo
+              ? i + this.emptyUnits
               : // * FIX Used Magic No.
-                inverseNo + this.emptyUnitNo + 2) % this.grid.h
+                inverseNo + this.emptyUnits + 2) % this.grid.h
           )}, 
           ${this.scaleVBand(rowNo)})`
         })
@@ -105,7 +105,7 @@ export default {
 
       this.boxSelection = this.boxGroup
         .append('g')
-        .attr('class', (d, i) => `box_${this.maxUnitNo - i - this.emptyUnitNo}`)
+        .attr('class', (d, i) => `box_${this.maxUnitNo - i - this.emptyUnits}`)
         .attr('transform', d => {
           let unitNoArr = d.unit
             .toString()
@@ -120,12 +120,12 @@ export default {
               })
             ) - 1 // start no is 0
           let inverseNo = this.maxUnitNo - unitNo
-          let rowNo = Math.floor((inverseNo - this.emptyUnitNo - 1) / this.grid.h)
+          let rowNo = Math.floor((inverseNo - this.emptyUnits - 1) / this.grid.h)
           return `translate(${this.scaleHBand(
             (rowNo === 1
-              ? unitNo + this.emptyUnitNo
+              ? unitNo + this.emptyUnits
               : // * FIX Used Magic No.
-                inverseNo + this.emptyUnitNo + 2) % this.grid.h
+                inverseNo + this.emptyUnits + 2) % this.grid.h
           )}, 
           ${this.scaleVBand(rowNo)})`
         })

@@ -91,7 +91,7 @@ export default {
     },
     // * [ USER INFO ]
     async getUserInfoFromServer({ commit, state }, callback) {
-      console.log(`[GET USER INFO]`)
+      console.log(`[GET USER INFO] 01`)
       let userEmail = { useremail: state.email }
       await accountApi.getUserInfo(userEmail, res => {
         let mode

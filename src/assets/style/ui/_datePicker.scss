@@ -79,7 +79,7 @@
           }
 
           &.today {
-            border: 1px solid $blue_normal;
+            border: 2px solid $blue_normal;
             border-radius: 50%;
             font-weight: 500;
             font-size: 80%;
@@ -88,15 +88,15 @@
             -ms-border-radius: 50%;
             -o-border-radius: 50%;
 
-            &:after {
-              content: 'Today';
-              color: $blue_normal;
-              display: block;
-              font-weight: 500;
-              position: relative;
-              left: -.4rem;
-              width: 2rem;
-            }
+            // &:after {
+            //   content: 'Today';
+            //   color: $blue_normal;
+            //   display: block;
+            //   font-weight: 500;
+            //   position: relative;
+            //   left: -.4rem;
+            //   width: 2rem;
+            // }
           }
 
           &.active {

@@ -3,7 +3,7 @@
     <div class="account_info">
       <div class="user">
         <div v-if="checkBreakPoint" class="user_img">
-          <!-- <img src="@/assets/images/woman-raising-hand_1f64b-200d-2640-fe0f.png" alt="user_image" class="clip-circle" /> -->
+          <image-user-image :Canvas="userImageCanvas" />
         </div>
         <div class="user_name">{{ userUpperCase }}</div>
       </div>
@@ -56,6 +56,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_.js'
+import _ImageUserImage from '@/primitives/imageUserImage.js'
 import IconAccount from '@/assets/icons/account_circle-24px.svg'
 import IconAdd from '@/assets/icons/add-24px.svg'
 import IconAdmin from '@/assets/icons/admin_panel_settings-24px.svg'
@@ -64,6 +65,7 @@ import IconSend from '@/assets/icons/send-24px.svg'
 import FormSmokeToday from '@/components/form/FormSmokeToday.vue'
 import SystemNavigation from '@/views/system/SystemNavigation'
 import UiModal from '@/components/ui/Modal.vue'
+import ImageUserImage from '@/lib/d3/chart/userImage/userImage.vue'
 
 export default {
   name: 'left-navigation-bar',
@@ -73,6 +75,7 @@ export default {
     IconAdmin,
     IconChange,
     IconSend,
+    ImageUserImage,
     FormSmokeToday,
     SystemNavigation,
     UiModal
@@ -97,14 +100,17 @@ export default {
     buildingNo() {
       return this.userInfo.buildingno
     },
+    checkBreakPoint() {
+      return this.window.width > 1439.98
+    },
     unit() {
       return this.userInfo.unit
     },
+    userImageCanvas() {
+      return _ImageUserImage.canvas
+    },
     userUpperCase() {
       return this.user.toUpperCase()
-    },
-    checkBreakPoint() {
-      return this.window.width > 1439.98
     }
   },
   mounted() {

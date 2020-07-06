@@ -22,11 +22,17 @@
       border-right: 1px solid $blue_light;
       
       &_img {
-        width: 2rem;
+        border: 1px solid $blue_light;
+        // border-radius: 50%;
         height: 2rem;
         margin-bottom: 0.2rem;
-        border: 2px solid $blue_light;
-        border-radius: 50%;
+        width: 2rem;
+        > div {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+
+        }
       }
       &_name {
         width: 4rem;

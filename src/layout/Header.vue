@@ -1,7 +1,6 @@
 <template>
   <div class="header">
-    <div class="logo" @click="home"><icon-logo class="icon" /><span>Find the smoker</span></div>
-    <!-- <div class="header_user_btn_onLoad" @click="onLoad">{{ user }}</div> -->
+    <div class="logo" @click="home"><icon-logo /><span>Find the smoker</span></div>
     <div class="btn logout type_text" @click="onLogout">logout</div>
   </div>
 </template>
@@ -36,8 +35,6 @@ export default {
 
 <style lang="scss" scoped>
 .header {
-  // color: $black;
-
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -48,6 +45,7 @@ export default {
     border-radius: $border_radius;
     color: $blue_bg;
     cursor: pointer;
+    font-family: roboto;
     font-weight: 500;
     line-height: 1.5rem;
     padding: 0 1rem 0 1rem;
@@ -64,11 +62,10 @@ export default {
       margin-right: 1rem;
     }
     span {
-      // background-color: $orange_point;
-      color: $white;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 400;
-      text-transform: uppercase;
+      line-height: 1.2rem;
+      padding: 0.5rem 1rem;
     }
   }
 }
