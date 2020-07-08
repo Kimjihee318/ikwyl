@@ -21,7 +21,7 @@ export default {
     UnitWidth: 38,
     UnitHeight: 38,
     UnitFillColor: '#2d519fb3',
-    UnitFillPointColor: '#5a81ff50',
+    UnitFillPointColor: '#3a53a5',
     UnitStroke: 'traslparent',
     UnitStrokeWidth: 0.5,
     UnitTextColor: '#81a8e3',

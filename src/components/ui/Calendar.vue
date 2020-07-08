@@ -2,7 +2,7 @@
   <div class="calendar type_row">
     <div class="calendar_title">
       <span class="type_english_font">FROM {{ startMonth.toUpperCase() }}</span>
-      <span class="type_english_font">{{ `${thisMonth.toUpperCase()}  TODAY` }}</span>
+      <span class="type_english_font">{{ `${thisMonth.toUpperCase()}` }}</span>
     </div>
     <div class="calendar_btn_wrapper">
       <div class="btn btn_svg btn_prev" @click="onPrev"><svg-prev-arrow /></div>

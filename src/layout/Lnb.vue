@@ -22,7 +22,7 @@
     <button class="add type_english_font" title="Add Record" @click="onAdd">
       <span v-if="checkBreakPoint">Add Record</span><span v-else><icon-add /></span>
     </button>
-    <ui-modal v-if="modalOpened" v-model="modalOpened" :width="600" :height="580">
+    <ui-modal v-if="modalOpened" v-model="modalOpened" :width="600" :height="580" :start="0">
       <template #slot_title>Today's secondhand smoke detection</template>
       <template #slot_contents><form-smoke-today /></template>
     </ui-modal>

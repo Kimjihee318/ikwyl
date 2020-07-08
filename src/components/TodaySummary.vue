@@ -67,25 +67,21 @@ export default {
     selectedDates: {
       handler(val) {
         if (!val || val.length === 0) return
-
-        this.setSHS()
-        this.getJoinedSHS()
+        this.draw()
       },
       deep: true
     }
   },
   mounted() {
-    this.setSHS()
-    this.getJoinedSHS()
+    this.draw()
   },
   methods: {
     // * getJoined 를 중복해서 부르고 있음
     ...mapActions(__C.STORE.NAMESPACE.REPORT, ['getReportFromServer', 'getJoinedSHSFromServer']),
-    async getJoinedSHS() {
-      let isData = await this.getJoinedSHSFromServer()
-      if (!isData) return
-      this.setFloorSHS()
-      this.setSurroundingRoomsSHS()
+
+    draw() {
+      this.setSHS()
+      this.getJoinedSHS()
     },
     init() {
       // set Quantity
@@ -116,6 +112,7 @@ export default {
     },
     // [ Daily SHS ]
     async setSHS() {
+      console.log(`TD SUMMARY Daily SHS`)
       let isSHS = await this.getReportFromServer()
       if (!isSHS) return
       let todaySHSKey = Object.keys(this.dailySHS).filter(d => __F.isSelectedDate(new Date(d), this.selectedDates[0]))
@@ -134,6 +131,12 @@ export default {
       this.todaySHS.quantity.shs.value = __F.integer(avgSHSQauntity)
       // set Time
       this.todaySHS.time.dailyAvg.value = avgSHSTime
+    },
+    async getJoinedSHS() {
+      let isData = await this.getJoinedSHSFromServer()
+      if (!isData) return
+      this.setFloorSHS()
+      this.setSurroundingRoomsSHS()
     }
   }
 }

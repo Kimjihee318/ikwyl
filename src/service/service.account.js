@@ -11,7 +11,22 @@ async function delAccount2LocalStorage(callback) {
     callback({ isEmptyLocalStorage: isEmptyLocalStorage })
   })
 }
-async function setAccount2LocalStorage(callback) {
+
+async function setAccount2LocalStorage(data, callback) {
+  let res = await axios('login').post('/', data)
+  let account = {
+    token: 'visitor_test',
+    user: { email: 'visitor@fts.com', displayName: '방문자' },
+    isNewUser: true
+  }
+  if (res) {
+    localStorage.setItem(__C.LOCAL_STORAGE_NAME.ACCOUNT, JSON.stringify(account))
+  }
+  let getLocalSTAccount = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
+  callback(getLocalSTAccount)
+}
+
+async function setGoogleAccount2LocalStorage(callback) {
   await OAuth.loginGoogleAuth(({ token, user, isNewUser }) => {
     let account = {
       token: token,
@@ -23,6 +38,27 @@ async function setAccount2LocalStorage(callback) {
     let getLocalSTAccount = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
     callback(getLocalSTAccount)
   })
+}
+
+//* [ BUILDING ]
+async function getBuildingName(callback) {
+  let res = await axios('buildingname').get('/')
+  callback(res ? res.data : {})
+}
+
+async function getBuildingNo(callback) {
+  let res = await axios('buildingno').get('/')
+  callback(res ? res.data : {})
+}
+
+async function addBuildingName(bdNa, callback) {
+  let res = await axios('buildingname').put('/', bdNa)
+  callback(res ? res.data : {})
+}
+
+async function addBuildingNo(bdNo, callback) {
+  let res = await axios('buildingno').put('/', bdNo)
+  callback(res ? res.data : {})
 }
 
 //* [ PERMISSION ]
@@ -55,10 +91,15 @@ async function postUserInfo(userdata, callback) {
 }
 
 export default {
+  addBuildingName,
+  addBuildingNo,
   addUserInfo,
   delAccount2LocalStorage,
   getUserInfo,
+  getBuildingName,
+  getBuildingNo,
   getUserPermission,
   postUserInfo,
-  setAccount2LocalStorage
+  setAccount2LocalStorage,
+  setGoogleAccount2LocalStorage
 }

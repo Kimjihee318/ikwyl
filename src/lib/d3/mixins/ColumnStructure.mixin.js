@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-
+import __F from '@/primitives/_function_'
 export default {
   data: () => ({
     bgStructureData: [],
@@ -36,10 +36,14 @@ export default {
       this.drawBars()
     },
     drawBars() {
-      this.setLinearGradient(this.secondChartArea, this.Rect.RectColorTypeGradient, 0, this.Rect.RectFillType, null, [
-        0,
-        5
-      ])
+      this.setLinearGradient(
+        this.secondChartArea,
+        this.Rect.RectColorTypeGradient,
+        -180,
+        this.Rect.RectFillType,
+        null,
+        [90, 100]
+      )
 
       let boxGroup = this.secondChartArea
         .append('g')
@@ -50,7 +54,7 @@ export default {
 
       let boxs = boxGroup
         .append('g')
-        .style('fill', 'url(#gradient_linear)')
+        // .style('fill', 'url(#gradient_linear)')
         .attr('class', (d, i) => {
           return `surrounding_g_bar_${i}`
         })
@@ -69,7 +73,7 @@ export default {
         .attr('y', 0.5)
         .attr('width', this.Unit.UnitSmellRectWidth)
         .attr('height', this.Unit.UnitSmellRectHeight)
-      // .attr('fill', this.Unit.UnitSmellRectColor)
+        .attr('fill', this.Rect.RectFillColor)
     },
     drawBarTitle() {
       let boxGroup = this.secondChartArea
@@ -209,16 +213,26 @@ export default {
     },
     formatBarData() {
       let copiedData = JSON.parse(JSON.stringify(this.DataItems))
+      let stUnit = this.UserInfo.unit
+      let userQuantities = []
+      let userBarPosition
       copiedData.forEach(d => {
         for (let key in d) {
           d[key].forEach(_d => {
             this.bgStructureData.forEach(_bd => {
               if (_bd.unit !== _d.unit) return
-              this.formattedBarData.push({ unit: _d.unit, barPosition: _bd.barPosition, quantity: _d.quantity })
+              if (_d.unit === stUnit) {
+                userQuantities.push(_d.quantity)
+                userBarPosition = _bd.barPosition
+              } else {
+                this.formattedBarData.push({ unit: _d.unit, barPosition: _bd.barPosition, quantity: _d.quantity })
+              }
             })
           })
         }
       })
+      if (userQuantities.length === 0) return
+      this.formattedBarData.push({ unit: stUnit, barPosition: userBarPosition, quantity: __F.mean(userQuantities) })
     },
     formatData() {
       this.dataItems = JSON.parse(JSON.stringify(this.DataItems[0]))
@@ -256,6 +270,8 @@ export default {
     },
     init() {
       this.bgStructureData = []
+      this.formattedSurroundingData = []
+      this.formattedBarData = []
     },
     setBgDataItems() {
       let userFloor = this.UserInfo.floor

@@ -5,8 +5,10 @@
     </div>
     <div class="main_body">
       <div class="main_left">
-        <today-summary />
-        <weekly-summray />
+        <template v-if="isVisible">
+          <today-summary ref="td_summary" />
+          <weekly-summray ref="wk_summary" />
+        </template>
       </div>
       <div class="main_right">
         <div class="main_chart_surrounding">
@@ -87,6 +89,9 @@ export default {
       let propertyToday = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
       return this.formattedJoinedSHS[propertyToday]
     },
+    isVisible() {
+      return this.joinedSHSWithUserInfo.length > 0
+    },
     surroundingDataItems() {
       return this.selectedDateSHS
     },
@@ -100,6 +105,8 @@ export default {
         if (val === true) return
         if (val === false) {
           this.getJoinedSHS()
+          this.$refs.td_summary.draw()
+          this.$refs.wk_summary.setCumulativeSHS()
         }
       },
       deep: true
@@ -122,6 +129,7 @@ export default {
   },
 
   mounted() {
+    console.log(`MOUNT MAIN`)
     this.getJoinedSHS()
   },
   methods: {
@@ -220,8 +228,8 @@ export default {
         result.push({
           floor: Number(d),
           avgQuantity: { title: '평균 간접 흡연 량', value: '' },
-          noOfMembers: { title: '데이터 입력자 수', value: '' },
-          noOfTotalMembers: { title: '총 이용자 수', value: '' }
+          noOfMembers: { title: '데이터 입력자 수', value: '' }
+          // noOfTotalMembers: { title: '총 이용자 수', value: '' }
         })
       })
 
@@ -235,17 +243,16 @@ export default {
         this.usedfloors.forEach((_d, _i) => {
           if (Number(d) === this.floorSummary[_i].floor) {
             let item = this.floorSummary[_i]
+            //!! FIXME
             item.avgQuantity.value = __F.integer(__F.propertyMean(selected[d], 'quantity'))
-            item.noOfMembers.value = __F.integer(selected[d].length)
-            item.noOfTotalMembers.alue = __F.integer(selected[d].length)
+            item.noOfMembers.value = __F.integer([...new Set(selected[d].map(d => d.unit))].length)
+            // item.noOfTotalMembers.value = __F.integer(selected[d].length)
           }
         })
       })
     },
     // [ JOINED SHS ]
     async getJoinedSHS() {
-      console.log(`[GET JOINED] 02`)
-      console.log(`[GET JOINED] userInfo`, this.userInfo)
       let isData = await this.getJoinedSHSFromServer()
       if (!isData) return
       this.formatJoinedSHS()

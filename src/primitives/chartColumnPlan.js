@@ -19,7 +19,7 @@ export default {
   },
   rect: {
     RectColorTypeGradient: ['#0f1333', '#ffbd71'],
-    RectFillColor: '#ffffff',
+    RectFillColor: '#ffbd71',
     RectFillType: 'whole_gradation',
     RectTextColor: '#ffbd71'
   },
@@ -35,7 +35,7 @@ export default {
     UnitWidth: 50,
     UnitHeight: 50,
     UnitFillColor: '#2d519fb3',
-    UnitFillPointColor: '#5a81ff50',
+    UnitFillPointColor: '#3a53a5',
     UnitStroke: 'transparent',
     UnitStrokeWidth: 0.5,
     UnitTextColor: 'rgb(129, 168, 227)',

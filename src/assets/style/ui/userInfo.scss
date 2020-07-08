@@ -191,7 +191,6 @@
           }
           input, select {
             border: 1px solid $blue_lightest;
-            
           }
           input {
             width: 11.6rem;
@@ -203,7 +202,6 @@
       }
     }
     
-
     .wrap__btn {
       display: flex;
       justify-content: center;
@@ -225,6 +223,19 @@
       }
     }
 
-    
+    .modal_wrap__content.type_user_info{
+      align-items: center;
+      display: flex;
+      height: 100%;
+      justify-content:space-between;
+      padding: 1rem;
+      width: 100%;
+      label {
+        margin-right: .3rem;
+      }
+      button {
+        height: 21px;
+      }
+    }
   }
 }

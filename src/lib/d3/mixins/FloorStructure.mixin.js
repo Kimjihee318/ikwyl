@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+import __F from '@/primitives/_function_'
 
 export default {
   data: () => ({
@@ -24,6 +25,7 @@ export default {
       this.setScale()
       this.drawBgBox()
       this.drawBgUnit()
+      if (!this.DataItems || this.DataItems.length === 0) return
       this.drawBoxGroup()
       this.drawUnit()
     },
@@ -96,6 +98,23 @@ export default {
     drawBoxGroup() {
       let dataItems = JSON.parse(JSON.stringify(this.DataItems))
 
+      if (this.UserInfo.floor === this.DataItems[0].floor) {
+        let stUnit = this.UserInfo.unit
+        let userQuantities = []
+        let copyUserItem = {}
+        let filtered = JSON.parse(JSON.stringify(dataItems)).filter(d => d.unit === stUnit)
+        if (filtered.length !== 0) {
+          filtered.forEach(d => {
+            copyUserItem = d
+            userQuantities.push(d.quantity)
+          })
+          let formattedDataItems = dataItems.filter(d => d.unit !== stUnit)
+          copyUserItem.quantity = __F.integer(__F.mean(userQuantities))
+          formattedDataItems.push(copyUserItem)
+
+          dataItems = formattedDataItems
+        }
+      }
       this.boxGroup = this.chartArea
         .append('g')
         .attr('class', 'boxGroup')

@@ -39,7 +39,7 @@
 
 <script>
 import * as d3 from 'd3'
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import __C from '@/primitives/_constants_.js'
 import __F from '@/primitives/_function_'
 import _ChartStackedData from '@/primitives/chartStacked'
@@ -129,25 +129,17 @@ export default {
     }
   },
   mounted() {
-    this.getJoinedSHS()
+    console.log(`MOUNT WEEK`)
+    this.setCumulativeSHS()
   },
   methods: {
-    ...mapActions(__C.STORE.NAMESPACE.REPORT, ['getJoinedSHSFromServer']),
-
-    async getJoinedSHS() {
-      console.log(`[FUNC WEEKLY JOINED]`)
-      //! FIX ME | 요청 중복 확인
-      let isData = await this.getJoinedSHSFromServer()
-      if (!isData) return
-      this.setCumulativeSHS()
-    },
     init() {
       this.cumulativeSHS.time.daily.value = ''
       this.cumulativeSHS.time.weekend.value = ''
     },
     setCumulativeSHS() {
+      if (this.joinedSHSWithUserInfo.length === 0) return
       let unit = this.userInfo.unit
-
       this.weeklySHS = __F.filterDatesOfSeletedWeek(this.joinedSHSWithUserInfo, 'date', this.selectedDates[0])
       this.userWeeklySHS = this.weeklySHS.filter(d => d.useremail === this.userInfo.useremail)
       this.userWeeklySHS.forEach(d => (d.date = new Date(d.date)))

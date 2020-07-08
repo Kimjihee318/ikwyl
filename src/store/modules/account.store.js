@@ -7,6 +7,8 @@ let ACCOUNT = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
 export default {
   namespaced: true,
   state: {
+    buidingNames: [],
+    buidingNums: [],
     email: ACCOUNT ? ACCOUNT.user.email : '',
     permission: __C.FULL_ACCESS_PERMISSION.SERVICE,
     token: ACCOUNT ? ACCOUNT.token : '',
@@ -24,6 +26,8 @@ export default {
   },
   mutations: {
     reset(state) {
+      state.buidingNames = []
+      state.buidingNums = []
       state.email = ''
       state.permission = null
       state.token = ''
@@ -43,6 +47,12 @@ export default {
       state.email = payload.user.email
       state.token = payload.token
       state.user = payload.user.displayName
+    },
+    setBuildingNames(state, payload) {
+      state.buidingNames = payload
+    },
+    setBuildingNo(state, payload) {
+      state.buidingNums = payload
     },
     setIdx(state, payload) {
       state.userInfoIdx = payload
@@ -65,13 +75,20 @@ export default {
   },
   actions: {
     // * [ LOGIN / LOGOUT ]
-    async login({ state, commit }) {
-      await accountApi.setAccount2LocalStorage(res => {
+    async googleLogin({ commit }) {
+      await accountApi.setGoogleAccount2LocalStorage(res => {
         commit('setAccount', res)
         ACCOUNT = res
         if (!ACCOUNT) return
         ACCOUNT.isNewUser ? router.push({ path: '/userinfo' }) : router.push({ path: '/main' })
-        console.log(`STATE:`, state)
+      })
+    },
+    async serverLogin({ commit }, data) {
+      await accountApi.setAccount2LocalStorage(data, res => {
+        commit('setAccount', res)
+        ACCOUNT = res
+        if (!ACCOUNT) return
+        ACCOUNT.isNewUser ? router.push({ path: '/userinfo' }) : router.push({ path: '/main' })
       })
     },
     async logout({ commit }) {
@@ -79,6 +96,46 @@ export default {
         if (isEmpty) console.log('GOOD')
         commit('reset')
       })
+    },
+    // * [ BUILDING ]
+    async getBuildingNamesFromserver({ commit }) {
+      try {
+        await accountApi.getBuildingName(res => {
+          let formattedObj = __F.obj2Lowercase(res.data)
+          commit('setBuildingNames', res.data.length === 0 ? null : formattedObj)
+        })
+      } catch (err) {
+        console.log(`[ERR]`, err)
+      }
+    },
+    async addBuildingNames2Server(vuex, bdNa) {
+      try {
+        await accountApi.addBuildingName(bdNa, res => {
+          console.log(res)
+        })
+      } catch (err) {
+        console.log(`[ERR]`, err)
+      }
+    },
+
+    async getBuildingNoFromserver({ commit }) {
+      try {
+        await accountApi.getBuildingNo(res => {
+          let formattedObj = __F.obj2Lowercase(res.data)
+          commit('setBuildingNo', res.data.length === 0 ? null : formattedObj)
+        })
+      } catch (err) {
+        console.log(`[ERR]`, err)
+      }
+    },
+    async addBuildingNums2Server(vuex, bdNo) {
+      try {
+        await accountApi.addBuildingNo(bdNo, res => {
+          console.log(res)
+        })
+      } catch (err) {
+        console.log(`[ERR]`, err)
+      }
     },
     // * [ PERMISSION ]
     async getUserPermissionFromServer({ state, commit }) {

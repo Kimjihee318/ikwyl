@@ -6,16 +6,16 @@
     </div>
     <div class="wrap__login">
       <div class="title">Log in</div>
-      <div class="button_google_login" @click="onLogin">
+      <div class="button_google_login" @click="onLogin('google')">
         <icon-google-logo class="icon" />
         <span>Log in With Google</span>
         <span></span>
       </div>
       <div class="divider">OR</div>
       <form class="form_login">
-        <input name="id" placeholder="Email" type="text" />
-        <input name="password" placeholder="Password" type="password" />
-        <button>Login</button>
+        <input v-model="id" name="id" placeholder="Email" type="text" />
+        <input v-model="password" name="password" placeholder="Password" type="password" />
+        <button @click="onLogin('server')">Login</button>
       </form>
     </div>
     <div class="copyright">
@@ -36,11 +36,26 @@ export default {
     IconGoogleLogo,
     IconLogo
   },
-  created() {},
+  data: () => ({
+    id: 'visitor',
+    password: '1234'
+  }),
   methods: {
-    ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['login']),
-    async onLogin() {
-      await this.login()
+    ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['googleLogin', 'serverLogin']),
+    async onLogin(type) {
+      try {
+        if (type === 'google') {
+          await this.googleLogin()
+        } else {
+          let data = {
+            id: this.id,
+            password: this.password
+          }
+          await this.serverLogin(data)
+        }
+      } catch (err) {
+        console.error(err)
+      }
     }
   }
 }

@@ -2,7 +2,7 @@
   <div>
     <h3>Daily Second Hand Smoking Board</h3>
     <div @click="onAdd"><icon-add /></div>
-    <ui-modal v-if="modalOpened" v-model="modalOpened" :width="1000" :height="500">
+    <ui-modal v-if="modalOpened" v-model="modalOpened" :width="1000" :height="800" :start="0">
       <template #slot_title>Today Second Hand Smoking Upload</template>
       <template #slot_contents>
         <template>

@@ -20,16 +20,17 @@ export default {
     // Close
   },
   props: {
+    height: Number,
+    start: Number,
     value: Boolean,
-    width: Number,
-    height: Number
+    width: Number
   },
   computed: {
     modalStyle() {
       return {
         width: `${this.width}px`,
         height: `${this.height}px`,
-        transform: `translate(${-(this.width / 2)}px, ${-(this.height / 2)}px)`
+        transform: `translate(${-(this.width / 2) + this.start}px, ${-(this.height / 2)}px)`
       }
     }
   },
