@@ -106,10 +106,6 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    &_h_row {
-    }
-    &_v_row {
-    }
   }
 }
 </style>

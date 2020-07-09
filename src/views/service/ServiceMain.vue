@@ -105,8 +105,6 @@ export default {
         if (val === true) return
         if (val === false) {
           this.getJoinedSHS()
-          this.$refs.td_summary.draw()
-          this.$refs.wk_summary.setCumulativeSHS()
         }
       },
       deep: true
@@ -257,6 +255,8 @@ export default {
       if (!isData) return
       this.formatJoinedSHS()
       this.draw()
+      this.$refs.td_summary.draw()
+      this.$refs.wk_summary.setCumulativeSHS()
     }
   }
 }

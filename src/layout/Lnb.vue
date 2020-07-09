@@ -28,9 +28,9 @@
     </ui-modal>
 
     <div class="service_nav">
-      <div class="service_nav_item" title="user information" @click="onMove">
+      <div class="service_nav_item" title="Setting of residence information" @click="onMove">
         <icon-account class="icon" />
-        <span>user information</span>
+        <span>Residence information</span>
       </div>
       <div class="service_nav_item" title="link">
         <icon-send class="icon type_move2right" />
@@ -57,7 +57,7 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_.js'
 import _ImageUserImage from '@/primitives/imageUserImage.js'
-import IconAccount from '@/assets/icons/account_circle-24px.svg'
+import IconAccount from '@/assets/icons/business-24px.svg'
 import IconAdd from '@/assets/icons/add-24px.svg'
 import IconAdmin from '@/assets/icons/admin_panel_settings-24px.svg'
 import IconChange from '@/assets/icons/sync-24px.svg'

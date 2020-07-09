@@ -5,7 +5,7 @@ export default {
     CanvasBgColor: 'transparent',
     CanvasBgPointColor: 'transparent',
     CanvasBorderWeight: 1,
-    CanvasBorderColor: ' rgba(192, 221, 255, 0.5)',
+    CanvasBorderColor: ' rgba(192, 221, 255, 0.3)',
     CanvasChartX: 0,
     CanvasChartY: 0
   },

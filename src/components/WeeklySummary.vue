@@ -129,7 +129,6 @@ export default {
     }
   },
   mounted() {
-    console.log(`MOUNT WEEK`)
     this.setCumulativeSHS()
   },
   methods: {

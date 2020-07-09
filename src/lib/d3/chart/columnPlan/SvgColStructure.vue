@@ -42,5 +42,6 @@ export default {
 <style lang="scss" scoped>
 .wrap__svg {
   padding: 0;
+  display: flex;
 }
 </style>

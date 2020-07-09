@@ -17,7 +17,7 @@ async function setAccount2LocalStorage(data, callback) {
   let account = {
     token: 'visitor_test',
     user: { email: 'visitor@fts.com', displayName: '방문자' },
-    isNewUser: true
+    isNewUser: false
   }
   if (res) {
     localStorage.setItem(__C.LOCAL_STORAGE_NAME.ACCOUNT, JSON.stringify(account))

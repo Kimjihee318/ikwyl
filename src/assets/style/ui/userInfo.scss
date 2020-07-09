@@ -1,8 +1,8 @@
 .user_info {
+  align-items: start;
   border-radius: 5px;
   display: flex;
   font-weight: 400;
-  height: 26rem;
   justify-content: center;
   margin-top: 10rem;
   -webkit-border-radius: 5px;
@@ -17,7 +17,6 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 1.2rem;
-    width: 52rem;
     -webkit-border-radius: $border_radius;
     -moz-border-radius: $border_radius;
     -ms-border-radius: $border_radius;
@@ -44,23 +43,46 @@
         border: 1px solid $blue_lightest;
         border-radius: $border_radius;
         padding: .5rem 1rem;
-        width: 48%;
+        width: 25rem;
         -webkit-border-radius: $border_radius;
         -moz-border-radius: $border_radius;
         -ms-border-radius: $border_radius;
         -o-border-radius: $border_radius;
+
+        &:nth-child(1) {
+          margin-right: 2rem;
+        }
         .wrap__input {
           align-items: center;
           display: flex;
           justify-content: space-between;
-          margin-bottom: 0.3rem;
+          margin-bottom: 0.7rem;
           position: relative;
+          
+          .msg__error {
+            align-items: center;
+            color: rgb(255, 81, 0);
+            display: flex;
+            font-size: 80%;
+            position: absolute;
+            top: 1.4rem;
+            right: 0;
+            .icon {
+              fill: rgb(255, 81, 0);
+              transform: scale(0.7,0.7);
+              -webkit-transform: scale(0.7,0.7);
+              -moz-transform: scale(0.7,0.7);
+              -ms-transform: scale(0.7,0.7);
+              -o-transform: scale(0.7,0.7);
+}
+          }
+
           label {
             align-items: center;
             color: $blue_bg;
             display: flex;
             justify-content: flex-start;
-    
+          
             &[data-label-has-icon='unit'] {
               &:before {
                 content: '호수는 100단위를 기준으로 합니다.';
@@ -144,7 +166,8 @@
                 z-index: 1;
               }
             }
-            
+
+
             &:hover {
               &[data-label-has-icon='unit'] {
                 &:before {
@@ -178,10 +201,9 @@
               -moz-transform: scale(0.8,0.8);
               -ms-transform: scale(0.8,0.8);
               -o-transform: scale(0.8,0.8);
-              // &:hover {
-    
-              // }
             }
+
+            
           }
           .form_has_add {
             display: flex;
@@ -193,10 +215,11 @@
             border: 1px solid $blue_lightest;
           }
           input {
-            width: 11.6rem;
+            width: 10.9rem;
+            height: 22px;
           }
           select {
-            width: 10rem;
+            width: 9rem;
           }
         }
       }
@@ -214,8 +237,9 @@
         border: 1px solid $blue_light;
         color: $blue_bg;
         cursor: pointer;
+        font-size: $title02;
         text-align: center;
-        padding: 0 1rem 0 1rem;
+        padding: .5rem 1rem;
         -webkit-border-radius: $border_radius;
         -moz-border-radius: $border_radius;
         -ms-border-radius: $border_radius;
