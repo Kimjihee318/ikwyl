@@ -1,21 +1,30 @@
 <template>
   <div class="user_info">
-    <ui-modal v-if="addModalOpened" v-model="addModalOpened" :width="300" :height="100" :start="lnbWidth">
+    <ui-modal v-if="addModalOpened" v-model="addModalOpened" :width="300" :height="120" :start="lnbWidth">
       <template #slot_title>
         <div v-if="modalMode === 'type_name'">빌딩 추가</div>
         <div v-else>동 추가</div>
       </template>
       <template #slot_contents>
-        <div class="modal_wrap__content type_user_info">
-          <div v-if="modalMode === 'type_name'">
-            <label>빌딩</label>
-            <input v-model="buildingName2Add" type="text" />
+        <div class="modal_wrap__content ">
+          <div class="content_user_info">
+            <div v-if="modalMode === 'type_name'">
+              <label>빌딩</label>
+              <input v-model="buildingName2Add" type="text" />
+            </div>
+            <div v-else>
+              <label>동</label>
+              <input v-model="buildingNo2Add" type="Number" />
+            </div>
+            <button @click="onAction4AddProperty(modalMode)">Add</button>
           </div>
-          <div v-else>
-            <label>동</label>
-            <input v-model="buildingNo2Add" type="Number" />
+          <div
+            v-if="!isValid2Add"
+            class="msg__error"
+            :class="{ type_no: modalMode === 'type_no', type_name: modalMode === 'type_name' }"
+          >
+            <icon-error class="icon" />입력 값이 올바르지 않습니다.
           </div>
-          <button @click="onAction4AddProperty(modalMode)">Add</button>
         </div>
       </template>
     </ui-modal>
@@ -37,7 +46,7 @@
           </div>
         </div>
         <div class="wrap__btn">
-          <button class="btn btn_user_info" @click="onAction('MOD')">Edit</button>
+          <button class="btn btn_user_info" @click="onModeEdit()">Edit</button>
         </div>
       </template>
       <template v-else>
@@ -57,17 +66,17 @@
               </div>
             </div>
             <div class="wrap__input">
-              <label data-label-has-icon="max_floor"><icon-help class="icon" />최고 층 </label>
+              <label data-label-has-icon="max_floor"><icon-help class="icon" />최고 층</label>
               <input v-model="maxFloor" min="1" type="number" required />
-              <div v-if="!isValid.maxFloor" class="msg__error">
+              <div v-if="!isValid.maxFloor && isChecking" class="msg__error">
                 <icon-error class="icon" />0보다 큰 수를 입력해주세요.
               </div>
             </div>
             <div class="wrap__input">
               <label data-label-has-icon="max_unit_no"><icon-help class="icon" />층 별 총 호 수</label
               ><input v-model="maxUnitNo" min="1" type="number" />
-              <div v-if="!isValid.maxUnitNo" class="msg__error">
-                <icon-error class="icon" />0보다 큰 수를 입력해주세요.
+              <div v-if="!isValid.maxUnitNo && isChecking" class="msg__error">
+                <icon-error class="icon" />0보다 크고 13보다 작은 수를 입력해주세요.
               </div>
             </div>
           </div>
@@ -87,15 +96,19 @@
             <div class="wrap__input">
               <label data-label-has-icon="unit"><icon-help class="icon" />호</label>
               <input v-model="unit" minlength="3" min="1" type="number" />
-              <div v-if="!isValid.unit" class="msg__error"><icon-error class="icon" />100 단위 수를 입력해주세요.</div>
+              <div v-if="!isValid.unit && isChecking" class="msg__error type_unit">
+                <icon-error class="icon " />100 이상의 수를 입력해주세요.
+              </div>
             </div>
           </div>
         </div>
         <div class="wrap__btn">
           <!-- <input type="submit" /> -->
-          <button v-if="mode === 'NEW'" class="btn btn_user_info" @click="onAction('ADD')">Update</button>
-          <button v-else-if="mode === 'MOD'" class="btn_user_info" :disabled="disabled" @click="onAction('EDIT')">
-            이거
+          <button v-if="mode === 'NEW'" class="btn btn_user_info" :disabled="isDisabled" @click="onAction('ADD')">
+            Update
+          </button>
+          <button v-else-if="mode === 'MOD'" class="btn_user_info" :disabled="isDisabled" @click="onAction('EDIT')">
+            Update
           </button>
         </div>
       </template>
@@ -128,12 +141,13 @@ export default {
     isAddSuccess: '',
     mode: '',
     modalMode: '',
+    isChecking: false,
     isValid: {
       unit: true,
-      floor: true,
       maxFloor: true,
       maxUnitNo: true
-    }
+    },
+    isValid2Add: true
   }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['userInfo', 'buidingNames', 'buidingNums']),
@@ -143,6 +157,17 @@ export default {
     },
     buildingNoOptions() {
       return this.buidingNums
+    },
+    isDisabled() {
+      return this.userInfo.address == '' ||
+        this.userInfo.buildingname == '' ||
+        isNaN(this.userInfo.buildingno) ||
+        isNaN(this.userInfo.floor) ||
+        isNaN(this.userInfo.maxunitno) ||
+        isNaN(this.userInfo.maxfloor) ||
+        isNaN(this.userInfo.unit)
+        ? true
+        : false
     },
     isVisible() {
       return this.buidingNames.length !== 0 && this.buidingNums.length !== 0
@@ -186,7 +211,6 @@ export default {
       },
       set(val) {
         this.isValid.maxFloor = val <= 0 || typeof Number(val) !== 'number' ? false : true
-        console.log(this.isValid.maxFloor)
         this.setUserInfo({ key: 'maxfloor', value: parseFloat(val) })
       }
     },
@@ -196,7 +220,7 @@ export default {
         return this.userInfo.maxunitno
       },
       set(val) {
-        this.isValid.maxUnitNo = val <= 0 || typeof Number(val) !== 'number' ? false : true
+        this.isValid.maxUnitNo = val <= 0 || val > 12 || typeof Number(val) !== 'number' ? false : true
         this.setUserInfo({ key: 'maxunitno', value: parseFloat(val) })
       }
     },
@@ -213,16 +237,14 @@ export default {
     }
   },
   watch: {
-    addModalOpened: {
-      handler(val) {
-        if (val === true) return
-        if (val === false) {
-          this.getBuildingNamesFromserver()
-          this.getBuildingNoFromserver()
-        }
-      },
-      deep: true
-    }
+    // addModalOpened: {
+    //   handler(val) {
+    //     if (val === true) return
+    //     if (val === false) {
+    //     }
+    //   },
+    //   deep: true
+    // }
   },
   mounted() {
     this.getUserInfoFromServer(mode => {
@@ -245,14 +267,13 @@ export default {
       'upUserInfo2Server'
     ]),
     onAction(mod) {
-      console.log(`IN ACTION`)
+      this.isChecking = true
+      let _isDisabled = Object.keys(this.isValid).some(k => !this.isValid[k])
+      if (_isDisabled) return
       switch (mod) {
         case __C.BUTTON.EDIT_MODE_ADD:
           this.addUserInfo2Server()
           this.mode = __C.FORM.EDIT_MODE_READ
-          break
-        case __C.FORM.EDIT_MODE_MOD:
-          this.mode = __C.FORM.EDIT_MODE_MOD
           break
         case __C.BUTTON.EDIT_MODE_EDIT:
           this.upUserInfo2Server()
@@ -263,18 +284,32 @@ export default {
           break
       }
     },
+    async onAction4AddProperty() {
+      try {
+        if (this.modalMode === 'type_name') {
+          this.isValid2Add = this.buildingName2Add.length <= 0 ? false : true
+          if (!this.isValid2Add) return
+          let res = await this.addBuildingNames2Server({ buildingName: this.buildingName2Add })
+          if (res) this.getBuildingNamesFromserver()
+        } else if (this.modalMode === 'type_no') {
+          this.isValid2Add = this.buildingNo2Add <= 0 || typeof Number(this.buildingNo2Add) !== 'number' ? false : true
+          if (!this.isValid2Add) return
+          let res = await this.addBuildingNums2Server({ buildingNo: this.buildingNo2Add })
+          if (res) this.getBuildingNoFromserver()
+        }
+        this.modalMode = ''
+        this.isValid2Add = true
+      } catch (err) {
+        console.log(err)
+      }
+    },
     onAddProperty(type) {
       this.modalMode = type
       this.addModalOpened = true
     },
-    onAction4AddProperty() {
-      if (this.modalMode === 'type_name') {
-        this.addBuildingNames2Server({ buildingName: this.buildingName2Add })
-      } else if (this.modalMode === 'type_no') {
-        this.addBuildingNums2Server({ buildingNo: this.buildingNo2Add })
-      }
-      this.modalMode = ''
-      this.addModalOpened = false
+    onModeEdit() {
+      this.isChecking = false
+      this.mode = __C.FORM.EDIT_MODE_MOD
     }
   }
 }

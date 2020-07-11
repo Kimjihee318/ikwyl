@@ -80,15 +80,17 @@ export default {
         commit('setAccount', res)
         ACCOUNT = res
         if (!ACCOUNT) return
-        ACCOUNT.isNewUser ? router.push({ path: '/userinfo' }) : router.push({ path: '/main' })
+        ACCOUNT.isNewUser ? router.push({ path: '/residenceinfo' }) : router.push({ path: '/main' })
       })
     },
     async serverLogin({ commit }, data) {
+      console.log(`IN SERVER`)
       await accountApi.setAccount2LocalStorage(data, res => {
+        console.log(`TEST STORE::::::::::::::::`, res)
         commit('setAccount', res)
         ACCOUNT = res
         if (!ACCOUNT) return
-        ACCOUNT.isNewUser ? router.push({ path: '/userinfo' }) : router.push({ path: '/main' })
+        ACCOUNT.isNewUser ? router.push({ name: 'residenceinfo' }) : router.push({ path: '/main' })
       })
     },
     async logout({ commit }) {
@@ -110,14 +112,12 @@ export default {
     },
     async addBuildingNames2Server(vuex, bdNa) {
       try {
-        await accountApi.addBuildingName(bdNa, res => {
-          console.log(res)
-        })
+        await accountApi.addBuildingName(bdNa)
+        return true
       } catch (err) {
         console.log(`[ERR]`, err)
       }
     },
-
     async getBuildingNoFromserver({ commit }) {
       try {
         await accountApi.getBuildingNo(res => {
@@ -130,9 +130,8 @@ export default {
     },
     async addBuildingNums2Server(vuex, bdNo) {
       try {
-        await accountApi.addBuildingNo(bdNo, res => {
-          console.log(res)
-        })
+        await accountApi.addBuildingNo(bdNo)
+        return true
       } catch (err) {
         console.log(`[ERR]`, err)
       }

@@ -134,7 +134,7 @@ export default {
       }
     },
     onMove() {
-      this.$router.push({ path: '/userinfo' })
+      this.$router.push({ path: '/residenceinfo' })
     }
   }
 }

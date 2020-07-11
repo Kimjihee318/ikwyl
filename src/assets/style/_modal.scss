@@ -6,6 +6,7 @@
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 1;
 }
 .modal {
   background-color: $white;
@@ -18,6 +19,7 @@
   -moz-border-radius: $border_radius;
   -ms-border-radius: $border_radius;
   -o-border-radius: $border_radius;
+  z-index: 1;
 
   &_title{
     border-bottom: 1px solid $gray_border;

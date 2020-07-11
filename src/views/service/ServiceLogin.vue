@@ -12,11 +12,11 @@
         <span></span>
       </div>
       <div class="divider">OR</div>
-      <form class="form_login">
+      <div class="form_login">
         <input v-model="id" name="id" placeholder="Email" type="text" />
         <input v-model="password" name="password" placeholder="Password" type="password" />
         <button @click="onLogin('server')">Login</button>
-      </form>
+      </div>
     </div>
     <div class="copyright">
       Copyrightⓒ 2020 JIHEE KIM All rights reserved.
@@ -37,9 +37,13 @@ export default {
     IconLogo
   },
   data: () => ({
-    id: 'visitor',
-    password: '1234'
+    id: '',
+    password: ''
   }),
+  created() {
+    this.id = 'visitor'
+    this.password = '1234'
+  },
   methods: {
     ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['googleLogin', 'serverLogin']),
     async onLogin(type) {

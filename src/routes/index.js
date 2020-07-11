@@ -5,6 +5,7 @@ import __C from '@/primitives/_constants_'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -23,8 +24,8 @@ const router = new VueRouter({
           }
         },
         {
-          path: 'userinfo',
-          name: 'userinfo',
+          path: 'residenceinfo',
+          name: 'residenceinfo',
           component: () => import('@/components/form/FormUserInfo.vue'),
           meta: {
             requiresAuth: true
@@ -76,13 +77,13 @@ const router = new VueRouter({
       //   next()
       // }
     },
-    {
-      path: '/userinfo',
-      component: () => import('@/views/service/ServiceUserInfo.vue'),
-      meta: {
-        requiresAuth: true
-      }
-    },
+    // {
+    //   path: '/userinfo',
+    //   component: () => import('@/views/service/ServiceUserInfo.vue'),
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // },
     { path: '/404', component: () => import('@/views/service/Service404.vue') },
     { path: '*', redirect: '/404' }
   ]
@@ -90,7 +91,11 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   let account = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
-  if (to.meta.requiresAuth && !account) return next({ name: 'login' })
+  console.log('AUTH CHECK ', account, '/', to.meta.requiresAuth && !account)
+  if (to.meta.requiresAuth && !account) {
+    next({ path: '/login' })
+    return
+  }
   next()
 })
 
