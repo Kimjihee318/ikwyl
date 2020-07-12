@@ -35,8 +35,13 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_'
+import IconHome from '@/assets/icons/home.svg'
+
 export default {
   name: 'form-user-info',
+  components: {
+    IconHome
+  },
   data: () => ({
     mode: '',
     isAddSuccess: ''
@@ -129,7 +134,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
 .user_info {
   display: flex;

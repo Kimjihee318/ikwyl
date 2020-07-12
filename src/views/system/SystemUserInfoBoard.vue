@@ -2,13 +2,13 @@
   <div>
     <h3>User Information Board</h3>
     <button @click="onAdd">Add</button>
-    <ui-modal v-if="modalOpened" v-model="modalOpened">
+    <ui-modal v-if="modalOpened" v-model="modalOpened" :width="300" :height="300">
       <template #slot_title>User</template>
       <template #slot_contents>
-        <!-- <div><label>user</label><input v-model="shsData.user" type="text" /></div>
+        <div><label>user</label><input v-model="shsData.user" type="text" /></div>
         <div><label>user email</label><input v-model="shsData.useremail" type="text" /></div>
         <div><label>date</label><input v-model="shsData.date" type="text" /></div>
-        <div><label>quantity</label><input v-model="shsData.quantity" type="number" /></div> -->
+        <div><label>quantity</label><input v-model="shsData.quantity" type="number" /></div>
         <button @click="onAction('ADD')">Upload</button>
       </template>
     </ui-modal>

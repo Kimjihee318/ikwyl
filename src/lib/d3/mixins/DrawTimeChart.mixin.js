@@ -82,12 +82,12 @@ export default {
         )
         .attr('stroke-width', 1)
         .attr('stroke', this.Circle.CircleBorderColor)
-        .on('mouseover', (_, i, a) => {
-          d3.select(a[i]).style('cursor', 'pointer')
-        })
-        .on('mouseout', (_, i, a) => {
-          d3.select(a[i]).style('cursor', 'default')
-        })
+      // .on('mouseover', (_, i, a) => {
+      //   d3.select(a[i]).style('cursor', 'pointer')
+      // })
+      // .on('mouseout', (_, i, a) => {
+      //   d3.select(a[i]).style('cursor', 'default')
+      // })
     },
     rearrangeData() {
       let copiedData = JSON.parse(JSON.stringify(this.DataItems))

@@ -2,7 +2,7 @@
   <div class="wrap__footer">
     <div>
       <div>Github</div>
-      <div></div>
+      <div><icon-mail /><a href="mailto: jiheekim318@gmail.com">Send Email</a></div>
       <div></div>
     </div>
     <div>
@@ -12,7 +12,13 @@
 </template>
 
 <script>
-export default {}
+import IconMail from '@/assets/icons/mail.svg'
+
+export default {
+  components: {
+    IconMail
+  }
+}
 </script>
 
 <style></style>

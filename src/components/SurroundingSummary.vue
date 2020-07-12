@@ -12,13 +12,13 @@
       />
       <div class="card_surrounding_rightside">
         <div class="card_surrounding_rightside_h_row">
-          <div>같은 층 간접 흡연 평균</div>
+          <div>옆 가구 간접 흡연 평균</div>
           <div>
             <span>{{ avgHRow }}</span>
           </div>
         </div>
         <div class="card_surrounding_rightside_v_row">
-          <div>위 아래층 간접 흡연 평균</div>
+          <div>위 아래 가구 간접 흡연 평균</div>
           <div>
             <span>{{ avgVRow }}</span>
           </div>

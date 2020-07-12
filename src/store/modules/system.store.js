@@ -55,6 +55,14 @@ export default {
         console.log('[AXIOS ERROR]', err)
       }
     },
+    // * [ SH SMOKE ]
+    async deleteSHS(vuex, data) {
+      try {
+        await systemApi.delSHS(data, res => console.log(res))
+      } catch (err) {
+        console.log('[AXIOS ERROR]', err)
+      }
+    },
     // async upSHS2Server(userData) {
     //   try {
     //     await systemApi.upSystem(userData, null)

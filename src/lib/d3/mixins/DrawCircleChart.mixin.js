@@ -3,12 +3,26 @@ import __F from '@/primitives/_function_'
 
 export default {
   data: () => ({
+    circleGroup: null, // * Selection
     dataItems: [],
     extentTime: [],
-    timeGroup: null, // * Selection
-    circleGroup: null, // * Selection
+    monthMap: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ],
     scaleVBand: () => {},
-    scaleTime: () => {}
+    scaleTime: () => {},
+    timeGroup: null // * Selection
   }),
   methods: {
     drawCircle() {
@@ -58,7 +72,7 @@ export default {
         .attr('class', 'stack_header')
         .attr('transform', `translate(${this.Chart.ChartHPadding / 2 + 10}, ${17})`)
         .append('text')
-        .text(`${this.SelectedDate.getMonth() + 1}월`)
+        .text(`${this.monthMap[this.SelectedDate.getMonth()]}`)
         .attr('fill', '#c0ddff')
         .style('text-anchor', 'middle')
     },

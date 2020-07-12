@@ -20,14 +20,15 @@ export default {
   methods: {
     ...mapActions(__C.STORE.NAMESPACE.ACCOUNT, ['logout']),
     home() {
-      this.$router.push({ path: '/' })
+      if (this.$router.history.current.path === '/main') return
+      this.$router.push({ path: '/main' })
     },
     onLoad() {
       // userinfo page
     },
     onLogout() {
       this.logout()
-      this.$router.push({ path: 'login' })
+      this.$router.push({ path: '/login' })
     }
   }
 }

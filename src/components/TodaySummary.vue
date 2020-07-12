@@ -5,14 +5,16 @@
       <div v-if="isNoData" class="msg_nodata">
         <!-- <span>{{ todaySHSInfo }}</span> -->
       </div>
-      <div v-for="(item, i) in todaySHS.quantity" class="report_today" :key="`report_t_q${i}`">
-        <div class="report_title ">{{ item.title }}</div>
+      <div v-for="(item, key) in todaySHS.quantity" class="report_today" :key="`report_t_q${key}`">
+        <div class="report_title" :class="{ type_surrounding: key === 'shsSurround' }">
+          {{ item.title }}<span><icon-help v-if="key === 'shsSurround'" class="icon"/></span>
+        </div>
         <div class="report_contents">{{ item.value }}</div>
       </div>
       <div v-for="(item, i) in todaySHS.time" class="report_today type_time" :key="`report_t_t${i}`">
         <div class="report_title">{{ item.title }}</div>
         <div class="report_contents">
-          <span v-for="(_item, _i) in item.value" class="time_item" :key="`shs_time_${_i}`">{{ _item }} </span>
+          <span v-for="(_item, _i) in item.value" class="time_item" :key="`shs_time_${_i}`">{{ _item }}</span>
         </div>
       </div>
     </ui-card>
@@ -24,10 +26,12 @@ import { mapState, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_.js'
 import __F from '@/primitives/_function_'
 import UiCard from '@/components/ui/Card.vue'
+import IconHelp from '@/assets/icons/help-24px.svg'
 
 export default {
   name: 'today-summary',
   components: {
+    IconHelp,
     UiCard
   },
   data: () => ({

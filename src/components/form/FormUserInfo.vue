@@ -29,7 +29,10 @@
       </template>
     </ui-modal>
     <div class="user_info_form_wrapper">
-      <div class="title">Residence information</div>
+      <div class="title">
+        Residence information
+        <div><icon-home @click="home()" /></div>
+      </div>
       <template v-if="mode === 'READ'">
         <div class="wrap__info">
           <div class="group group_building">
@@ -122,6 +125,7 @@ import __C from '@/primitives/_constants_'
 import IconAdd from '@/assets/icons/add_box-24px.svg'
 import IconError from '@/assets/icons/error_outline-24px.svg'
 import IconHelp from '@/assets/icons/help-24px.svg'
+import IconHome from '@/assets/icons/home.svg'
 import UiModal from '@/components/ui/Modal.vue'
 // D:\Workspace\project\vue\ikwyl\src\assets\icons\help_outline-24px.svg
 
@@ -131,7 +135,8 @@ export default {
     IconAdd,
     IconError,
     IconHelp,
-    UiModal
+    UiModal,
+    IconHome
   },
   data: () => ({
     addModalOpened: false,
@@ -266,6 +271,9 @@ export default {
       'getUserInfoFromServer',
       'upUserInfo2Server'
     ]),
+    home() {
+      this.$router.push({ path: '/main' })
+    },
     onAction(mod) {
       this.isChecking = true
       let _isDisabled = Object.keys(this.isValid).some(k => !this.isValid[k])

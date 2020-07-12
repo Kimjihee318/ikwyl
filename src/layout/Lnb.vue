@@ -32,10 +32,10 @@
         <icon-account class="icon" />
         <span>Residence information</span>
       </div>
-      <div class="service_nav_item" title="link">
+      <!-- <div class="service_nav_item" title="link">
         <icon-send class="icon type_move2right" />
         <span>link</span>
-      </div>
+      </div> -->
       <div class="service_nav_item" @click="onSys(permission === 'SYS_ADMIN' && !isSystemMod ? 'sys' : 'svc')">
         <template v-if="permission === 'SYS_ADMIN' && !isSystemMod">
           <icon-admin class="icon type_move2right" />
@@ -61,7 +61,7 @@ import IconAccount from '@/assets/icons/business-24px.svg'
 import IconAdd from '@/assets/icons/add-24px.svg'
 import IconAdmin from '@/assets/icons/admin_panel_settings-24px.svg'
 import IconChange from '@/assets/icons/sync-24px.svg'
-import IconSend from '@/assets/icons/send-24px.svg'
+// import IconSend from '@/assets/icons/send-24px.svg'
 import FormSmokeToday from '@/components/form/FormSmokeToday.vue'
 import SystemNavigation from '@/views/system/SystemNavigation'
 import UiModal from '@/components/ui/Modal.vue'
@@ -74,7 +74,7 @@ export default {
     IconAdd,
     IconAdmin,
     IconChange,
-    IconSend,
+    // IconSend,
     ImageUserImage,
     FormSmokeToday,
     SystemNavigation,

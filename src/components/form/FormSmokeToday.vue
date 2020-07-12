@@ -12,12 +12,17 @@
               <div class="header_time">{{ formattedDate }}</div>
               <div class="input_type_between">
                 <label
-                  >간접 흡연 감지량<span class="icon color_white has_tooltip"><icon-help class="icon_help"/></span
+                  >간접 흡연 감지량<span class="icon color_white has_tooltip"
+                    ><icon-help class="icon_help" :class="{ warning: isDisabled }"/></span
                 ></label>
                 <input v-model="quantity" max="10" type="number" />
               </div>
             </div>
-            <button class="form_sh_contents_card_button" :disabled="modeDate === 'FUTURE'" @click="onUpload('add')">
+            <button
+              class="form_sh_contents_card_button"
+              :disabled="modeDate === 'FUTURE' || isDisabled"
+              @click="onUpload('add')"
+            >
               Upload
             </button>
           </div>
@@ -35,12 +40,8 @@
               <div>{{ timeFormat(item.date) }}</div>
               <div class="input_type_between">
                 <label>간접 흡연 감지량</label>
-                <span v-if="mode === 'READ'">{{ item.quantity }}</span>
-                <!-- //? STUDY -->
-                <!-- // * v-for안에서 v-model 사용할때 @input="@ => {}" 사용 -->
-                <!-- <input v-else v-model="item.quantity" max="10" type="number" /> -->
                 <input
-                  v-else
+                  v-if="mode === 'MOD' && i === selected4EditIdx"
                   max="10"
                   type="number"
                   :value="item.quantity"
@@ -50,11 +51,20 @@
                     }
                   "
                 />
+                <span v-else>{{ item.quantity }}</span>
+                <!-- //? STUDY -->
+                <!-- // * v-for안에서 v-model 사용할때 @input="@ => {}" 사용 -->
+                <!-- <input v-else v-model="item.quantity" max="10" type="number" /> -->
               </div>
             </div>
             <div class="form_sh_contents_card_buttons">
-              <button v-if="mode === 'READ'" @click="onEdit()">Edit</button>
-              <button v-if="mode === 'MOD'" @click="onUpload('edit', { key: item.formateddate, idx: i })">
+              <button v-if="mode === 'READ' || (mode === 'MOD' && i !== selected4EditIdx)" @click="onEdit(i)">
+                Edit
+              </button>
+              <button
+                v-else-if="mode === 'MOD' && i === selected4EditIdx"
+                @click="onUpload('edit', { key: item.formateddate, idx: i })"
+              >
                 Upload
               </button>
               <button @click="onUpload('del', { key: item.formateddate, idx: i })">Delete</button>
@@ -83,10 +93,13 @@ export default {
   data: () => ({
     blockTimeWidth: null,
     date: new Date(),
+    isValid: true,
+    isDisabled: false,
     mode: __C.FORM.EDIT_MODE_READ,
     modeDate: '',
     quantity: 0,
-    selectedDateItems: null
+    selectedDateItems: null,
+    selected4EditIdx: null
   }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user', 'email']),
@@ -124,6 +137,18 @@ export default {
         this.setSelectedDateSHS()
       },
       deep: true
+    },
+    quantity: {
+      handler(val) {
+        if (val > 11 || val <= -1) {
+          this.isValid = false
+          this.isDisabled = true
+        } else {
+          this.isValid = true
+          this.isDisabled = false
+        }
+      },
+      deep: true
     }
   },
   mounted() {
@@ -144,8 +169,9 @@ export default {
     init() {
       this.date = new Date()
     },
-    onEdit() {
+    onEdit(idx) {
       this.mode = __C.FORM.EDIT_MODE_MOD
+      this.selected4EditIdx = idx
     },
     onUpload(mod, payload) {
       // upload logic

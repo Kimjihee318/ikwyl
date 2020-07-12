@@ -26,8 +26,55 @@
   &_today, &_cumulative {
     display: flex;
     justify-content: space-between;
-    &_title {
-      width: 10rem;
+  }
+  &_title {
+    width: 12rem;
+    &.type_surrounding {
+      span {
+        .icon {
+          position: relative;
+          top: .5rem;
+          fill: $blue_alpha01;
+          transform: scale(0.7,0.7);
+          -webkit-transform: scale(0.7,0.7);
+          -moz-transform: scale(0.7,0.7);
+          -ms-transform: scale(0.7,0.7);
+          -o-transform: scale(0.7,0.7);
+        }
+
+        &:after {
+          content: '위 아래, 양 옆 집의 간접 흡연 평균값';
+          background-color: $gray_alpha01;
+          border: 1px solid $gray03;
+          border-radius: $border_radius;
+          color: $black;
+          font-size: 1rem;
+          font-weight: 400;
+          height: 2.9rem;
+          line-height: 1.5rem;
+          padding: .4rem;
+          position: absolute;
+          visibility: hidden;
+          // transition:  visibility 2s;
+          width: 8rem;
+          z-index: 1;
+          // -webkit-transition:  visibility 2s;
+          // -moz-transition:  visibility 2s;
+          // -ms-transition:  visibility 2s;
+          // -o-transition:  visibility 2s;
+          -webkit-border-radius: $border_radius;
+          -moz-border-radius: $border_radius;
+          -ms-border-radius: $border_radius;
+          -o-border-radius: $border_radius;
+        }
+
+        &:hover {
+          &:after {
+            visibility: visible;
+          }
+        }
+      }
+      
     }
   }
 
