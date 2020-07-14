@@ -47,7 +47,7 @@ export default {
     color: $blue_bg;
     cursor: pointer;
     font-family: roboto;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.5rem;
     padding: 0 1rem 0 1rem;
     &:hover {
@@ -58,11 +58,12 @@ export default {
     align-items: center;
     cursor: pointer;
     display: flex;
-    width: 100%;
+    width: 15rem;
     .icon {
       margin-right: 1rem;
     }
     span {
+      // color: $blue_light;
       font-size: 1.2rem;
       font-weight: 400;
       line-height: 1.2rem;

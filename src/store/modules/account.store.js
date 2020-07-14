@@ -118,6 +118,15 @@ export default {
         console.log(`[ERR]`, err)
       }
     },
+    async delBuildingNames2Server(vuex, id) {
+      try {
+        await accountApi.delBuildingName(id)
+        return true
+      } catch (err) {
+        console.log(`[ERR]`, err)
+      }
+    },
+
     async getBuildingNoFromserver({ commit }) {
       try {
         await accountApi.getBuildingNo(res => {
@@ -136,6 +145,15 @@ export default {
         console.log(`[ERR]`, err)
       }
     },
+    async delBuildingNums2Server(vuex, id) {
+      try {
+        await accountApi.delBuildingNo(id)
+        return true
+      } catch (err) {
+        console.log(`[ERR]`, err)
+      }
+    },
+
     // * [ PERMISSION ]
     async getUserPermissionFromServer({ state, commit }) {
       let email = {

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.2" width="200" height="20">
+  <g class="surrounding_g_bar_0" transform="translate(150, 137)">
+    <g class="srrounding_group_rect_shs_quantity">
+      <rect x="0" y="0.5" width="2.2" height="10.5" fill="#ffbd71"></rect>
+      <rect x="5" y="0.5" width="2.2" height="10.5" fill="#ffbd71"></rect>
+      <rect x="10" y="0.5" width="2.2" height="10.5" fill="#ffbd71"></rect>
+      <rect x="15" y="0.5" width="2.2" height="10.5" fill="#ffbd71"></rect>
+      <rect x="20" y="0.5" width="2.2" height="10.5" fill="#ffbd71"></rect>
+      <rect x="10" y="0.5" width="2.2" height="10.5" fill="#ffbd71"></rect>
+      <rect x="0" y="0.5" width="2.2" height="10.5" fill="#ffbd71"></rect>
+      <rect x="5" y="0.5" width="2.2" height="10.5" fill="#ffbd71"></rect>
+      <rect x="10" y="0.5" width="2.2" height="10.5" fill="#ffbd71"></rect>
+      <rect x="10" y="0.5" width="2.2" height="10.5" fill="#ffbd71"></rect>
+    </g>
+  </g>
+</svg>

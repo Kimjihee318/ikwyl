@@ -64,6 +64,16 @@ async function addBuildingNo(bdNo, callback) {
   if (callback) callback(res ? res.data : {})
 }
 
+async function delBuildingName(id, callback) {
+  let res = await axios('buildingname').delete('/', { params: { id: id } })
+  if (callback) callback(res ? res.data : {})
+}
+
+async function delBuildingNo(id, callback) {
+  let res = await axios('buildingno').delete('/', { params: { id: id } })
+  if (callback) callback(res ? res.data : {})
+}
+
 //* [ PERMISSION ]
 async function getUserPermission(email, callback) {
   let res = await axios('permission').post('/', email)
@@ -98,6 +108,8 @@ export default {
   addBuildingNo,
   addUserInfo,
   delAccount2LocalStorage,
+  delBuildingName,
+  delBuildingNo,
   getUserInfo,
   getBuildingName,
   getBuildingNo,

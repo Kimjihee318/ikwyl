@@ -27,6 +27,21 @@ button {
   -o-border-radius: 2px;
 }
 
+a {
+  &:link {
+    color: $font_color;
+    text-decoration: unset;
+  }
+  &:visited {
+    color: $font_color;
+  }
+  &:hover {
+    color: $font_color;
+  }
+  &:active {
+    color: $font_color;
+  }
+}
 ::-webkit-scrollbar {
   width: 5px;
   height: 10px;

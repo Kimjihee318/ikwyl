@@ -9,6 +9,10 @@
           <today-summary ref="td_summary" />
           <weekly-summray ref="wk_summary" />
         </template>
+        <template v-else>
+          <today-empty-summary />
+          <weekly-empty-summray />
+        </template>
       </div>
       <div class="main_right">
         <div class="main_chart_surrounding">
@@ -61,13 +65,15 @@ import __C from '@/primitives/_constants_'
 import __F from '@/primitives/_function_'
 import mainMixin from '@/mixins/main.mixins'
 import WeeklySummray from '@/components/WeeklySummary.vue'
+import WeeklyEmptySummray from '@/components/WeeklyEmptySummary.vue'
 import SurroundingSummary from '@/components/SurroundingSummary.vue'
 import TodaySummary from '@/components/TodaySummary.vue'
+import TodayEmptySummary from '@/components/TodayEmptySummary.vue'
 
 export default {
   name: 'main-page',
   mixins: [mainMixin],
-  components: { SurroundingSummary, TodaySummary, WeeklySummray },
+  components: { WeeklyEmptySummray, TodayEmptySummary, SurroundingSummary, TodaySummary, WeeklySummray },
   data: () => ({
     floorBgStructure: {},
     floorSummary: [],
@@ -118,7 +124,6 @@ export default {
     },
     userInfo: {
       handler(val) {
-        console.log(`WATCH USIF`, val)
         if (!val || Object.keys(val).length === 0) return
         this.getJoinedSHS()
       },
@@ -127,7 +132,6 @@ export default {
   },
 
   mounted() {
-    console.log(`MOUNT MAIN`)
     this.getJoinedSHS()
   },
   methods: {
@@ -255,8 +259,10 @@ export default {
       if (!isData) return
       this.formatJoinedSHS()
       this.draw()
-      this.$refs.td_summary.draw()
-      this.$refs.wk_summary.setCumulativeSHS()
+      // setTimeout(() => {
+      //   this.$refs.td_summary.draw()
+      //   this.$refs.wk_summary.setCumulativeSHS()
+      // }, 200)
     }
   }
 }

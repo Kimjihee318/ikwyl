@@ -44,7 +44,13 @@
         -moz-border-radius: 50%;
         -ms-border-radius: 50%;
         -o-border-radius: 50%;
+
+        :hover {
+          cursor: pointer;
+          fill:$blue_light;
+        }
         svg {
+          fill: #2d519f;
           display: block;
           position: relative;
           top: -1px;
@@ -52,7 +58,7 @@
       }
 
       &.type_sub {
-        font-size: $title01;
+        font-size: 1.4rem;
         font-weight: 400;
       }
     }

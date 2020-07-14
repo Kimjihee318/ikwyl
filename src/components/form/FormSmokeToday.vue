@@ -124,6 +124,7 @@ export default {
   watch: {
     date: {
       handler(val) {
+        this.modeDate = ''
         this.setSelectedDateSHS()
         if (val.getTime() > new Date().getTime()) {
           this.modeDate = 'FUTURE'

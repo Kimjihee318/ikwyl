@@ -78,6 +78,7 @@ export default {
   },
   mounted() {
     this.draw()
+    console.log('TODAY')
   },
   methods: {
     // * getJoined 를 중복해서 부르고 있음

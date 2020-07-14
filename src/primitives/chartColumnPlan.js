@@ -1,7 +1,7 @@
 export default {
   canvas: {
     CanvasWidth: 208.5,
-    CanvasHeight: 208.5,
+    CanvasHeight: 210.5,
     CanvasBgColor: 'transparent',
     CanvasBgPointColor: '#1a2157',
     CanvasBorderWeight: 0.5,
@@ -9,7 +9,7 @@ export default {
     CanvasChartX: 0,
     CanvasChartY: 0,
     CanvasSecondSvgWidth: 200.5,
-    CanvasSecondSvgHeight: 200.5,
+    CanvasSecondSvgHeight: 202.5,
     CanvasSecondSvgBgColor: 'transparent',
     CanvasSecondSvgBgPointColor: '#1a2157',
     CanvasSecondSvgBorderWeight: 0.5,

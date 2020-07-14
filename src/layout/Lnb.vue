@@ -1,5 +1,5 @@
 <template>
-  <div class="comp_lnb">
+  <div class="lnb">
     <div class="account_info">
       <div class="user">
         <div v-if="checkBreakPoint" class="user_img">
@@ -18,24 +18,53 @@
         </div>
       </div>
     </div>
-
     <button class="add type_english_font" title="Add Record" @click="onAdd">
       <span v-if="checkBreakPoint">Add Record</span><span v-else><icon-add /></span>
     </button>
+    <div class="wrap__shs_info">
+      <div class="shs_info">
+        <div class="shs_bar">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            version="1.2"
+            width="200"
+            height="20"
+          >
+            <g class="info_bars">
+              <g class="bars" v-for="(bar, i) in localSHSNumArr" :key="`bar_${i}`">
+                <defs>
+                  <linearGradient :id="`info_linear_gradient_${i}`" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#0f1333" />
+                    <stop offset="1" stop-color="#ffbd71" />
+                  </linearGradient>
+                </defs>
+                <rect y="0.5" width="8" height="25" :fill="`url(#info_linear_gradient_${i})`" :x="`${i * 17.5}`"></rect>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <div class="shs_num">
+          <div v-for="(item, i) in localSHSNumArr" class="num_item" :key="`num_${i}`">
+            <div class="num">{{ i + 1 }}</div>
+            <div :class="`line_${i} ${i === 0 || i === 4 || i === 9 ? 'info_line' : ''}`"></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <ui-modal v-if="modalOpened" v-model="modalOpened" :width="600" :height="580" :start="0">
       <template #slot_title>Today's secondhand smoke detection</template>
       <template #slot_contents><form-smoke-today /></template>
     </ui-modal>
-
     <div class="service_nav">
       <div class="service_nav_item" title="Setting of residence information" @click="onMove">
         <icon-account class="icon" />
         <span>Residence information</span>
       </div>
-      <!-- <div class="service_nav_item" title="link">
-        <icon-send class="icon type_move2right" />
-        <span>link</span>
-      </div> -->
+      <a class="service_nav_item" title="email" href="mailto: jiheekim.developer@gmail.com"
+        ><icon-mail class="icon type_move2right" />
+        <span>Email to administrator</span>
+      </a>
       <div class="service_nav_item" @click="onSys(permission === 'SYS_ADMIN' && !isSystemMod ? 'sys' : 'svc')">
         <template v-if="permission === 'SYS_ADMIN' && !isSystemMod">
           <icon-admin class="icon type_move2right" />
@@ -49,6 +78,9 @@
     </div>
     <div class="sys">
       <system-navigation v-if="this.isSystemMod" class="sys_menu" />
+    </div>
+    <div class="footer">
+      Copyrightⓒ 2020 JIHEE KIM All rights reserved.
     </div>
   </div>
 </template>
@@ -66,20 +98,26 @@ import FormSmokeToday from '@/components/form/FormSmokeToday.vue'
 import SystemNavigation from '@/views/system/SystemNavigation'
 import UiModal from '@/components/ui/Modal.vue'
 import ImageUserImage from '@/lib/d3/chart/userImage/userImage.vue'
+import IconMail from '@/assets/icons/mail.svg'
 
 export default {
   name: 'left-navigation-bar',
   components: {
+    FormSmokeToday,
     IconAccount,
     IconAdd,
     IconAdmin,
     IconChange,
+    IconMail,
     // IconSend,
     ImageUserImage,
-    FormSmokeToday,
     SystemNavigation,
     UiModal
   },
+  data: () => ({
+    localSHSNumArr: Array.from({ length: 10 }, (d, i) => i),
+    localSHSBarArr: Array.from({ length: 11 }, (d, i) => i)
+  }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user', 'userInfo', 'permission']),
     ...mapState(__C.STORE.NAMESPACE.APPLICATION, ['window']),

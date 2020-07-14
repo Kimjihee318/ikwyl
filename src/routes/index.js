@@ -59,6 +59,14 @@ const router = new VueRouter({
               meta: {
                 requiresAuth: true
               }
+            },
+            {
+              path: 'residence',
+              name: 'residence',
+              component: () => import('@/views/system/SystemResidence.vue'),
+              meta: {
+                requiresAuth: true
+              }
             }
           ]
         }

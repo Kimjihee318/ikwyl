@@ -2,7 +2,7 @@
   <div>
     <ul class="system_nav_list">
       <li v-for="(nav, i) in systemNav" :key="`system_nav_${i}`" @click="onMove(nav)">
-        <component :is="nav.icon" />
+        <component class="icon" :is="nav.icon" />
         {{ nav.name }}
       </li>
     </ul>
@@ -21,7 +21,8 @@ export default {
   data: () => ({
     systemNav: [
       { name: 'User Information Board', path: '/system/userinfo', icon: 'IconUser' },
-      { name: 'Daily Second Hand Smoke Board', path: '/system/dailyshs', icon: 'IconList' }
+      { name: 'Daily SHS Board', path: '/system/dailyshs', icon: 'IconList' },
+      { name: 'Residence Data', path: '/system/residence', icon: 'IconList' }
     ]
   }),
   methods: {
@@ -40,5 +41,8 @@ export default {
     margin-bottom: 0.5rem;
     padding: 0.2rem;
   }
+}
+.icon {
+  fill: $blue_alpha01;
 }
 </style>
