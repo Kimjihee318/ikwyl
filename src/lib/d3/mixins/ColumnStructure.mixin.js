@@ -39,14 +39,16 @@ export default {
       this.setLinearGradient(
         this.secondChartArea,
         this.Rect.RectColorTypeGradient,
-        -180,
+        0,
         this.Rect.RectFillType,
         null,
-        [90, 100]
+        [0, 12],
+        'column'
       )
 
       let boxGroup = this.secondChartArea
         .append('g')
+        .style('fill', 'url(#column_gradient_linear)')
         .attr('class', 'surrounding_data_bar')
         .selectAll('g')
         .data(this.formattedBarData)
@@ -54,7 +56,7 @@ export default {
 
       let boxs = boxGroup
         .append('g')
-        // .style('fill', 'url(#gradient_linear)')
+
         .attr('class', (d, i) => {
           return `surrounding_g_bar_${i}`
         })
@@ -69,11 +71,11 @@ export default {
         .data(d => Array.from({ length: d.quantity }, () => null))
         .enter()
         .append('rect')
-        .attr('x', (d, i) => i * 5)
+        .attr('x', (d, i) => i * 5.5)
         .attr('y', 0.5)
         .attr('width', this.Unit.UnitSmellRectWidth)
         .attr('height', this.Unit.UnitSmellRectHeight)
-        .attr('fill', this.Rect.RectFillColor)
+      // .attr('fill', this.Rect.RectFillColor)
     },
     drawBarTitle() {
       let boxGroup = this.secondChartArea
@@ -244,7 +246,7 @@ export default {
 
           switch (d.unit) {
             case this.UserInfo.unit - 1:
-              d.coordinate = [xPosition, vPosition]
+              d.coordinate = [xPosition - 1, vPosition]
               filteredDatas.push(d)
               break
             case this.UserInfo.unit:
@@ -252,7 +254,7 @@ export default {
               filteredDatas.push(d)
               break
             case this.UserInfo.unit + 1:
-              d.coordinate = [xPosition, vPosition]
+              d.coordinate = [xPosition + 1, vPosition]
               filteredDatas.push(d)
               break
             case this.UserInfo.unit + 100:

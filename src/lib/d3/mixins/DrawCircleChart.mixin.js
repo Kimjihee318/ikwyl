@@ -77,12 +77,20 @@ export default {
         .style('text-anchor', 'middle')
     },
     drawCircles() {
-      this.setLinearGradient(this.chartArea, this.Rect.RectColorTypeGradient, 90, this.Rect.RectFillType, null, [0, 50])
+      this.setLinearGradient(
+        this.chartArea,
+        this.Rect.RectColorTypeGradient,
+        90,
+        this.Rect.RectFillType,
+        null,
+        [0, 50],
+        'circle'
+      )
 
       this.timeGroup = this.chartArea
         .append('g')
         .attr('class', `stack_chart_group`)
-        .style('fill', 'url(#gradient_linear)')
+        .style('fill', 'url(#circle_gradient_linear)')
         .selectAll('g')
         .data(this.dataItems)
         .enter()

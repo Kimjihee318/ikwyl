@@ -5,7 +5,6 @@ import router from '@/routes'
 import { sync } from 'vuex-router-sync'
 import '@/assets/style/index.scss'
 
-// console.log(oAuth)
 Vue.config.productionTip = false
 
 sync(store, router)

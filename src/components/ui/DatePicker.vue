@@ -112,13 +112,6 @@ export default {
     }
   },
   watch: {
-    // formattedMonth: {
-    //   handler(val) {
-    //     if (!val || val.length === 0) return
-    //     console.log(val)
-    //   },
-    //   deep: true
-    // },
     date: function(val) {
       // ! 예외 전부 파악하지 못함
       if (!val) return
@@ -132,7 +125,6 @@ export default {
     },
     // ! watch에서는 화살표 함수 사용하면 안된다. 화살표 함수가 부모 컨텍스트를 바인딩하기 때문에
     firstDayOfMonth: function() {
-      // console.log(`WATCH: new: ${val}, old: ${old}`)
       this.set()
     }
   },
@@ -145,7 +137,6 @@ export default {
       if (!item.date) return
       let today = new Date()
       let hasData = true
-      // console.log('TEST noData', item.date, noData)
       return {
         today:
           item.date.getFullYear() === today.getFullYear() &&

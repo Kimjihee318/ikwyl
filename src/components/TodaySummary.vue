@@ -78,10 +78,8 @@ export default {
   },
   mounted() {
     this.draw()
-    console.log('TODAY')
   },
   methods: {
-    // * getJoined 를 중복해서 부르고 있음
     ...mapActions(__C.STORE.NAMESPACE.REPORT, ['getReportFromServer']),
 
     draw() {
@@ -107,7 +105,6 @@ export default {
     },
     // [ Surround SHS ]
     setSurroundingRoomsSHS() {
-      console.log(`[SET SURROUNDING]`)
       if (this.todayUserFloorSHS.length === 0) return
       let unit = this.userInfo.unit
       this.todaySurroundingSHS = this.todayUserFloorSHS.filter(d => {

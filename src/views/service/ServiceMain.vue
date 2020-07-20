@@ -56,6 +56,7 @@
         </div>
       </div>
     </div>
+    <Footer class="footer" />
   </div>
 </template>
 
@@ -64,6 +65,7 @@ import { mapState, mapActions } from 'vuex'
 import __C from '@/primitives/_constants_'
 import __F from '@/primitives/_function_'
 import mainMixin from '@/mixins/main.mixins'
+import Footer from '@/layout/Footer.vue'
 import WeeklySummray from '@/components/WeeklySummary.vue'
 import WeeklyEmptySummray from '@/components/WeeklyEmptySummary.vue'
 import SurroundingSummary from '@/components/SurroundingSummary.vue'
@@ -73,7 +75,7 @@ import TodayEmptySummary from '@/components/TodayEmptySummary.vue'
 export default {
   name: 'main-page',
   mixins: [mainMixin],
-  components: { WeeklyEmptySummray, TodayEmptySummary, SurroundingSummary, TodaySummary, WeeklySummray },
+  components: { Footer, WeeklyEmptySummray, TodayEmptySummary, SurroundingSummary, TodaySummary, WeeklySummray },
   data: () => ({
     floorBgStructure: {},
     floorSummary: [],
@@ -88,6 +90,18 @@ export default {
     ...mapState(__C.STORE.NAMESPACE.COMMON, ['lnb']),
     ...mapState(__C.STORE.NAMESPACE.REPORT, ['dailySHS', 'joinedSHSWithUserInfo']),
     floorBgItems() {
+      // const arrayReverseObj = obj => {
+      //   let new_obj = {}
+      //   let rev_obj = Object.keys(obj).reverse()
+      //   console.log(Object.keys(obj), 'reversed', rev_obj)
+      //   rev_obj.forEach(i => {
+      //     console.log(i, 'nw', new_obj[i], 'od', obj[i])
+      //     return (new_obj[` ${i}`] = obj[i])
+      //   })
+      //   console.log(new_obj)
+      //   return new_obj
+      // }
+      // return arrayReverseObj(this.floorBgStructure)
       return this.floorBgStructure
     },
     floorDataItems() {
@@ -99,7 +113,15 @@ export default {
       return this.joinedSHSWithUserInfo.length > 0
     },
     surroundingDataItems() {
-      return this.selectedDateSHS
+      if (this.selectedDateSHS.length === 0) return []
+      const keys = [`${this.userInfo.floor}`, `${this.userInfo.floor + 1}`, `${this.userInfo.floor - 1}`]
+      const filtered = Object.keys(this.selectedDateSHS[0])
+        .filter(key => keys.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = this.selectedDateSHS[0][key]
+          return obj
+        }, {})
+      return Object.keys(filtered).length === 0 ? [] : [filtered]
     },
     dateHasData() {
       return Object.keys(this.formattedJoinedSHS).map(d => new Date(d))
@@ -170,10 +192,7 @@ export default {
       let floors = []
       switch (this.userInfo.floor) {
         case this.userInfo.maxfloor:
-          floors =
-            this.userInfo.floor === this.userInfo.maxfloor
-              ? [this.userInfo.floor]
-              : [this.userInfo.floor - 1, this.userInfo.floor]
+          floors = [this.userInfo.floor - 1, this.userInfo.floor]
           break
         case 1:
           floors = [this.userInfo.floor, this.userInfo.floor + 1]
@@ -213,18 +232,6 @@ export default {
       this.selectedDateSHS = __F.getKeyofDateType(this.formattedJoinedSHS, this.selectedDates)
     },
     setSurroundingFloorSHS() {
-      if (Object.keys(this.formattedJoinedSHS).length === 0) return
-      let selectedDate = this.selectedDates[0]
-      // ! FIX DATA NAME
-
-      let filteredKeyOfSelectedDates = Object.keys(this.formattedJoinedSHS).filter(d => {
-        return (
-          new Date(d).getFullYear() === selectedDate.getFullYear() &&
-          new Date(d).getMonth() === selectedDate.getMonth() &&
-          new Date(d).getDate() === selectedDate.getDate()
-        )
-      })
-
       let result = []
       this.usedfloors.forEach(d => {
         result.push({
@@ -236,6 +243,18 @@ export default {
       })
 
       this.floorSummary = result
+
+      if (Object.keys(this.formattedJoinedSHS).length === 0) return
+      let selectedDate = this.selectedDates[0]
+      // ! FIX DATA NAME
+
+      let filteredKeyOfSelectedDates = Object.keys(this.formattedJoinedSHS).filter(d => {
+        return (
+          new Date(d).getFullYear() === selectedDate.getFullYear() &&
+          new Date(d).getMonth() === selectedDate.getMonth() &&
+          new Date(d).getDate() === selectedDate.getDate()
+        )
+      })
 
       if (filteredKeyOfSelectedDates.length === 0) return
       let key = filteredKeyOfSelectedDates[0]
@@ -259,10 +278,9 @@ export default {
       if (!isData) return
       this.formatJoinedSHS()
       this.draw()
-      // setTimeout(() => {
-      //   this.$refs.td_summary.draw()
-      //   this.$refs.wk_summary.setCumulativeSHS()
-      // }, 200)
+      if (!this.isVisible) return
+      this.$refs.td_summary.draw()
+      this.$refs.wk_summary.setCumulativeSHS()
     }
   }
 }

@@ -98,9 +98,12 @@
             </div>
             <div class="wrap__input">
               <label data-label-has-icon="unit"><icon-help class="icon" />호</label>
-              <input v-model="unit" minlength="3" min="1" type="number" />
+              <input v-model="unit" minlength="3" min="1" type="number" @keyup="initDuplicated" />
               <div v-if="!isValid.unit && isChecking" class="msg__error type_unit">
                 <icon-error class="icon " />100 이상의 수를 입력해주세요.
+              </div>
+              <div v-if="isValid.unit && isChecking && isDuplicated" class="msg__error type_unit">
+                <icon-error class="icon " />해당 호수가 이미 있습니다.
               </div>
             </div>
           </div>
@@ -144,6 +147,7 @@ export default {
     buildingNo2Add: '',
     disabled: false,
     isAddSuccess: '',
+    isDuplicated: false,
     mode: '',
     modalMode: '',
     isChecking: false,
@@ -156,6 +160,7 @@ export default {
   }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['userInfo', 'buidingNames', 'buidingNums']),
+    ...mapState(__C.STORE.NAMESPACE.SYSTEM, ['userInfoList']),
     ...mapState(__C.STORE.NAMESPACE.APPLICATION, ['window']),
     buildingNameOptions() {
       return this.buidingNames
@@ -206,7 +211,7 @@ export default {
         return this.userInfo.buildingno
       },
       set(val) {
-        this.setUserInfo({ key: 'buildingno', value: parseFloat(val) })
+        this.setUserInfo({ key: 'buildingno', value: val })
       }
     },
     maxFloor: {
@@ -271,13 +276,39 @@ export default {
       'getUserInfoFromServer',
       'upUserInfo2Server'
     ]),
+    ...mapActions(__C.STORE.NAMESPACE.SYSTEM, ['getUserInfoListFromServer']),
+    async checkUnitValid() {
+      try {
+        let res = await this.getUserInfoListFromServer()
+        if (res) {
+          let BDname = this.userInfo.buildingname
+          let BDno = this.userInfo.buildingno
+          let filteredUnits = this.userInfoList
+            .filter(d => d.buildingname === BDname && d.buildingno === BDno)
+            .map(d => d.unit)
+          return filteredUnits
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    },
     home() {
       this.$router.push({ path: '/main' })
     },
-    onAction(mod) {
+    initDuplicated() {
+      this.isDuplicated = false
+    },
+    async onAction(mod) {
       this.isChecking = true
       let _isDisabled = Object.keys(this.isValid).some(k => !this.isValid[k])
       if (_isDisabled) return
+      let res = await this.checkUnitValid()
+      let duplicated = null
+      duplicated = res.filter(d => d === this.userInfo.unit)
+      if (duplicated.length !== 0) {
+        this.isDuplicated = true
+        return
+      }
       switch (mod) {
         case __C.BUTTON.EDIT_MODE_ADD:
           this.addUserInfo2Server()
@@ -288,7 +319,6 @@ export default {
           this.mode = __C.FORM.EDIT_MODE_READ
           break
         case __C.BUTTON.EDIT_MODE_DEL:
-          console.log('DELETE')
           break
       }
     },

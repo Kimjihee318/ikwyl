@@ -13,14 +13,11 @@ async function delAccount2LocalStorage(callback) {
 }
 
 async function setAccount2LocalStorage(data, callback) {
-  console.log(`IN API`)
-
   let res = await axios('login').post('/', data)
-  console.log(`TEST:::::::::::::::`, res)
   let account = {
     token: 'visitor_test',
     user: { email: 'visitor@fts.com', displayName: '방문자' },
-    isNewUser: true
+    isNewUser: false
   }
   if (res) {
     localStorage.setItem(__C.LOCAL_STORAGE_NAME.ACCOUNT, JSON.stringify(account))
@@ -36,7 +33,6 @@ async function setGoogleAccount2LocalStorage(callback) {
       user: user,
       isNewUser: isNewUser
     }
-    // console.log(`AUTH SERVICE`, account)
     localStorage.setItem(__C.LOCAL_STORAGE_NAME.ACCOUNT, JSON.stringify(account))
     let getLocalSTAccount = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
     callback(getLocalSTAccount)

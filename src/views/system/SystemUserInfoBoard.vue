@@ -16,7 +16,7 @@
       <tr>
         <th v-for="(item, i) in table.headers" :key="`system_shs_header_${i}`">{{ item.title }}</th>
       </tr>
-      <tr v-for="(row, i) in userInfo" :key="`system_shs_tr_${i}`">
+      <tr v-for="(row, i) in userInfoList" :key="`system_shs_tr_${i}`">
         <td v-for="(_item, _i) in row" :key="`system_shs_td_${_i}`">{{ _item }}</td>
         <td><button>Delete</button></td>
       </tr>
@@ -55,13 +55,13 @@ export default {
     }
   }),
   computed: {
-    ...mapState(__C.STORE.NAMESPACE.SYSTEM, ['userInfo'])
+    ...mapState(__C.STORE.NAMESPACE.SYSTEM, ['userInfoList'])
   },
   mounted() {
-    this.getUserInfoFromServer()
+    this.getUserInfoListFromServer()
   },
   methods: {
-    ...mapActions(__C.STORE.NAMESPACE.SYSTEM, ['addUserInfo2Server', 'getUserInfoFromServer']),
+    ...mapActions(__C.STORE.NAMESPACE.SYSTEM, ['addUserInfo2Server', 'getUserInfoListFromServer']),
     onAdd() {
       this.modalOpened = true
     },
@@ -79,7 +79,6 @@ export default {
           this.mode = __C.FORM.EDIT_MODE_READ
           break
         case __C.BUTTON.EDIT_MODE_DEL:
-          console.log('DELETE')
           break
       }
     },

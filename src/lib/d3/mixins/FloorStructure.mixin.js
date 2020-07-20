@@ -150,10 +150,15 @@ export default {
         })
 
       dataItems.forEach((d, i) => {
-        this.setLinearGradient(this.boxSelection, this.Rect.RectColorTypeGradient, 0, this.Rect.RectFillType, i, [
+        this.setLinearGradient(
+          this.boxSelection,
+          this.Rect.RectColorTypeGradient,
           0,
-          10
-        ])
+          this.Rect.RectFillType,
+          i,
+          [0, 7],
+          'floor'
+        )
       })
 
       // if (!this.isUserFloor) return
@@ -183,7 +188,7 @@ export default {
 
         _self
           .append('g')
-          .style('fill', (d, i) => `url(#gradient_linear_${i})`)
+          .style('fill', (d, i) => `url(#floor_gradient_linear_${i})`)
           .attr('class', 'floor_group_rect_shs_quantity')
           .selectAll('rect')
           .data(Array.from({ length: d.quantity }, () => null))

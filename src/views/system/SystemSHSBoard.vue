@@ -120,7 +120,7 @@ export default {
       'deleteSHS',
       'getSHSFromServer',
       'addSHS2Server',
-      'getUserInfoFromServer'
+      'getUserInfoListFromServer'
     ]),
     addSHS() {
       let data = JSON.parse(JSON.stringify(this.shsData))
@@ -148,7 +148,6 @@ export default {
           this.mode = __C.FORM.EDIT_MODE_READ
           break
         case __C.BUTTON.EDIT_MODE_DEL:
-          console.log('DELETE')
           break
       }
     },
@@ -178,7 +177,7 @@ export default {
       this.addMode = mod
       if (mod !== __C.ACTION.ADD_MODE_LIST) return
       try {
-        await this.getUserInfoFromServer()
+        await this.getUserInfoListFromServer()
         this.setSHSList()
       } catch (err) {
         console.log(err)

@@ -147,7 +147,6 @@ export default {
           } else {
             innerArr.push(false)
           }
-          // console.log(`[DATA]`, d.date, `[SELECTED]`, _d, `[COMPARE TIME]`, d.date.getTime(), _d.getTime())
         })
 
         d.selected = innerArr.some(d => d)

@@ -130,7 +130,6 @@ export default {
   },
   mounted() {
     this.setCumulativeSHS()
-    console.log('TODAY')
   },
   methods: {
     init() {

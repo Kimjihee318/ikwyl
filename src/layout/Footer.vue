@@ -1,7 +1,7 @@
 <template>
   <div class="wrap__footer">
     <div>
-      Copyrightⓒ 2020 JIHEE KIM All rights reserved.
+      Copyright ⓒ 2020 JIHEE KIM All rights reserved.
     </div>
   </div>
 </template>

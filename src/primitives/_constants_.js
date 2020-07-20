@@ -33,7 +33,7 @@ let CONSTANTS = function() {
       }
     },
     URL: {
-      HOST_URL: `http://localhost:3000`
+      HOST_URL: `https://test012-vxg3g76muq-an.a.run.app`
     }
   }
 }

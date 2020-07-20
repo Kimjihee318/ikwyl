@@ -192,6 +192,24 @@
       .icon {
         margin-right: 1rem;
       }
+      
+      &.active {
+        border-radius: $border_radius;
+        background-color: $blue_alpha01;
+        color: $blue_bg;
+        font-weight: 400;
+        -webkit-border-radius: $border_radius;
+        -moz-border-radius: $border_radius;
+        -ms-border-radius: $border_radius;
+        -o-border-radius: $border_radius;
+        svg{
+          fill: $blue_bg;
+        }
+  
+        .icon {
+          margin-right: 1rem;
+        }
+      }
     }
   }
   .footer {
@@ -206,14 +224,13 @@
 @media (max-width: 1439.98px) {
   .lnb {
     .account_info {
-      border: unset;
       margin-bottom: 1rem;
       padding: 0;
       .user {
-        border: 1px solid #81a8e3;
+        
         border-right:initial;
         &_name {
-          width: unset;
+          width: 3.5rem;
         }
       }
     }
@@ -248,6 +265,11 @@
         justify-content: center;
         margin: 0 0 1rem 0;
 
+      &.active {
+        .icon {
+          margin-right: initial;
+        }
+      }
         .icon {
           margin-right: initial;
         }

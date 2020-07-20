@@ -20,9 +20,14 @@ async function addSHSList(data) {
 }
 
 // * [ USER INFO ]
-async function getUserInfo(callback) {
-  let res = await axios('systemusi').post('/')
-  callback(res ? res.data : {})
+async function getUserInfoList(callback) {
+  try {
+    let res = await axios('systemusi').post('/')
+    callback(res ? res.data : {})
+    if (res) return true
+  } catch (err) {
+    console.log(err)
+  }
 }
 async function putUserInfo(data) {
   await axios('systemusi').put('/', data)
@@ -40,7 +45,7 @@ export default {
   upSHS,
   delSHS,
   addSHSList,
-  getUserInfo,
+  getUserInfoList,
   putUserInfo,
   upUserInfo,
   delUserInfo

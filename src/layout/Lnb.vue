@@ -35,7 +35,7 @@
               <g class="bars" v-for="(bar, i) in localSHSNumArr" :key="`bar_${i}`">
                 <defs>
                   <linearGradient :id="`info_linear_gradient_${i}`" gradientUnits="userSpaceOnUse">
-                    <stop offset="0" stop-color="#0f1333" />
+                    <stop offset="0" stop-color="#3e343f" />
                     <stop offset="1" stop-color="#ffbd71" />
                   </linearGradient>
                 </defs>
@@ -57,7 +57,12 @@
       <template #slot_contents><form-smoke-today /></template>
     </ui-modal>
     <div class="service_nav">
-      <div class="service_nav_item" title="Setting of residence information" @click="onMove">
+      <div
+        class="service_nav_item"
+        title="Setting of residence information"
+        :class="{ active: isResidence }"
+        @click="onMove"
+      >
         <icon-account class="icon" />
         <span>Residence information</span>
       </div>
@@ -78,9 +83,6 @@
     </div>
     <div class="sys">
       <system-navigation v-if="this.isSystemMod" class="sys_menu" />
-    </div>
-    <div class="footer">
-      Copyrightⓒ 2020 JIHEE KIM All rights reserved.
     </div>
   </div>
 </template>
@@ -120,7 +122,7 @@ export default {
   }),
   computed: {
     ...mapState(__C.STORE.NAMESPACE.ACCOUNT, ['user', 'userInfo', 'permission']),
-    ...mapState(__C.STORE.NAMESPACE.APPLICATION, ['window']),
+    ...mapState(__C.STORE.NAMESPACE.APPLICATION, ['window', 'isResidence']),
     ...mapState(__C.STORE.NAMESPACE.COMMON, ['lnb']),
     ...mapState(__C.STORE.NAMESPACE.SYSTEM, ['isSystemMod']),
 
@@ -172,6 +174,7 @@ export default {
       }
     },
     onMove() {
+      if (this.$router.history.current.path === '/residenceinfo') return
       this.$router.push({ path: '/residenceinfo' })
     }
   }

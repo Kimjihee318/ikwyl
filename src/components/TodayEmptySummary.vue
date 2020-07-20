@@ -52,10 +52,7 @@ export default {
           value: []
         }
       }
-    },
-    todaySHSInfo: '',
-    todaySHSMode: '',
-    todayUserFloorSHS: []
+    }
   })
 }
 </script>

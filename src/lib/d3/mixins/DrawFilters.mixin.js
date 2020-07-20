@@ -16,13 +16,14 @@ export default {
         .attr('width', width)
         .attr('height', height - vScale(55))
     },
-    setLinearGradient(selection, color, angle, fillType, idx, offset) {
+    setLinearGradient(selection, color, angle, fillType, idx, offset, chart) {
       let gradientLinear = selection
         .append('g')
+        .attr('class', `g__${chart}_gradient_linear`)
         .append('defs')
         .append('linearGradient')
         .attr('gradientTransform', `rotate(${angle})`)
-        .attr('id', typeof idx === 'number' ? `gradient_linear_${idx}` : 'gradient_linear')
+        .attr('id', typeof idx === 'number' ? `${chart}_gradient_linear_${idx}` : `${chart}_gradient_linear`)
         .attr('gradientUnits', fillType === 'whole_gradation' ? 'userSpaceOnUse' : null)
       gradientLinear
         .append('stop')

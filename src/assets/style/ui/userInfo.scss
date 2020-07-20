@@ -121,7 +121,7 @@
           
             &[data-label-has-icon='unit'] {
               &:before {
-                content: '호수는 100단위를 기준으로 합니다.';
+                content: '호수는 100부터 시작합니다.';
                 background-color: $blue_lightest02;
                 border: 1px solid $blue_lightest;
                 border-radius: 3px;

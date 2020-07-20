@@ -18,7 +18,7 @@ export default {
     CanvasSecondSvgChartY: 0
   },
   rect: {
-    RectColorTypeGradient: ['#0f1333', '#ffbd71'],
+    RectColorTypeGradient: ['#644f48', '#ffbd71'],
     RectFillColor: '#ffbd71',
     RectFillType: 'whole_gradation',
     RectTextColor: '#ffbd71'
@@ -42,7 +42,7 @@ export default {
     UnitTextPointColor: '#ffffff',
     UnitTextFont: null,
     UnitTextSize: '0.9rem',
-    UnitSmellRectWidth: 2.2,
+    UnitSmellRectWidth: 2.8,
     UnitSmellRectHeight: 10.5,
     UnitSmellRectColor: '#ffffff'
   }

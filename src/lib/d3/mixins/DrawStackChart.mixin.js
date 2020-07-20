@@ -63,12 +63,20 @@ export default {
         .style('text-anchor', 'middle')
     },
     drawRects() {
-      this.setLinearGradient(this.chartArea, this.Rect.RectColorTypeGradient, 90, this.Rect.RectFillType, null, [0, 50])
+      this.setLinearGradient(
+        this.chartArea,
+        this.Rect.RectColorTypeGradient,
+        90,
+        this.Rect.RectFillType,
+        null,
+        [0, 50],
+        'stack'
+      )
 
       this.timeGroup = this.chartArea
         .append('g')
         .attr('class', `stack_chart_group`)
-        .style('fill', 'url(#gradient_linear)')
+        .style('fill', 'url(#stack_gradient_linear)')
         .selectAll('g')
         .data(this.dataItems)
         .enter()

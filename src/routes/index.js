@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
 import __C from '@/primitives/_constants_'
 
 Vue.use(VueRouter)
@@ -78,12 +79,13 @@ const router = new VueRouter({
       component: () => import('@/views/service/ServiceLogin.vue'),
       meta: {
         requiresAuth: false
+      },
+      beforeEnter(from, to, next) {
+        const account = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
+
+        if (account) return next('/')
+        next()
       }
-      // beforeEnter(from, to, next) {
-      //   const account = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
-      //   if (account) return next('/')
-      //   next()
-      // }
     },
     // {
     //   path: '/userinfo',
@@ -99,11 +101,11 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   let account = JSON.parse(localStorage.getItem(__C.LOCAL_STORAGE_NAME.ACCOUNT))
-  console.log('AUTH CHECK ', account, '/', to.meta.requiresAuth && !account)
   if (to.meta.requiresAuth && !account) {
     next({ path: '/login' })
     return
   }
+  store.state.application.isResidence = to.name === 'residenceinfo' ? true : false
   next()
 })
 

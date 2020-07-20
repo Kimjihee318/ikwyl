@@ -7,7 +7,7 @@ export default {
   state: {
     isSystemMod: false, // ! 새로고침시 system 버튼으로 변경되는 부분 수정
     dailySHS: null,
-    userInfo: null
+    userInfoList: null
   },
   mutations: {
     setSysMod(state, payload) {
@@ -17,7 +17,7 @@ export default {
       state.dailySHS = payload
     },
     setUserInfo(state, payload) {
-      state.userInfo = payload
+      state.userInfoList = payload
     }
   },
   actions: {
@@ -72,12 +72,13 @@ export default {
     // },
 
     // * [ USER INFO ]
-    async getUserInfoFromServer({ commit }) {
+    async getUserInfoListFromServer({ commit }) {
       try {
-        await systemApi.getUserInfo(res => {
+        let res = await systemApi.getUserInfoList(res => {
           let formattedData = __F.obj2Lowercase(res.data)
           commit('setUserInfo', formattedData)
         })
+        if (res) return true
       } catch (err) {
         console.log('[AXIOS ERROR]', err)
       }

@@ -70,7 +70,6 @@ export default {
         let id = {
           id: selected.id
         }
-        console.log(id)
         let res = await reportApi.delReport(id, null)
         if (res) return true
       } catch (err) {

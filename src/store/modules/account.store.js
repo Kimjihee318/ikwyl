@@ -84,9 +84,7 @@ export default {
       })
     },
     async serverLogin({ commit }, data) {
-      console.log(`IN SERVER`)
       await accountApi.setAccount2LocalStorage(data, res => {
-        console.log(`TEST STORE::::::::::::::::`, res)
         commit('setAccount', res)
         ACCOUNT = res
         if (!ACCOUNT) return
@@ -94,10 +92,15 @@ export default {
       })
     },
     async logout({ commit }) {
-      await accountApi.delAccount2LocalStorage(({ isEmpty }) => {
-        if (isEmpty) console.log('GOOD')
-        commit('reset')
-      })
+      try {
+        await accountApi.delAccount2LocalStorage(({ isEmptyLocalStorage }) => {
+          if (isEmptyLocalStorage) console.log('GOOD_BYE')
+          router.push({ path: '/login' })
+          commit('reset')
+        })
+      } catch (err) {
+        console.log(err)
+      }
     },
     // * [ BUILDING ]
     async getBuildingNamesFromserver({ commit }) {
@@ -165,7 +168,6 @@ export default {
     },
     // * [ USER INFO ]
     async getUserInfoFromServer({ commit, state }, callback) {
-      console.log(`[GET USER INFO] 01`)
       let userEmail = { useremail: state.email }
       await accountApi.getUserInfo(userEmail, res => {
         let mode

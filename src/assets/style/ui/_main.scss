@@ -2,12 +2,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
   .calendar_wrapper {
+    padding-top: 1rem;
     padding-bottom: 2rem;
   }
   .main_body {
     display: flex;
+    margin-bottom: 1.5rem;
     .main_right {
       .main_chart_floor {
         display: flex;
@@ -43,6 +44,19 @@
       }
     }
     .main_left {
+    }
+  }
+  .footer {
+    background-color: $blue_bg_header;
+    border-top: 1px solid $blue_alpha03;
+    padding: .5rem;
+    padding-left: 1rem;
+    text-align: center;
+    width: 100%;
+    &.wrap__footer {
+      // background-color: $blue_alpha02;
+      font-size: .8rem;
+      font-weight: 300;
     }
   }
 }
